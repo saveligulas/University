@@ -1,8 +1,14 @@
 package org.example.ub1;
 
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Getter;
+
 public class Point {
+
     private int _xCoordinate;
     private int _yCoordinate;
+
 
     public Point(int x, int y) {
         _xCoordinate = x;
