@@ -1,6 +1,13 @@
 package org.example.ub1.cheese;
 
-public class MyCollection<T> {
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.TreeSet;
+import java.util.function.Consumer;
+
+public class MyCollection<T> implements Iterable<T> {
     private Object[] _data;
     private int _pointer;
 
@@ -29,6 +36,12 @@ public class MyCollection<T> {
         _pointer++;
     }
 
+    public void add(MyCollection<T> collection) {
+        for (T e : collection) {
+            this.add(e);
+        }
+    }
+
     public T get(int index) throws ArrayIndexOutOfBoundsException {
         return (T) _data[index];
     }
@@ -50,14 +63,34 @@ public class MyCollection<T> {
         }
     }
 
+    public boolean contains(T e) {
+        for (int i = 0; i < _pointer; i++) {
+            if (_data[i].equals(e)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void clear() {
         _data = new Object[1];
         _pointer = 0;
     }
 
-    public T[] toArray() {
-        T[] array = (T[]) new Object[_pointer];
-        System.arraycopy(_data, 0, array, 0, _pointer);
-        return array;
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private int currentIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < _pointer;
+            }
+
+            @Override
+            public T next() {
+                return (T) _data[currentIndex++];
+            }
+        };
     }
 }
