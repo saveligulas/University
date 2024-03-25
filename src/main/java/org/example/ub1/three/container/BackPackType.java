@@ -1,4 +1,4 @@
-package org.example.ub1.three;
+package org.example.ub1.three.container;
 
 public enum BackPackType {
     STANDARD(10), LARGE(20);
