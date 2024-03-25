@@ -15,6 +15,11 @@ public class Rectangle {
     }
 
     public Rectangle(Point top, Point bottom) {
+        if (top.getY() < bottom.getY()) {
+            Point temp = top;
+            top = bottom;
+            bottom = temp;
+        }
         _topCorner = top;
         _bottomCorner = bottom;
     }
@@ -27,6 +32,10 @@ public class Rectangle {
 
     public void moveByTopCorner(int x, int y) {
         moveByTopCorner(new Point(x, y));
+    }
+
+    public void moveTopCornerToPoint(int x, int y) {
+        moveByTopCorner(new Point(x - _topCorner.getX(), y - _topCorner.getY()));
     }
 
     public void moveByTopCorner(Point moveVector) {
@@ -70,20 +79,22 @@ public class Rectangle {
         return Point.addVector(_topCorner, new Point(0, -getVerticalLength()));
     }
 
-    public Rectangle[] splitIntoFour() {
+    public Tuple<Tuple<Rectangle, Rectangle>, Tuple<Rectangle, Rectangle>> splitIntoFour() {
         if (getHorizontalLength() % 2 != 0 || getVerticalLength() % 2 != 0) {
             return null;
         }
         Point center = getCenter();
-        Rectangle[] result = new Rectangle[3];
-        result[0] = new Rectangle(Point.addVector(_topCorner, new Point(getHorizontalLength(), 0)), new Point(center));
-        result[1] = new Rectangle(new Point(center), Point.addVector(_topCorner, new Point(0, -getVerticalLength())));
-        result[2] = new Rectangle(new Point(center), new Point(_bottomCorner));
-        _bottomCorner = center;
-        return result;
+        Rectangle[] rectangles = new Rectangle[4];
+        rectangles[0] = new Rectangle(new Point(_topCorner), center);
+        rectangles[1] = new Rectangle(getOtherTopCorner(), new Point(center));
+        rectangles[2] = new Rectangle(new Point(center), getOtherBottomCorner());
+        rectangles[3] = new Rectangle(new Point(center), new Point(_bottomCorner));
+        return new Tuple<>(new Tuple<>(rectangles[0], rectangles[1]), new Tuple<>(rectangles[2], rectangles[3]));
     }
 
-    public Triangle[] splitIntoTrianglePair() {
-        return null;
+    public Tuple<Triangle, Triangle> splitIntoTrianglePair() {
+        Triangle a = new Triangle(_topCorner, _bottomCorner, getOtherTopCorner());
+        Triangle b = new Triangle(_topCorner, _bottomCorner, getOtherBottomCorner());
+        return new Tuple<>(a, b);
     }
 }
