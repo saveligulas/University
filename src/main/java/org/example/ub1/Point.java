@@ -36,4 +36,12 @@ public class Point {
     public int getY() {
         return _yCoordinate;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Point point)) {
+            return false;
+        }
+        return point.getX() == _xCoordinate && point.getY() == _yCoordinate;
+    }
 }

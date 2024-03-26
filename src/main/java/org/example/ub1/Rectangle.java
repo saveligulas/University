@@ -1,8 +1,8 @@
 package org.example.ub1;
 
 public class Rectangle {
-    private Point _topCorner;
-    private Point _bottomCorner;
+    private final Point _topCorner;
+    private final Point _bottomCorner;
 
     //region <Constructor>
 
@@ -96,5 +96,13 @@ public class Rectangle {
         Triangle a = new Triangle(_topCorner, _bottomCorner, getOtherTopCorner());
         Triangle b = new Triangle(_topCorner, _bottomCorner, getOtherBottomCorner());
         return new Tuple<>(a, b);
+    }
+
+    public Point getTopCorner() {
+        return _topCorner;
+    }
+
+    public Point getBottomCorner() {
+        return _bottomCorner;
     }
 }
