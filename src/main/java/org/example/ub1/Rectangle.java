@@ -32,33 +32,49 @@ public class Rectangle {
 
     //endregion
 
+    //region <Private Methods>
+
     private boolean isRightwards() {
         return _topCorner.getX() < _bottomCorner.getX();
+    }
+
+    private int getHorizontalLength() {
+        return Math.abs(_topCorner.getX() - _bottomCorner.getX());
+    }
+
+    private int getVerticalLength() {
+        return Math.abs(_topCorner.getY() - _bottomCorner.getY());
+    }
+
+    private Point getCenter() {
+        return new Point(_topCorner.getX() + (isRightwards() ? 1 : -1) * (getHorizontalLength() / 2), _topCorner.getY() - (getVerticalLength() / 2));
+    }
+
+    private Point getOtherTopCorner() {
+        return Point.addVector(_topCorner, new Point(getHorizontalLength() * (isRightwards() ? 1 : -1), 0));
+    }
+
+    private Point getOtherBottomCorner() {
+        return Point.addVector(_bottomCorner, new Point(getHorizontalLength() * (isRightwards() ? -1 : 1), 0));
+    }
+
+    //endregion
+
+    public void moveTopCornerToPoint(int x, int y) {
+        moveTopCornerToPoint(new Point(x, y));
+    }
+
+    public void moveTopCornerToPoint(Point point) {
+        moveByTopCorner(new Point(point.getX() - _topCorner.getX(), point.getY() - _topCorner.getY()));
     }
 
     public void moveByTopCorner(int x, int y) {
         moveByTopCorner(new Point(x, y));
     }
 
-    public void moveTopCornerToPoint(int x, int y) {
-        moveByTopCorner(new Point(x - _topCorner.getX(), y - _topCorner.getY()));
-    }
-
     public void moveByTopCorner(Point moveVector) {
         _topCorner.addVector(moveVector);
         _bottomCorner.addVector(moveVector);
-    }
-
-    private int getHorizontalLength() {
-        int xTop = _topCorner.getX();
-        int xBot = _bottomCorner.getX();
-        return xTop > 0 ? xTop + (-1 * xBot) : Math.abs(xTop) + xBot;
-    }
-
-    private int getVerticalLength() {
-        int yTop = _topCorner.getY();
-        int yBot = _bottomCorner.getY();
-        return yTop >= 0 ? yTop + (-1 * yBot) : Math.abs(yTop) + yBot;
     }
 
     public int getCircumference() {
@@ -71,7 +87,7 @@ public class Rectangle {
         }
         Point center = getCenter();
         Point vector = new Point(center.getX() - _topCorner.getX(), center.getY() - _topCorner.getY());
-        double length = Math.sqrt(vector.getX() * vector.getX() + vector.getY() * vector.getY());
+        double length = Math.sqrt((vector.getX() * vector.getX()) + (vector.getY() * vector.getY()));
         return 2 * length * Math.PI;
     }
 
@@ -79,21 +95,12 @@ public class Rectangle {
         return getHorizontalLength() == getVerticalLength();
     }
 
-    public void zoomByTopCorner(int factor) {
-        _bottomCorner.addVector(new Point(factor, -1 * factor));
+    public void zoomFromBottomCorner(double factor) {
+        factor = factor - 1;
+        Point vector = new Point((int) (getHorizontalLength() * factor * (isRightwards() ? 1 : -1)), (int) (getVerticalLength() * (factor * -1)));
+        _bottomCorner.addVector(vector);
     }
 
-    private Point getCenter() {
-        return new Point(_topCorner.getX() + (isRightwards() ? 1 : -1) * getHorizontalLength(), _topCorner.getY() - getVerticalLength() / 2);
-    }
-
-    private Point getOtherTopCorner() {
-        return Point.addVector(_topCorner, new Point(getHorizontalLength(), 0));
-    }
-
-    private Point getOtherBottomCorner() {
-        return Point.addVector(_topCorner, new Point(0, -getVerticalLength()));
-    }
 
     public Tuple<Tuple<Rectangle, Rectangle>, Tuple<Rectangle, Rectangle>> splitIntoFour() {
         if (getHorizontalLength() % 2 != 0 || getVerticalLength() % 2 != 0) {
