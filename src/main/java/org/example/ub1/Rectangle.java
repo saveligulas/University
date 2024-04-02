@@ -20,6 +20,12 @@ public class Rectangle {
             top = bottom;
             bottom = temp;
         }
+        if (top.getY() == bottom.getY()) {
+            top = new Point(top.getX(), top.getY() + 1);
+        }
+        if (top.getX() == bottom.getX()) {
+            bottom = new Point(bottom.getX() + 1, bottom.getY());
+        }
         _topCorner = top;
         _bottomCorner = bottom;
     }
@@ -59,6 +65,16 @@ public class Rectangle {
         return (getHorizontalLength() * 2 + getVerticalLength() * 2);
     }
 
+    public double getCircleCircumference() {
+        if (!isQuadratic()) {
+            return -1;
+        }
+        Point center = getCenter();
+        Point vector = new Point(center.getX() - _topCorner.getX(), center.getY() - _topCorner.getY());
+        double length = Math.sqrt(vector.getX() * vector.getX() + vector.getY() * vector.getY());
+        return 2 * length * Math.PI;
+    }
+
     public boolean isQuadratic() {
         return getHorizontalLength() == getVerticalLength();
     }
@@ -68,7 +84,7 @@ public class Rectangle {
     }
 
     private Point getCenter() {
-        return new Point(getHorizontalLength() / 2 + (isRightwards() ? 1 : -1) * _topCorner.getX(), getVerticalLength() / 2 + _bottomCorner.getY());
+        return new Point(_topCorner.getX() + (isRightwards() ? 1 : -1) * getHorizontalLength(), _topCorner.getY() - getVerticalLength() / 2);
     }
 
     private Point getOtherTopCorner() {
