@@ -1,4 +1,4 @@
-package org.example.ub1;
+package org.example.ub1.rect;
 
 import org.example.ub1.tuple.Quadruplet;
 import org.example.ub1.tuple.Tuple;

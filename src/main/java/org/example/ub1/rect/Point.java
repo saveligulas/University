@@ -1,8 +1,4 @@
-package org.example.ub1;
-
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
+package org.example.ub1.rect;
 
 public class Point {
     //region <Fields>

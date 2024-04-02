@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.ub1.Rectangle;
+import org.example.ub1.rect.Rectangle;
 import org.example.ub1.cheese.CheeseHoleFinder;
 import org.example.ub1.cheese.MyCollection;
 

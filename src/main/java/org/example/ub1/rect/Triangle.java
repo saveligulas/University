@@ -1,4 +1,4 @@
-package org.example.ub1;
+package org.example.ub1.rect;
 
 public class Triangle {
     //region <Fields>

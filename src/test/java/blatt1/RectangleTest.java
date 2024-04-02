@@ -1,8 +1,8 @@
 package blatt1;
 
-import org.example.ub1.Point;
-import org.example.ub1.Rectangle;
-import org.example.ub1.Triangle;
+import org.example.ub1.rect.Point;
+import org.example.ub1.rect.Rectangle;
+import org.example.ub1.rect.Triangle;
 import org.example.ub1.tuple.Quadruplet;
 import org.example.ub1.tuple.Tuple;
 import org.junit.jupiter.api.BeforeEach;
