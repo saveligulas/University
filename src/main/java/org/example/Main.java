@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.ub1.Rectangle;
 import org.example.ub1.cheese.CheeseHoleFinder;
 import org.example.ub1.cheese.MyCollection;
 
@@ -21,5 +22,8 @@ public class Main {
         for (Integer hole : holes) {
             System.out.println(hole);
         }
+        Rectangle r = new Rectangle();
+        System.out.println(r.getCircleCircumference());
     }
+
 }
