@@ -1,4 +1,4 @@
-package blatt1;
+package blatt1.custom;
 
 import org.example.ub1.cheese.MyCollection;
 import org.junit.jupiter.api.Test;
