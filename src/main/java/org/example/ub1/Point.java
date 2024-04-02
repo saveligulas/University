@@ -29,6 +29,10 @@ public class Point {
         return new Point(point.getX() + vector.getX(), point.getY() + vector.getY());
     }
 
+    public static double distance(Point a, Point b) {
+        return Math.sqrt(Math.pow(a.getX() - b.getX(), 2) + Math.pow(a.getY() - b.getY(), 2));
+    }
+
     public int getX() {
         return _xCoordinate;
     }
