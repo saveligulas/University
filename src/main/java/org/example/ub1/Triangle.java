@@ -10,4 +10,8 @@ public class Triangle {
         _b = b;
         _c = c;
     }
+
+    public double getCircumference() {
+        return (Point.distance(_a, _b)) + Point.distance(_b, _c) + Point.distance(_c, _a);
+    }
 }
