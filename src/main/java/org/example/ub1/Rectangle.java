@@ -1,11 +1,15 @@
 package org.example.ub1;
 
+import org.example.ub1.tuple.Quadruplet;
+import org.example.ub1.tuple.Tuple;
+
 public class Rectangle {
+    //region <Fields>
     private final Point _topCorner;
     private final Point _bottomCorner;
+    //endregion
 
     //region <Constructor>
-
     public Rectangle() {
         this(0, 2, 2, 0);
     }
@@ -32,8 +36,9 @@ public class Rectangle {
 
     //endregion
 
-    //region <Private Methods>
+    //region <Methods>
 
+    //region <Private Methods>
     private boolean isRightwards() {
         return _topCorner.getX() < _bottomCorner.getX();
     }
@@ -57,9 +62,9 @@ public class Rectangle {
     private Point getOtherBottomCorner() {
         return Point.addVector(_bottomCorner, new Point(getHorizontalLength() * (isRightwards() ? -1 : 1), 0));
     }
-
     //endregion
 
+    //region <Movement>
     public void moveTopCornerToPoint(int x, int y) {
         moveTopCornerToPoint(new Point(x, y));
     }
@@ -76,7 +81,9 @@ public class Rectangle {
         _topCorner.addVector(moveVector);
         _bottomCorner.addVector(moveVector);
     }
+    //endregion
 
+    //region <Circumference>
     public int getCircumference() {
         return (getHorizontalLength() * 2 + getVerticalLength() * 2);
     }
@@ -90,6 +97,7 @@ public class Rectangle {
         double length = Math.sqrt((vector.getX() * vector.getX()) + (vector.getY() * vector.getY()));
         return 2 * length * Math.PI;
     }
+    //endregion
 
     public boolean isQuadratic() {
         return getHorizontalLength() == getVerticalLength();
@@ -102,17 +110,18 @@ public class Rectangle {
     }
 
 
-    public Tuple<Tuple<Rectangle, Rectangle>, Tuple<Rectangle, Rectangle>> splitIntoFour() {
+    //region <Splitting>
+    public Quadruplet<Rectangle> splitIntoFour() {
         if (getHorizontalLength() % 2 != 0 || getVerticalLength() % 2 != 0) {
             return null;
         }
         Point center = getCenter();
-        Rectangle[] rectangles = new Rectangle[4];
-        rectangles[0] = new Rectangle(new Point(_topCorner), center);
-        rectangles[1] = new Rectangle(getOtherTopCorner(), new Point(center));
-        rectangles[2] = new Rectangle(new Point(center), getOtherBottomCorner());
-        rectangles[3] = new Rectangle(new Point(center), new Point(_bottomCorner));
-        return new Tuple<>(new Tuple<>(rectangles[0], rectangles[1]), new Tuple<>(rectangles[2], rectangles[3]));
+        Quadruplet<Rectangle> result = new Quadruplet<>();
+        result.setFirst(new Rectangle(new Point(_topCorner), center));
+        result.setSecond(new Rectangle(getOtherTopCorner(), new Point(center)));
+        result.setThird(new Rectangle(new Point(center), getOtherBottomCorner()));
+        result.setFourth(new Rectangle(new Point(center), new Point(_bottomCorner)));
+        return result;
     }
 
     public Tuple<Triangle, Triangle> splitIntoTrianglePair() {
@@ -120,7 +129,10 @@ public class Rectangle {
         Triangle b = new Triangle(_topCorner, _bottomCorner, getOtherBottomCorner());
         return new Tuple<>(a, b);
     }
+    //endregion
+    //endregion
 
+    //region <Getters>
     public Point getTopCorner() {
         return _topCorner;
     }
@@ -128,4 +140,5 @@ public class Rectangle {
     public Point getBottomCorner() {
         return _bottomCorner;
     }
+    //endregion
 }
