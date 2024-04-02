@@ -1,4 +1,4 @@
-package org.example.ub1;
+package org.example.ub1.tuple;
 
 import org.jetbrains.annotations.Nullable;
 
