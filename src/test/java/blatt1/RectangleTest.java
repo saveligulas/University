@@ -3,13 +3,11 @@ package blatt1;
 import org.example.ub1.Point;
 import org.example.ub1.Rectangle;
 import org.example.ub1.Triangle;
-import org.example.ub1.Tuple;
+import org.example.ub1.tuple.Quadruplet;
+import org.example.ub1.tuple.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -89,11 +87,11 @@ public class RectangleTest {
 
     @Test
     public void testSplitIntoFour() {
-        Tuple<Tuple<Rectangle, Rectangle>, Tuple<Rectangle, Rectangle>> result = _r.splitIntoFour();
-        assertEquals(4, result.getFirst().getFirst().getCircumference());
-        assertEquals(4, result.getFirst().getSecond().getCircumference());
-        assertEquals(4, result.getSecond().getFirst().getCircumference());
-        assertEquals(4, result.getSecond().getSecond().getCircumference());
+        Quadruplet<Rectangle> result = _r.splitIntoFour();
+        assertEquals(4, result.getFirst().getCircumference());
+        assertEquals(4, result.getSecond().getCircumference());
+        assertEquals(4, result.getThird().getCircumference());
+        assertEquals(4, result.getFourth().getCircumference());
 
         _r = new Rectangle(_top, new Point(3, 0));
         assertEquals(null, _r.splitIntoFour());
