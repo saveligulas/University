@@ -1,9 +1,11 @@
 package org.example.ub1;
 
 public class Triangle {
+    //region <Fields>
     private Point _a;
     private Point _b;
     private Point _c;
+    //endregion
 
     public Triangle(Point a, Point b, Point c) {
         _a = a;
