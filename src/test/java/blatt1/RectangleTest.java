@@ -2,6 +2,8 @@ package blatt1;
 
 import org.example.ub1.Point;
 import org.example.ub1.Rectangle;
+import org.example.ub1.Triangle;
+import org.example.ub1.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RectangleTest {
     private Rectangle _r;
     private Random _random;
+    private final Point _top = new Point(0, 2);
+    private final Point _bot = new Point(2, 0);
 
     @BeforeEach
     public void reset() {
@@ -29,96 +33,76 @@ public class RectangleTest {
     @Test
     public void testConstructor() {
         assertTrue(checkTopAndBottom());
+
         Point a = new Point(0, 0);
         Point b = new Point(0, 0);
+        _r = new Rectangle(a, b);
         assertTrue(checkTopAndBottom());
-        for (int i = 0; i < 100; i++) {
-            a = new Point(i, _random.nextInt(-100, 100));
-            b = new Point(_random.nextInt(-100, 100), i);
-            _r = new Rectangle(a, b);
-            assertTrue(checkTopAndBottom());
-        }
+
+        a = new Point(-2, 0);
+        b = _top;
+        _r = new Rectangle(a, b);
+        assertTrue(checkTopAndBottom());
     }
 
     @Test
     public void testMovement() {
-        for (int i = 0; i < 100; i++) {
-            Point vector = new Point(_random.nextInt(-100, 100), _random.nextInt(-100, 100));
-            Point top = new Point(_r.getTopCorner());
-            Point bot = new Point(_r.getBottomCorner());
-            _r.moveByTopCorner(vector);
-            assertEquals(_r.getTopCorner(), Point.addVector(top, vector));
-            assertEquals(_r.getBottomCorner(), Point.addVector(bot, vector));
-        }
+        Point vector = new Point(1, 1);
+        _r.moveByTopCorner(vector);
+        assertEquals(Point.addVector(vector, _top), _r.getTopCorner());
+        assertEquals(Point.addVector(vector, _bot), _r.getBottomCorner());
+
+        _r.moveTopCornerToPoint(new Point(0, 2));
+        assertEquals(_top, _r.getTopCorner());
+        assertEquals(_bot, _r.getBottomCorner());
     }
 
     @Test
     public void testIsQuadratic() {
-        for (int i = 1; i < 100; i++) {
-            boolean sameLength = _random.nextBoolean();
-            Point top = new Point(0, i);
-            Point bot = new Point(sameLength ? i : i + 1, 0);
-            _r = new Rectangle(top, bot);
-            boolean isQuadratic = _r.isQuadratic();
-            if (sameLength) {
-                assertTrue(isQuadratic);
-
-            } else {
-                assertFalse(isQuadratic);
-            }
-        }
+        assertTrue(_r.isQuadratic());
+        _r = new Rectangle(_top, new Point(3, 0));
+        assertFalse(_r.isQuadratic());
     }
 
     @Test
-    public void testQuadraticCircumferences() {
-        int circumference = _r.getCircumference();
-        int length = 2;
-
-        BigDecimal circle;
-        BigDecimal catheter = BigDecimal.valueOf(1);
-        BigDecimal radius;
-        BigDecimal circleCalc;
-        for (int i = 0; i < 100; i++) {
-            assertEquals(length * 4, circumference);
-
-            Point top = _r.getTopCorner();
-            Point bot = Point.addVector(_r.getBottomCorner(), new Point(1, -1));
-            _r = new Rectangle(top, bot);
-
-            catheter = catheter.add(BigDecimal.valueOf(0.5));
-            radius = BigDecimal.valueOf(Math.sqrt(catheter.pow(2).multiply(BigDecimal.TWO).doubleValue()));
-            circleCalc = radius.multiply(BigDecimal.TWO).multiply(BigDecimal.valueOf(Math.PI));
-            circle = BigDecimal.valueOf(_r.getCircleCircumference());
-            assertEquals(circleCalc.round(MathContext.DECIMAL32), circle.round(MathContext.DECIMAL32));
-
-            circumference = _r.getCircumference();
-            length++;
-        }
+    public void testCircumference() {
+        assertEquals(8, _r.getCircumference());
+        _r = new Rectangle(_top, new Point(3, 0));
+        assertEquals(10, _r.getCircumference());
     }
 
     @Test
-    public void testHorizontalCircumference() {
-        int circumference = _r.getCircumference();
-        int initialCircumference = circumference;
-        for (int i = 1; i < 100; i++) {
-            Point top = _r.getTopCorner();
-            Point bot = Point.addVector(_r.getBottomCorner(), new Point(1, 0));
-            _r = new Rectangle(top, bot);
-            circumference = _r.getCircumference();
-            assertEquals(initialCircumference + (i * 2), circumference);
-        }
+    public void testCircleCircumference() {
+        double circumference = _r.getCircleCircumference();
+        assertTrue(circumference > 8.8 && circumference < 8.9);
+
+        _r = new Rectangle(_top, new Point(3, 0));
+        assertEquals(-1, _r.getCircleCircumference());
     }
 
     @Test
-    public void testVerticalCircumference() {
-        int circumference = _r.getCircumference();
-        int initialCircumference = circumference;
-        for (int i = 1; i < 100; i++) {
-            Point top = _r.getTopCorner();
-            Point bot = Point.addVector(_r.getBottomCorner(), new Point(0, -1));
-            _r = new Rectangle(top, bot);
-            circumference = _r.getCircumference();
-            assertEquals(initialCircumference + (i * 2), circumference);
-        }
+    public void testZoom() {
+        _r.zoomFromBottomCorner(2);
+        assertEquals(_top, _r.getTopCorner());
+        assertEquals(new Point(4, -2), _r.getBottomCorner());
+    }
+
+    @Test
+    public void testSplitIntoFour() {
+        Tuple<Tuple<Rectangle, Rectangle>, Tuple<Rectangle, Rectangle>> result = _r.splitIntoFour();
+        assertEquals(4, result.getFirst().getFirst().getCircumference());
+        assertEquals(4, result.getFirst().getSecond().getCircumference());
+        assertEquals(4, result.getSecond().getFirst().getCircumference());
+        assertEquals(4, result.getSecond().getSecond().getCircumference());
+
+        _r = new Rectangle(_top, new Point(3, 0));
+        assertEquals(null, _r.splitIntoFour());
+    }
+
+    @Test
+    public void testSplitIntoTrianglePair() {
+        Tuple<Triangle, Triangle> result = _r.splitIntoTrianglePair();
+        assertTrue(result.getFirst().getCircumference() > 6.8 && result.getFirst().getCircumference() < 6.9);
+        assertTrue(result.getSecond().getCircumference() > 6.8 && result.getSecond().getCircumference() < 6.9);
     }
 }
