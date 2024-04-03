@@ -1,5 +1,8 @@
 package org.example.ub1.three;
 
+import org.example.ub1.three.container.Item;
+import org.example.ub1.three.container.ItemContainer;
+
 public class Backpack extends ItemContainer {
     public Backpack(int size, int weight) {
         super(size, weight);
