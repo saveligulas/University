@@ -1,6 +1,6 @@
 package org.example.ub1.cheese;
 
-import java.util.TreeSet;
+import org.example.ub1.my.MyCollection;
 
 public class CheeseHoleFinder {
     private final MyCollection<Point> _stars = new MyCollection<>();

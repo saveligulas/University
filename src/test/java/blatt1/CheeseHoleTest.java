@@ -1,17 +1,14 @@
 package blatt1;
 
 import org.example.ub1.cheese.CheeseHoleFinder;
-import org.example.ub1.cheese.MyCollection;
-import org.junit.jupiter.api.BeforeAll;
+import org.example.ub1.my.MyCollection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CheeseHoleTest {
-    private CheeseHoleFinder _finder;
+    private final CheeseHoleFinder _finder;
     private char[][] _grid;
     private MyCollection<Integer> _result;
 
