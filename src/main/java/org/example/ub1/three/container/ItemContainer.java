@@ -1,4 +1,4 @@
-package org.example.ub1.three;
+package org.example.ub1.three.container;
 
 import org.example.ub1.my.MyCollection;
 import org.example.ub1.my.MyCollectionArray;
