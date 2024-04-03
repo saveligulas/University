@@ -1,5 +1,7 @@
 package org.example.ub1.my;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Iterator;
 
 public class MyCollection<T> implements Iterable<T> {
@@ -77,7 +79,7 @@ public class MyCollection<T> implements Iterable<T> {
     }
 
     @Override
-    public Iterator<T> iterator() {
+    public @NotNull Iterator<T> iterator() {
         return new Iterator<T>() {
             private int currentIndex = 0;
 
