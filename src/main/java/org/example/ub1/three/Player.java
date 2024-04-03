@@ -1,38 +1,28 @@
 package org.example.ub1.three;
 
-import org.example.ub1.three.container.BackPack;
-import org.example.ub1.three.container.ItemContainer;
+
+import org.example.ub1.three.app.Appearance;
 
 public class Player {
-    private String _name;
-    private double _health;
-    private Outfit _outfit;
+    public final String USERNAME;
+    private HealthPool _healthPool;
+    private Appearance _appearance;
     private ItemContainer _container;
     private Item _equippedItem;
+    private LocationPosition _locationPos;
+    private Experience _experience;
 
-    public Player() {
-
+    public Player(String username) {
+        USERNAME = username;
     }
 
-    public Player(String name) {
-
+    public Player(String username, HealthPool healthPool, Appearance appearance, ItemContainer container, Item item, LocationPosition location, Experience experience) {
+        USERNAME = username;
+        _healthPool = healthPool;
+        _appearance = appearance;
+        _container = container;
+        _equippedItem = item;
+        _locationPos = location;
+        _experience = experience;
     }
-
-    public Player(String name, Outfit outfit) {
-
-    }
-
-    public Player(String name, Outfit outfit, ItemContainer itemContainer) {
-
-    }
-
-    public Player(String name, double health, Outfit outfit, ItemContainer itemContainer) {
-        _name = name;
-        _health = health;
-        _outfit = outfit;
-        _container = itemContainer;
-        _equippedItem = null;
-    }
-
-
 }

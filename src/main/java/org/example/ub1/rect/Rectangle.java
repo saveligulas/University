@@ -43,14 +43,6 @@ public class Rectangle {
         return _topCorner.getX() < _bottomCorner.getX();
     }
 
-    private int getHorizontalLength() {
-        return Math.abs(_topCorner.getX() - _bottomCorner.getX());
-    }
-
-    private int getVerticalLength() {
-        return Math.abs(_topCorner.getY() - _bottomCorner.getY());
-    }
-
     private Point getCenter() {
         return new Point(_topCorner.getX() + (isRightwards() ? 1 : -1) * (getHorizontalLength() / 2), _topCorner.getY() - (getVerticalLength() / 2));
     }
@@ -61,6 +53,23 @@ public class Rectangle {
 
     private Point getOtherBottomCorner() {
         return Point.addVector(_bottomCorner, new Point(getHorizontalLength() * (isRightwards() ? -1 : 1), 0));
+    }
+    //endregion
+
+    //region <Dimension>
+    public int getHorizontalLength() {
+        return Math.abs(_topCorner.getX() - _bottomCorner.getX());
+    }
+
+    public int getVerticalLength() {
+        return Math.abs(_topCorner.getY() - _bottomCorner.getY());
+    }
+
+    public boolean isInsideRectangle(Point point) {
+        boolean x = isRightwards() ? point.getX() >= _topCorner.getX() && point.getX() <= _bottomCorner.getX() :
+                point.getX() <= _topCorner.getX() && point.getX() >= _bottomCorner.getX();
+        boolean y = point.getY() <= _topCorner.getY() && point.getY() >= _bottomCorner.getY();
+        return x && y;
     }
     //endregion
 

@@ -44,6 +44,22 @@ public class RectangleTest {
     }
 
     @Test
+    public void testDimensions() {
+        assertEquals(2, _r.getHorizontalLength());
+        assertEquals(2, _r.getVerticalLength());
+        _r = new Rectangle(_top, new Point(3, 0));
+        assertEquals(3, _r.getHorizontalLength());
+        assertEquals(2, _r.getVerticalLength());
+    }
+
+    @Test
+    public void testIsInsideRectangle() {
+        assertTrue(_r.isInsideRectangle(_top));
+        assertTrue(_r.isInsideRectangle(_bot));
+        assertTrue(_r.isInsideRectangle(new Point(1, 1)));
+    }
+
+    @Test
     public void testMovement() {
         Point vector = new Point(1, 1);
         _r.moveByTopCorner(vector);
@@ -94,7 +110,7 @@ public class RectangleTest {
         assertEquals(4, result.getFourth().getCircumference());
 
         _r = new Rectangle(_top, new Point(3, 0));
-        assertEquals(null, _r.splitIntoFour());
+        assertNull(_r.splitIntoFour());
     }
 
     @Test
