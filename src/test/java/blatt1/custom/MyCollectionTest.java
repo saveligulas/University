@@ -1,6 +1,6 @@
 package blatt1.custom;
 
-import org.example.ub1.cheese.MyCollection;
+import org.example.ub1.my.MyCollection;
 import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
