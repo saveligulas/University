@@ -1,18 +1,17 @@
-package org.example.ub1.cheese;
+package org.example.ub1.my;
 
-import java.lang.reflect.Array;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.TreeSet;
-import java.util.function.Consumer;
 
 public class MyCollection<T> implements Iterable<T> {
     private Object[] _data;
     private int _pointer;
 
     public MyCollection() {
-        _data = new Object[1];
+        this(1);
+    }
+
+    public MyCollection(int size) {
+        _data = new Object[size];
         _pointer = 0;
     }
 
