@@ -3,9 +3,9 @@ package org.example;
 import org.example.ub1.rect.Rectangle;
 import org.example.ub1.cheese.CheeseHoleFinder;
 import org.example.ub1.my.MyCollection;
-import org.example.ub1.three.Item;
-import org.example.ub1.three.ItemContainer;
-import org.example.ub1.three.ItemType;
+import org.example.ub1.three.container.Item;
+import org.example.ub1.three.container.ItemContainer;
+import org.example.ub1.three.container.ItemType;
 
 public class Main {
     public static void main(String[] args) {
