@@ -1,6 +1,4 @@
-package org.example.ub1.three;
-
-import org.jetbrains.annotations.NotNull;
+package org.example.ub1.three.container;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
