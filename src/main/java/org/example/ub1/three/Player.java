@@ -64,5 +64,16 @@ public class Player {
         return new Damage(DamageType.values()[random.nextInt(DamageType.values().length)], _equippedItem.WEIGHT);
     }
 
+    public void updatePosition(Point position) {
+
+    }
+
+    public void updateLocation(Location location) {
+
+    }
+
+    public void addExperience(int amount) {
+
+    }
 
 }
