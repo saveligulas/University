@@ -30,8 +30,8 @@ public class Rectangle {
         if (top.getX() == bottom.getX()) {
             bottom = new Point(bottom.getX() + 1, bottom.getY());
         }
-        _topCorner = top;
-        _bottomCorner = bottom;
+        _topCorner = new Point(top);
+        _bottomCorner = new Point(bottom);
     }
 
     //endregion
@@ -98,9 +98,6 @@ public class Rectangle {
     }
 
     public double getCircleCircumference() {
-        if (!isQuadratic()) {
-            return -1;
-        }
         Point center = getCenter();
         Point vector = new Point(center.getX() - _topCorner.getX(), center.getY() - _topCorner.getY());
         double length = Math.sqrt((vector.getX() * vector.getX()) + (vector.getY() * vector.getY()));

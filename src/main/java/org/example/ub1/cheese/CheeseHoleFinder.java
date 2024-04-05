@@ -61,13 +61,4 @@ public class CheeseHoleFinder {
         }
         return false;
     }
-
-    private boolean isNeighbour(MyCollection<Point> points1, MyCollection<Point> points2) {
-        for (Point p2 : points2) {
-            if (isNeighbour(points1, p2)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

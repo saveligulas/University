@@ -1,5 +1,6 @@
 package org.example.ub1.rect;
 
+
 public class Triangle {
     //region <Fields>
     private Point _a;
