@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE archery_tournament SYSTEM "archery_tournament.dtd">
+<archery_tournament xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <type id="boar" point_sheet_id="boar_points">Boar</type>
+    <type id="pig" point_sheet_id="pig_points">Pig</type>
+    <type id="hawk" point_sheet_id="hawk_points">Hawk</type>
+
+    <target id="target-001" type_id="boar">Target 1</target>
+    <target id="target-002" type_id="pig">Target 2</target>
+    <target id="target-003" type_id="hawk">Target 3</target>
+
+    <point_sheet id="boar_points">
+        <xs:simpleType name="points">
+            <xs:list itemType="xs:integer">
+            </xs:list>
+        </xs:simpleType>
+    </point_sheet>
+    <point_sheet id="pig_points">
+        <xs:simpleType name="points">
+            <xs:list itemType="xs:integer">
+            </xs:list>
+        </xs:simpleType>
+    </point_sheet>
+    <point_sheet id="hawk_points">
+        <xs:simpleType name="points">
+            <xs:list itemType="xs:integer">
+            </xs:list>
+        </xs:simpleType>
+    </point_sheet>
+
+    <course id="01">
+        <name>Test Course</name>
+        <target_list>
+    </course>
+</archery_tournament>
+
