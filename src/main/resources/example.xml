@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<addresses>
+    <address id="address-0">
+        <street>Königsallee 31</street>
+        <zip>6969</zip>
+        <city>Berlin</city>
+    </address>
+
+    <company>
+
+    </company>
+</addresses>

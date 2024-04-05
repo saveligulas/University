@@ -1,12 +1,15 @@
 package org.example.ub1.my;
 
+import org.example.print.Page;
+import org.example.ub1.tuple.Tuple;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Array;
 import java.util.Iterator;
 
 public class MyCollection<T> implements Iterable<T> {
-    private Object[] _data;
-    private int _pointer;
+    protected Object[] _data;
+    protected int _pointer;
 
     public MyCollection() {
         this(1);
@@ -17,7 +20,7 @@ public class MyCollection<T> implements Iterable<T> {
         _pointer = 0;
     }
 
-    private void increaseSize() {
+    protected void increaseSize() {
         int size;
         if (_data.length < 100) {
             size = _data.length * 2;
@@ -25,6 +28,15 @@ public class MyCollection<T> implements Iterable<T> {
             size = _data.length + (int) Math.sqrt(_data.length) + 1;
         }
         Object[] newData = new Object[size];
+        System.arraycopy(_data, 0, newData, 0, _data.length);
+        _data = newData;
+    }
+
+    public void increaseSize(int size) {
+        Object[] newData = new Object[size + _pointer];
+        if (newData.length < _data.length) {
+            return;
+        }
         System.arraycopy(_data, 0, newData, 0, _data.length);
         _data = newData;
     }
@@ -43,9 +55,45 @@ public class MyCollection<T> implements Iterable<T> {
         }
     }
 
+    @SuppressWarnings({"all"})
     public T get(int index) throws ArrayIndexOutOfBoundsException {
-        return (T) _data[index];
+        try {
+            return (T) _data[index];
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
+    @SuppressWarnings({"unchecked"})
+    public T get(T e) {
+        for (int i = 0; i < _pointer; i++) {
+            if (((T) _data[i]).equals(e)) {
+                return get(i);
+            }
+        }
+        return null;
+    }
+
+    public void set(int index, T value) {
+        _data[index] = value;
+    }
+
+    public void fill(int amount, T value) {
+        for (int i = 0; i < amount; i++) {
+            add(value);
+        }
+    }
+
+    //TODO: finish implementation
+   /* public <A, T extends Tuple<A, ?>> T get(Class<?> clazz, A e) {
+        for (int i = 0; i < _pointer; i++) {
+            if (((T) _data[i]).getFirst().equals(e)) {
+                return (T) get(i);
+            }
+        }
+        return null;
+    }*/
 
     public int size() {
         return _pointer;
@@ -58,6 +106,17 @@ public class MyCollection<T> implements Iterable<T> {
                     for (int j = i; j < _pointer - 1; j++) {
                         _data[j] = _data[j + 1];
                     }
+                }
+                _pointer--;
+            }
+        }
+    }
+
+    public void removeFromBehind(T e) {
+        for (int i = _pointer - 1; i >= 0; i--) {
+            if (_data[i].equals(e)) {
+                for (int j = i; j < _pointer - 1; j++) {
+                    _data[j] = _data[j + 1];
                 }
                 _pointer--;
             }
@@ -78,6 +137,33 @@ public class MyCollection<T> implements Iterable<T> {
         _pointer = 0;
     }
 
+    public MyCollection<T> subList(int end) {
+        return subList(0, end);
+    }
+
+    public MyCollection<T> subList(int start, int end) {
+        if (start < 0 || end < 0) {
+            throw new IllegalArgumentException("start must be larger than 0");
+        }
+        if (end < start) {
+            throw new IllegalArgumentException("end cant be smaller than start");
+        }
+        MyCollection<T> result = new MyCollection<>();
+        for (int i = start; i < end; i++) {
+            result.add(get(i));
+        }
+        return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    public T[] toArray(Class<T> clazz) {
+        T[] newArray = (T[]) Array.newInstance(clazz, _pointer);
+        for (int i = 0; i < _pointer; i++) {
+            newArray[i] = get(i);
+        }
+        return newArray;
+    }
+
     @Override
     public @NotNull Iterator<T> iterator() {
         return new Iterator<T>() {
@@ -90,7 +176,7 @@ public class MyCollection<T> implements Iterable<T> {
 
             @Override
             public T next() {
-                return (T) _data[currentIndex++];
+                return get(currentIndex++);
             }
         };
     }
