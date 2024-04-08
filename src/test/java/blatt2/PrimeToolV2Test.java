@@ -11,7 +11,7 @@ public class PrimeToolV2Test {
 
     @Test
     public void testPrimes() {
-        for (Integer i : tool.getPrimes(2, 100)) {
+        for (Integer i : tool.getPrimes(100, 1000000)) {
             assertTrue(Primes.isPrime(i));
         }
     }
