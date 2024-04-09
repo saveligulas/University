@@ -1,7 +1,7 @@
-package org.example.ub1.three;
+package org.example.ub2.container;
 
-import org.example.ub1.three.container.Item;
-import org.example.ub1.three.container.ItemContainer;
+import org.example.ub2.container.Item;
+import org.example.ub2.container.ItemContainer;
 
 public class Backpack extends ItemContainer {
     public Backpack(int size, int weight) {

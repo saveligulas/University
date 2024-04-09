@@ -1,4 +1,6 @@
-package org.example.ub1.my;
+package org.example.ub2.container;
+
+import org.example.ub1.my.MyCollection;
 
 public class MyCollectionArray<T> extends MyCollection<T> {
     public final int SIZE;

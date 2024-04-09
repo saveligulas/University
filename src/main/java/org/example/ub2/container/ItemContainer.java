@@ -1,7 +1,6 @@
-package org.example.ub1.three.container;
+package org.example.ub2.container;
 
 import org.example.ub1.my.MyCollection;
-import org.example.ub1.my.MyCollectionArray;
 
 import java.util.Iterator;
 

@@ -1,4 +1,4 @@
-package org.example.ub1.three.container;
+package org.example.ub2.container;
 
 public enum ItemType {
     PENCIL, LAPTOP, BOTTLE, WEAPON;

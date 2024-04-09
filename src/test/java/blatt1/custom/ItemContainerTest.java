@@ -1,9 +1,9 @@
 package blatt1.custom;
 
 import org.example.ub1.my.MyCollection;
-import org.example.ub1.three.container.Item;
-import org.example.ub1.three.container.ItemContainer;
-import org.example.ub1.three.container.ItemType;
+import org.example.ub2.container.Item;
+import org.example.ub2.container.ItemContainer;
+import org.example.ub2.container.ItemType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

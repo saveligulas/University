@@ -9,13 +9,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class PrimeToolV2 {
-    private static final Primes PRIMES;
+    private static final MySortedIntegerCollection PRIMES;
     private static int _highestNumberChecked;
-    private final int MAX_THREADS = 4;
-    private static ExecutorService executorService;
 
     static {
-        PRIMES = new Primes();
+        PRIMES = new MySortedIntegerCollection();
         PRIMES.add(1);
         PRIMES.add(2);
         PRIMES.add(3);
@@ -23,10 +21,6 @@ public class PrimeToolV2 {
         PRIMES.add(7);
         PRIMES.add(11);
         _highestNumberChecked = 11;
-    }
-
-    public PrimeToolV2() {
-        executorService = Executors.newFixedThreadPool(MAX_THREADS);
     }
 
     public MyCollection<Integer> getPrimes(int lowerBound, int upperBound) {
@@ -91,6 +85,7 @@ public class PrimeToolV2 {
         }
     }
 
+
     public Long expandPrimesTime(int upperBound) {
         if (upperBound <= _highestNumberChecked) {
             return 0L;
@@ -100,52 +95,6 @@ public class PrimeToolV2 {
         long endTime = System.nanoTime();
 
         return (endTime - startTime) / 1000000;
-    }
-
-    public void expandPrimesMultithreaded(int newMax) {
-        int jobSize = (newMax - _highestNumberChecked) / MAX_THREADS;
-        for (int i = 0; i < MAX_THREADS; i++) {
-            int start = _highestNumberChecked + i * jobSize;
-            int end = _highestNumberChecked + (i + 1) * jobSize;
-            executorService.execute(() -> expandPrimes(start, end));
-        }
-        _highestNumberChecked = newMax;
-    }
-
-    private void expandPrimes(int start, int newMax) {
-        int offset = newMax - start;
-        boolean[] numList = new boolean[offset];
-        Arrays.fill(numList, true);
-        int largestNumberToCheck = (int) Math.sqrt(newMax);
-        int largestNumberChecked = 0;
-        int nextPrimeIndexToCheck = 1;
-        int highestIndexAdded = 0;
-        while (largestNumberChecked <= largestNumberToCheck) {
-            int largestIndexToCheck = PRIMES.getIndexWhenNumberLarger(largestNumberToCheck);
-            largestNumberChecked = PRIMES.get(largestIndexToCheck);
-            for (int i = nextPrimeIndexToCheck; i <= largestIndexToCheck; i++) {
-                int prime = PRIMES.get(i);
-                int startPoint = prime * getMultiplierForGreaterThan(prime, start);
-                for (int j = startPoint; j <= newMax; j += prime) {
-                    int indexNotPrime = j - start - 1;
-                    try {
-                        numList[indexNotPrime] = false;
-
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("AIOOBE -" + prime + "-" + startPoint + "-" + _highestNumberChecked);
-                    }
-
-                }
-            }
-            nextPrimeIndexToCheck = largestIndexToCheck + 1;
-            int highestGuaranteedIndex = largestNumberChecked * largestNumberChecked;
-            for (int i = highestIndexAdded; i < (Math.min(highestGuaranteedIndex, numList.length)); i++) {
-                if (numList[i]) {
-                    PRIMES.add(i + start + 1);
-                }
-                highestIndexAdded++;
-            }
-        }
     }
 
     public static MyCollection<Integer> primesInRange(int a, int b) {
@@ -167,23 +116,5 @@ public class PrimeToolV2 {
             }
         }
         return primes;
-    }
-
-    private static class Primes extends MySortedIntegerCollection {
-        private final Object lock = new Object();
-
-        @Override
-        public void add(Integer e) {
-            synchronized (lock) {
-                super.add(e);
-            }
-        }
-
-        @Override
-        public Integer get(int index) {
-            synchronized (lock) {
-                return super.get(index);
-            }
-        }
     }
 }

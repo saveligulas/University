@@ -1,13 +1,13 @@
 package org.example.ub1.three;
 
 
-import org.example.ub1.my.MyCollectionArray;
 import org.example.ub1.rect.Point;
 import org.example.ub1.three.app.Appearance;
 import org.example.ub1.three.app.AppearanceUpdateChange;
-import org.example.ub1.three.container.Item;
-import org.example.ub1.three.container.ItemContainer;
-import org.example.ub1.three.container.ItemType;
+import org.example.ub2.container.Backpack;
+import org.example.ub2.container.Item;
+import org.example.ub2.container.ItemContainer;
+import org.example.ub2.container.ItemType;
 import org.example.ub1.three.dmg.Damage;
 import org.example.ub1.three.dmg.DamageType;
 import org.example.ub1.three.dmg.HealthPool;
@@ -27,7 +27,7 @@ public class Player {
         this(username, new HealthPool(100), new Appearance(), new Backpack(12, 12) , null, new LocationPosition(Location.HOME_ISLAND, new Point(0,0)), new Experience());
     }
 
-    public Player(String username, HealthPool healthPool, Appearance appearance, org.example.ub1.three.Backpack backpack, Item item, LocationPosition location, Experience experience) {
+    public Player(String username, HealthPool healthPool, Appearance appearance, Backpack backpack, Item item, LocationPosition location, Experience experience) {
         USERNAME = username;
         _healthPool = healthPool;
         _appearance = appearance;
