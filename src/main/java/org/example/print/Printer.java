@@ -1,6 +1,6 @@
 package org.example.print;
 
-import org.example.ub1.my.MyCollection;
+import org.example.coll.MyCollection;
 import org.example.ub1.tuple.Tuple;
 
 public class Printer {

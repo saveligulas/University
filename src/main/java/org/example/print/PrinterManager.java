@@ -1,6 +1,6 @@
 package org.example.print;
 
-import org.example.ub1.my.MyCollection;
+import org.example.coll.MyCollection;
 
 public class PrinterManager {
     private static final MyCollection<Printer> PRINTERS = new MyCollection<>();
