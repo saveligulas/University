@@ -1,5 +1,6 @@
 package org.example.ub3.one;
 
+import org.example.coll.MyDictionary;
 import org.example.ub1.rect.Point;
 import org.example.ub1.rect.Rectangle;
 import org.example.ub3.one.pro.Product;
@@ -15,6 +16,16 @@ public class TrainNetwork {
     public TrainNetwork(int height, int width) {
         DIMENSIONS = new Rectangle(new Point(width - 1, height - 1), new Point(0, 0));
         _pointProductMap = new MyDictionary<>();
+        fillMap(height, width);
+    }
+
+    private void fillMap(int height, int width) {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                Point p = new Point(row, col);
+                _pointProductMap.put(p, Optional.empty());
+            }
+        }
     }
 
     public void fillWithRandomProducts() {
@@ -39,7 +50,13 @@ public class TrainNetwork {
         return _pointProductMap.get(point);
     }
 
-    public void clearPosition(Point point) {
-        _pointProductMap.put(point, Optional.empty());
+    public void setPosition(Point point, Product product) {
+        _pointProductMap.put(new Point(point), Optional.of(product));
     }
+
+    public void clearPosition(Point point) {
+        _pointProductMap.put(new Point(point), Optional.empty());
+    }
+
+
 }

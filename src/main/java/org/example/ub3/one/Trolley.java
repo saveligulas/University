@@ -1,9 +1,8 @@
 package org.example.ub3.one;
 
-import org.apache.commons.math3.util.MathArrays;
+import org.example.coll.MyCollection;
 import org.example.ub1.rect.Point;
-import org.example.ub1.rect.Rectangle;
-import org.example.ub2.container.MyCollectionArray;
+import org.example.coll.MyCollectionArray;
 import org.example.ub3.one.pro.Product;
 import org.example.ub3.one.pro.ProductType;
 
@@ -28,9 +27,19 @@ public class Trolley {
         _inventory = new MyCollectionArray<Product>(size);
     }
 
-    private void checkPosition(ProductType type) {
+    private int getProductAmount(ProductType type) {
+        int amount = 0;
+        for (Product product : _inventory) {
+            if (product.TYPE == type) {
+                amount++;
+            }
+        }
+        return amount;
+    }
+
+    private void checkPosition(TrainJob job) {
         Optional<Product> product = _network.getProduct(_position);
-        if (product.isPresent() && product.get().TYPE == type) {
+        if (product.isPresent() && product.get().TYPE == job.type() && getProductAmount(job.type()) < job.target()) {
             _inventory.add(product.get());
             _network.clearPosition(_position);
         }
@@ -45,15 +54,27 @@ public class Trolley {
         int originY = _position.getY();
         boolean rightwards = originX < target.getX();
         boolean upwards = originY < target.getY();
-        for (int i = 0; i < Math.abs(originX - target.getX()); i++) {
-            int x = rightwards ? 1 : -1;
-            _position.addVector(new Point(x, 0));
-            checkPosition(job.type());
+
+        checkPosition(job);
+        while (!_position.equals(target)) {
+            int x = 0;
+            int y = 0;
+            if (_position.getX() != target.getX()) {
+                x = rightwards ? 1 : -1;
+            }
+            if (_position.getY() != target.getY()) {
+                y = upwards ? 1 : -1;
+            }
+            _position.addVector(new Point(x, y));
+            checkPosition(job);
         }
-        for (int i = 0; i < Math.abs(originY - target.getY()); i++) {
-            int y = upwards ? 1 : -1;
-            _position.addVector(new Point(0, y));
-            checkPosition(job.type());
-        }
+    }
+
+    public MyCollection<Product> getInventory() {
+        return _inventory;
+    }
+
+    public Point getPosition() {
+        return _position;
     }
 }
