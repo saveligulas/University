@@ -43,7 +43,7 @@ public class Rectangle {
         return _topCorner.getX() < _bottomCorner.getX();
     }
 
-    private Point getCenter() {
+    public Point getCenter() {
         return new Point(_topCorner.getX() + (isRightwards() ? 1 : -1) * (getHorizontalLength() / 2), _topCorner.getY() - (getVerticalLength() / 2));
     }
 
