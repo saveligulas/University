@@ -1,6 +1,6 @@
 package org.example.ub1.cheese;
 
-import org.example.ub1.my.MyCollection;
+import org.example.coll.MyCollection;
 
 public class CheeseHoleFinder {
     private final MyCollection<Point> _stars = new MyCollection<>();

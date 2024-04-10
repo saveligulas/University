@@ -1,7 +1,7 @@
 package blatt1;
 
 import org.example.ub1.cheese.CheeseHoleFinder;
-import org.example.ub1.my.MyCollection;
+import org.example.coll.MyCollection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
