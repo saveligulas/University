@@ -1,17 +1,20 @@
 package org.example;
 
+import org.example.coll.MyCollection;
 import org.example.ub1.rect.Point;
+import org.example.ub1.three.app.Gender;
 import org.example.ub2.NameGenerator;
 import org.example.ub2.PrimeToolV2;
 import org.example.ub3.one.TrainJob;
 import org.example.ub3.one.TrainNetwork;
 import org.example.ub3.one.Trolley;
 import org.example.ub3.one.pro.ProductType;
+import org.example.ub3.two.MarriageBureau;
+import org.example.ub3.two.Person;
 
 public class Main {
     public static void main(String[] args) {
-//        PrimeToolV2 tool = new PrimeToolV2();
-//        System.out.println(tool.expandPrimesTime(1000000) + "ms");
+
 //        NameGenerator gen = new NameGenerator(5);
 //        int count = 0;
 //        while (true) {
@@ -23,12 +26,18 @@ public class Main {
 //                break;
 //            }
 //        }
-        TrainNetwork network = new TrainNetwork(100, 100);
-        network.fillWithRandomProducts();
-        Trolley trolley = new Trolley(network, new Point(0, 0), 500);
-        TrainJob job = new TrainJob(ProductType.IRON, 400);
-        trolley.moveTo(new Point(99, 99), job);
-        System.out.println();
+//        TrainNetwork network = new TrainNetwork(100, 100);
+//        network.fillWithRandomProducts();
+//        Trolley trolley = new Trolley(network, new Point(0, 0), 500);
+//        TrainJob job = new TrainJob(ProductType.IRON, 400);
+//        trolley.moveTo(new Point(99, 99), job);
+//        System.out.println();
+
+        MarriageBureau b = new MarriageBureau();
+        Person male = new Person(Gender.MALE);
+        Person female = new Person(Gender.FEMALE);
+        b.marry(male, female, new MyCollection<>(), new MyCollection<>());
+        b.divorce(male, "Reason..");
     }
 
 
