@@ -29,6 +29,10 @@ public class ItemContainer extends MyCollectionArray<Item> {
         return super.size() == 0;
     }
 
+    public Item get(ItemType type) {
+        return null; //TODO
+    }
+
     @Override
     public void add(Item item) {
         if (!super.contains(item) && getWeight() + item.WEIGHT <= MAX_WEIGHT) {
