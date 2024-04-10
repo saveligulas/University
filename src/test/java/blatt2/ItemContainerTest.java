@@ -1,6 +1,6 @@
-package blatt1.custom;
+package blatt2;
 
-import org.example.ub1.my.MyCollection;
+import org.example.coll.MyCollection;
 import org.example.ub2.container.Item;
 import org.example.ub2.container.ItemContainer;
 import org.example.ub2.container.ItemType;
