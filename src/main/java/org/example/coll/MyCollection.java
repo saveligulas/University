@@ -1,7 +1,5 @@
-package org.example.ub1.my;
+package org.example.coll;
 
-import org.example.print.Page;
-import org.example.ub1.tuple.Tuple;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
@@ -90,18 +88,18 @@ public class MyCollection<T> implements Iterable<T> {
         }
     }
 
-    //TODO: finish implementation
-   /* public <A, T extends Tuple<A, ?>> T get(Class<?> clazz, A e) {
-        for (int i = 0; i < _pointer; i++) {
-            if (((T) _data[i]).getFirst().equals(e)) {
-                return (T) get(i);
-            }
-        }
-        return null;
-    }*/
-
     public int size() {
         return _pointer;
+    }
+
+    public void removeIndex(int index) {
+        if (index < 0 || index >= _pointer) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        for (int i = index; i < _pointer - 1; i++) {
+            _data[i] = _data[i + 1];
+        }
+        _pointer--;
     }
 
     public void remove(T e) {

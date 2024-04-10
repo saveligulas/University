@@ -1,4 +1,4 @@
-package org.example.ub1.my;
+package org.example.coll;
 
 import java.math.BigInteger;
 

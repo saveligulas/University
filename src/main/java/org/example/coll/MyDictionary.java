@@ -1,17 +1,17 @@
-package org.example.ub3.one;
+package org.example.coll;
 
-import org.example.ub1.my.MyCollection;
+import org.example.coll.MyCollection;
 
 public class MyDictionary<K, V> {
-    private final MyCollection<K> _keys;
-    private final MyCollection<V> _values;
+    protected final MyCollection<K> _keys;
+    protected final MyCollection<V> _values;
 
     public MyDictionary() {
         _keys = new MyCollection<K>();
         _values = new MyCollection<V>();
     }
 
-    private int findIndex(K key) {
+    protected int findIndex(K key) {
         for (int i = 0; i < _keys.size(); i++) {
             if (_keys.get(i).equals(key)) {
                 return i;
@@ -36,8 +36,8 @@ public class MyDictionary<K, V> {
         }
     }
 
-    public V get(K k) {
-        int index = findIndex(k);
+    public V get(K key) {
+        int index = findIndex(key);
         if (index >= 0) {
             return _values.get(index);
         }
