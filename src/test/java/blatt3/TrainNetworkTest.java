@@ -2,10 +2,13 @@ package blatt3;
 
 import org.example.ub1.rect.Point;
 import org.example.ub3.one.TrainNetwork;
+import org.example.ub3.one.pro.Product;
+import org.example.ub3.one.pro.ProductType;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TrainNetworkTest {
 
@@ -16,6 +19,7 @@ public class TrainNetworkTest {
 
         Point insidePoint = new Point(2, 3);
         Point outsidePoint = new Point(6, 6);
+        trainNetwork.setPosition(new Point(2, 3), new Product(ProductType.IRON));
 
         assertTrue(trainNetwork.getProduct(insidePoint).isPresent());
         assertFalse(trainNetwork.getProduct(outsidePoint).isPresent());
@@ -48,5 +52,22 @@ public class TrainNetworkTest {
         }
 
         assertTrue(productCount > 0);
+    }
+
+    @Test
+    public void testSetPosition() {
+        TrainNetwork trainNetwork = new TrainNetwork(5, 5);
+        Point position = new Point(2, 3); // Assuming we set a product at position (2, 3)
+        Product product = new Product(ProductType.IRON); // Assuming we set an IRON product at position (2, 3)
+
+        // Set the product at the position
+        trainNetwork.setPosition(position, product);
+
+        // Retrieve the product from the same position
+        Optional<Product> retrievedProduct = trainNetwork.getProduct(position);
+
+        // Assert that the retrieved product is present and matches the product we set
+        assertTrue(retrievedProduct.isPresent());
+        assertEquals(product, retrievedProduct.get());
     }
 }

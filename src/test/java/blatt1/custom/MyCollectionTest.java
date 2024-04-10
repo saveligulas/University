@@ -1,6 +1,6 @@
 package blatt1.custom;
 
-import org.example.ub1.my.MyCollection;
+import org.example.coll.MyCollection;
 import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
@@ -32,6 +32,40 @@ public class MyCollectionTest {
         collection.add(3.14);
         collection.add(2.71);
         assertEquals(2, collection.size());
+    }
+
+    @Test
+    public void testRemoveIndex() {
+        // Create a MyCollection with some initial elements
+        MyCollection<String> collection = new MyCollection<>();
+        collection.add("apple");
+        collection.add("banana");
+        collection.add("orange");
+
+        // Remove an element at index 1
+        collection.removeIndex(1);
+
+        // Ensure the size is decremented
+        assertEquals(2, collection.size());
+
+        // Ensure the removed element is no longer in the collection
+        assertFalse(collection.contains("banana"));
+
+        // Ensure the elements are shifted correctly
+        assertEquals("apple", collection.get(0));
+        assertEquals("orange", collection.get(1));
+    }
+
+    @Test
+    public void testRemoveOutOfBounds() {
+        MyCollection<String> collection = new MyCollection<>();
+        collection.add("apple");
+        collection.add("banana");
+
+        // Attempt to remove an element at an invalid index
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            collection.removeIndex(2); // Index 2 is out of bounds for a collection of size 2
+        });
     }
 
     @Test

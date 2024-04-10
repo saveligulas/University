@@ -1,7 +1,7 @@
 package blatt3;
 
-import org.example.ub1.my.MyCollection;
-import org.example.ub3.one.MyDictionary;
+import org.example.coll.MyCollection;
+import org.example.coll.MyDictionary;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

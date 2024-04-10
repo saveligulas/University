@@ -1,7 +1,7 @@
 package blatt1.custom;
 
-import org.example.ub1.my.MyCollection;
-import org.example.ub2.container.MyCollectionArray;
+import org.example.coll.MyCollection;
+import org.example.coll.MyCollectionArray;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
