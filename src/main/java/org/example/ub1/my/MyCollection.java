@@ -20,6 +20,11 @@ public class MyCollection<T> implements Iterable<T> {
         _pointer = 0;
     }
 
+    public MyCollection(MyCollection<T> collection) {
+        _data = collection._data;
+        _pointer = collection._pointer;
+    }
+
     protected void increaseSize() {
         int size;
         if (_data.length < 100) {
