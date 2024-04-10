@@ -1,10 +1,7 @@
 package org.example.ub2;
 
-import org.example.ub1.my.MyCollection;
-import org.example.ub1.my.MySortedIntegerCollection;
+import org.example.coll.MySortedIntegerCollection;
 import org.example.ub1.tuple.Tuple;
-
-import javax.swing.*;
 
 public class PrimeTool {
     private static final MySortedIntegerCollection PRIMES;

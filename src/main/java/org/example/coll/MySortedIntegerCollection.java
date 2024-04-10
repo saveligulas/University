@@ -1,4 +1,4 @@
-package org.example.ub1.my;
+package org.example.coll;
 
 public class MySortedIntegerCollection extends MyCollection<Integer> {
     public int getIndexWhenNumberLarger(int number) {
