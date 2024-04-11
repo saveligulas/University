@@ -1,7 +1,7 @@
 package org.example.ub1.rect;
 
-import org.example.ub1.tuple.Quadruplet;
-import org.example.ub1.tuple.Tuple;
+import org.example.coll.tuple.Quadruplet;
+import org.example.coll.tuple.Tuple;
 
 public class Rectangle {
     //region <Fields>
