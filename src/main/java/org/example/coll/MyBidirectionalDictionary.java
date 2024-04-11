@@ -1,6 +1,6 @@
 package org.example.coll;
 
-public class MyBidirectionalDictionary<K, V extends K> extends MyDictionary<K, V> {
+public class MyBidirectionalDictionary<K, V> extends MyDictionary<K, V> {
     protected int findIndexInverted(K key) {
         for (int i = 0; i < _values.size(); i++) {
             if (_values.get(i).equals(key)) {
