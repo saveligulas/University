@@ -105,6 +105,22 @@ public class MyCollectionTest {
     }
 
     @Test
+    public void testReverse() {
+        // Arrange
+        MyCollection<Integer> collection = new MyCollection<>();
+        collection.add(2);
+        collection.add(1);
+        collection.add(0);
+
+        // Act
+        collection.reverse();
+
+        for (int i = 0; i < 3; i++) {
+            assertEquals(Integer.valueOf(i), collection.get(i));
+        }
+    }
+
+    @Test
     public void testIterator() {
         MyCollection<String> collection = new MyCollection<>();
         collection.add("Item1");
