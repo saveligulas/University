@@ -108,7 +108,6 @@ public class PrimeToolV2 {
         if (a == b) {
             return 2;
         } else {
-            b++;
             return ((int) Math.ceil((double) b / a));
         }
     }
