@@ -1,4 +1,4 @@
-package org.example.ub1.tuple;
+package org.example.coll.tuple;
 
 public class Quadruplet<T> {
     private final Tuple<T, T> _first;
