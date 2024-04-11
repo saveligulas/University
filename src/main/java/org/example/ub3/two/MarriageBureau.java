@@ -4,7 +4,7 @@ import org.example.coll.MyBidirectionalDictionary;
 import org.example.coll.MyCollection;
 import org.example.coll.MyDictionary;
 import org.example.ub1.three.app.Gender;
-import org.example.ub1.tuple.Tuple;
+import org.example.coll.tuple.Tuple;
 
 import java.time.LocalDate;
 
@@ -15,7 +15,7 @@ public class MarriageBureau {
     private final MyDictionary<Person, MyCollection<Person>> _bridesmaids;
     private final MyDictionary<Tuple<Person, Person>, Divorce> _divorces;
 
-    public MarriageBureau() {
+     MarriageBureau() {
         _marriages = new MyBidirectionalDictionary<>();
         _originalSurnames = new MyDictionary<>();
         _bridesmen = new MyDictionary<>();
@@ -27,6 +27,10 @@ public class MarriageBureau {
         MyCollection<Person> result = _marriages.getKeys();
         result.add(_marriages.getValues());
         return result;
+    }
+
+    public void marry(Person p1, Person p2) {
+         this.marry(p1, p2, new MyCollection<>(), new MyCollection<>());
     }
 
     public void marry(Person p1, Person p2, MyCollection<Person> bridesmen, MyCollection<Person> bridesmaids) {

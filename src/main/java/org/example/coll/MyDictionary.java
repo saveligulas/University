@@ -52,6 +52,16 @@ public class MyDictionary<K, V> {
         }
     }
 
+    public int size() {
+        return _keys.size();
+    }
+
+    public void clear() {
+        for (K key : _keys) {
+            this.remove(key);
+        }
+    }
+
     public MyCollection<K> getKeys() {
         return new MyCollection<>(_keys);
     }
