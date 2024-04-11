@@ -1,6 +1,7 @@
 package org.example.ub3.two;
 
 import com.github.javafaker.Faker;
+import org.example.coll.MyCollection;
 import org.example.ub1.three.app.Gender;
 import org.example.ub2.container.Item;
 
@@ -9,6 +10,7 @@ import java.util.Date;
 import java.util.Random;
 
 public class Person {
+    public static final MarriageBureau MARRIAGE_BUREAU = new MarriageBureau();
     public static final Faker FAKER = new Faker();
     public final Gender GENDER;
     public final Date BIRTH_DATE;
@@ -32,6 +34,12 @@ public class Person {
 
     public void setSurname(String surname) {
         _surname = surname;
+    }
+
+    public void marry(Person p) {
+        if (!this.equals(p)) {
+            MARRIAGE_BUREAU.marry(this, p, new MyCollection<>(), new MyCollection<>());
+        }
     }
 
     @Override
