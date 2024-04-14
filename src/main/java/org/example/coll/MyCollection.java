@@ -3,7 +3,10 @@ package org.example.coll;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class MyCollection<T> implements Iterable<T> {
     protected Object[] _data;
@@ -165,6 +168,16 @@ public class MyCollection<T> implements Iterable<T> {
             newArray[i] = get(i);
         }
         return newArray;
+    }
+
+    public void reverse() {
+        Object[] newArray = new Object[_pointer];
+        int index = 0;
+        for (int i = _pointer - 1; i >= 0; i--) {
+            newArray[index] = get(i);
+            index++;
+        }
+        _data = newArray;
     }
 
     @Override

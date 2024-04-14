@@ -1,4 +1,4 @@
-package org.example.ub1.tuple;
+package org.example.coll.tuple;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -35,10 +35,10 @@ public class Tuple<A, B> {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Tuple<?,?> tuple)) {
+        if (!(obj instanceof Tuple<?,?> tuple) || tuple.getFirst() == null || tuple.getSecond() == null) {
             return false;
         }
         //TODO: change when MyCollection get() is implemented
-        return tuple.getFirst().equals(this.getFirst()); //&& tuple.getSecond().equals(this.getSecond())
+        return tuple.getFirst().equals(this.getFirst()) && tuple.getSecond().equals(this.getSecond()); //&& tuple.getSecond().equals(this.getSecond())
     }
 }

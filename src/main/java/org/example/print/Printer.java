@@ -1,7 +1,7 @@
 package org.example.print;
 
 import org.example.coll.MyCollection;
-import org.example.ub1.tuple.Tuple;
+import org.example.coll.tuple.Tuple;
 
 public class Printer {
     private int _printedPages;

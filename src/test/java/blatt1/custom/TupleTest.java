@@ -1,6 +1,6 @@
 package blatt1.custom;
 
-import org.example.ub1.tuple.Tuple;
+import org.example.coll.tuple.Tuple;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -20,6 +20,13 @@ public class MySortedIntegerCollection extends MyCollection<Integer> {
     }
 
     @Override
+    public void add(Integer e) {
+        if (_pointer == 0 || get(_pointer - 1) <= e) {
+            super.add(e);
+        }
+    }
+
+    @Override
     public void remove(Integer e) {
         for (int i = 0; i < _pointer; i++) {
             if (_data[i] == e) {
