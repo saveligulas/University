@@ -30,7 +30,7 @@ public class Trolley {
     private int getProductAmount(ProductType type) {
         int amount = 0;
         for (Product product : _inventory) {
-            if (product.TYPE == type) {
+            if (product.type() == type) {
                 amount++;
             }
         }
@@ -38,8 +38,8 @@ public class Trolley {
     }
 
     private void checkPosition(TrainJob job) {
-        Optional<Product> product = _network.getProduct(_position);
-        if (product.isPresent() && product.get().TYPE == job.type() && getProductAmount(job.type()) < job.target()) {
+        Optional<Product> product = _network.getProducts(_position);
+        if (product.isPresent() && product.get().type() == job.type() && getProductAmount(job.type()) < job.target()) {
             _inventory.add(product.get());
             _network.clearPosition(_position);
         }

@@ -4,7 +4,6 @@ import org.example.ub1.rect.Point;
 import org.example.ub3.one.TrainJob;
 import org.example.ub3.one.TrainNetwork;
 import org.example.ub3.one.Trolley;
-import org.example.ub3.one.pro.Product;
 import org.example.ub3.one.pro.ProductType;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +38,7 @@ public class TrolleyTest {
         trolley.moveTo(targetPosition, job);
 
         assertTrue(trolley.getInventory().contains(product));
-        assertFalse(network.getProduct(targetPosition).isPresent());
+        assertFalse(network.getProducts(targetPosition).isPresent());
     }
 
     @Test
@@ -59,7 +58,7 @@ public class TrolleyTest {
 
         assertTrue(trolley.getInventory().contains(product));
         assertEquals(2, trolley.getInventory().size());
-        assertTrue(network.getProduct(new Point(0, 4)).isPresent());
+        assertTrue(network.getProducts(new Point(0, 4)).isPresent());
     }
 
     @Test
@@ -75,6 +74,6 @@ public class TrolleyTest {
 
         trolley.moveTo(targetPosition, job);
 
-        assertFalse(network.getProduct(initialPosition).isPresent());
+        assertFalse(network.getProducts(initialPosition).isPresent());
     }
 }

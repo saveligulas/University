@@ -2,7 +2,6 @@ package blatt3;
 
 import org.example.ub1.rect.Point;
 import org.example.ub3.one.TrainNetwork;
-import org.example.ub3.one.pro.Product;
 import org.example.ub3.one.pro.ProductType;
 import org.junit.jupiter.api.Test;
 
@@ -21,8 +20,8 @@ public class TrainNetworkTest {
         Point outsidePoint = new Point(6, 6);
         trainNetwork.setPosition(new Point(2, 3), new Product(ProductType.IRON));
 
-        assertTrue(trainNetwork.getProduct(insidePoint).isPresent());
-        assertFalse(trainNetwork.getProduct(outsidePoint).isPresent());
+        assertTrue(trainNetwork.getProducts(insidePoint).isPresent());
+        assertFalse(trainNetwork.getProducts(outsidePoint).isPresent());
     }
 
     @Test
@@ -33,7 +32,7 @@ public class TrainNetworkTest {
         Point point = new Point(2, 3);
         trainNetwork.clearPosition(point);
 
-        assertFalse(trainNetwork.getProduct(point).isPresent());
+        assertFalse(trainNetwork.getProducts(point).isPresent());
     }
 
     @Test
@@ -45,7 +44,7 @@ public class TrainNetworkTest {
         for (int row = 0; row < trainNetwork.DIMENSIONS.getVerticalLength() + 1; row++) {
             for (int col = 0; col < trainNetwork.DIMENSIONS.getHorizontalLength() + 1; col++) {
                 Point p = new Point(row, col);
-                if (trainNetwork.getProduct(p).isPresent()) {
+                if (trainNetwork.getProducts(p).isPresent()) {
                     productCount++;
                 }
             }
@@ -64,7 +63,7 @@ public class TrainNetworkTest {
         trainNetwork.setPosition(position, product);
 
         // Retrieve the product from the same position
-        Optional<Product> retrievedProduct = trainNetwork.getProduct(position);
+        Optional<Product> retrievedProduct = trainNetwork.getProducts(position);
 
         // Assert that the retrieved product is present and matches the product we set
         assertTrue(retrievedProduct.isPresent());
