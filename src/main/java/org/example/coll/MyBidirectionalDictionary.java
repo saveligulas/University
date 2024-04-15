@@ -23,16 +23,19 @@ public class MyBidirectionalDictionary<K, V> extends MyDictionary<K, V> {
     }
 
     @Override
-    public void remove(K key) {
+    public boolean remove(K key) {
         int index = super.findIndex(key);
         if (index >= 0) {
             super.remove(key);
+            return true;
         } else {
             index = findIndexInverted(key);
             if (index >= 0) {
                 _values.removeIndex(index);
                 _keys.removeIndex(index);
+                return true;
             }
         }
+        return false;
     }
 }
