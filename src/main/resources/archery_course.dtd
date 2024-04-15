@@ -1,0 +1,25 @@
+[
+        <!ELEMENT archery_tournament (type|target|point_sheet|course)*>
+        <!ELEMENT type (#PCDATA)>
+        <!ATTLIST type
+                id ID #REQUIRED
+                point_sheet_id IDREF #REQUIRED>
+        <!ELEMENT target (#PCDATA)>
+        <!ATTLIST target
+                id ID #REQUIRED
+                type_id IDREF #REQUIRED>
+        <!ELEMENT point_sheet (name|points)*>
+        <!ATTLIST point_sheet
+                id ID #REQUIRED>
+        <!ELEMENT name (#PCDATA)>
+        <!ELEMENT points (point)*>
+        <!ELEMENT point (#PCDATA)>
+        <!ELEMENT course (name|location_description|targets)*>
+        <!ATTLIST course
+                id ID #REQUIRED>
+        <!ELEMENT location_description (#PCDATA)>
+        <!ELEMENT targets (animal)*>
+        <!ELEMENT animal (#PCDATA)>
+        <!ATTLIST animal
+                target_id IDREF #REQUIRED>
+        ]>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE archery_tournament SYSTEM "archery_tournament.dtd">
-<archery_tournament xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<!DOCTYPE archery_tournament SYSTEM "archery_course.dtd">
+<archery_tournament>
     <type id="boar" point_sheet_id="boar_points">Boar</type>
     <type id="pig" point_sheet_id="pig_points">Pig</type>
     <type id="hawk" point_sheet_id="hawk_points">Hawk</type>
@@ -10,27 +10,47 @@
     <target id="target-003" type_id="hawk">Target 3</target>
 
     <point_sheet id="boar_points">
-        <xs:simpleType name="points">
-            <xs:list itemType="xs:integer">
-            </xs:list>
-        </xs:simpleType>
+        <name>Boar Points</name>
+        <points>
+            <point>10</point>
+            <point>15</point>
+            <point>20</point>
+        </points>
     </point_sheet>
     <point_sheet id="pig_points">
-        <xs:simpleType name="points">
-            <xs:list itemType="xs:integer">
-            </xs:list>
-        </xs:simpleType>
+        <name>Pig Points</name>
+        <points>
+            <point>5</point>
+            <point>8</point>
+            <point>12</point>
+        </points>
     </point_sheet>
     <point_sheet id="hawk_points">
-        <xs:simpleType name="points">
-            <xs:list itemType="xs:integer">
-            </xs:list>
-        </xs:simpleType>
+        <name>Hawk Points</name>
+        <points>
+            <point>25</point>
+            <point>30</point>
+            <point>35</point>
+        </points>
     </point_sheet>
 
-    <course id="01">
-        <name>Test Course</name>
-        <target_list>
+    <course id="001">
+        <name>Beginner's Archery Course</name>
+        <location_description>Back at the old watchtower.</location_description>
+        <targets>
+            <animal target_id="target-001">1. Boar</animal>
+            <animal target_id="target-002">2. Pig</animal>
+        </targets>
     </course>
+
+    <course id="002">
+        <name>Intermediate Archery Course</name>
+        <location_description>In the woods to the east. Follow the Mountainbike trail. Turn to the left on the first intersection.</location_description>
+        <targets>
+            <animal target_id="target-003">1. Hawk</animal>
+            <animal target_id="target-003">2. Hawk</animal>
+        </targets>
+    </course>
+
 </archery_tournament>
 
