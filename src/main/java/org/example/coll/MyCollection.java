@@ -26,6 +26,11 @@ public class MyCollection<T> implements Iterable<T> {
         _pointer = collection._pointer;
     }
 
+    public MyCollection(T[] array) {
+        _data = array.clone();
+        _pointer = array.length;
+    }
+
     protected void increaseSize() {
         int size;
         if (_data.length < 100) {
