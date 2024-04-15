@@ -44,12 +44,14 @@ public class MyDictionary<K, V> {
         return null;
     }
 
-    public void remove(K key) {
+    public boolean remove(K key) {
         int index = findIndex(key);
         if (index >= 0) {
             _keys.remove(key);
             _values.remove(_values.get(index));
+            return true;
         }
+        return false;
     }
 
     public int size() {
