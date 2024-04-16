@@ -12,16 +12,20 @@ import org.example.ub3.one.Trolley;
 import org.example.ub3.one.pro.ProductType;
 import org.example.ub3.two.MarriageBureau;
 import org.example.ub3.two.Person;
+import org.example.ub3.twov2.Human;
 
 public class Main {
     public static void main(String[] args) {
-        PrimeToolV2 tool = new PrimeToolV2();
-        System.out.println("With saving");
-        System.out.println(tool.expandPrimesTime(1000000) + "ms");
-        System.out.println(tool.expandPrimesTime(2000000) + "ms");
-        System.out.println(tool.expandPrimesTime(3000000) + "ms");
-        System.out.println(tool.getPrimes(2, 1000000).get(0));
-
+        Human husband = new Human(Gender.MALE);
+        Human spouse = new Human(Gender.FEMALE);
+        MyCollection<Human> guests = new MyCollection<>();
+        for (int i = 0; i < 100) {
+            guests.add(new Human());
+        }
+        husband.propose(spouse);
+        System.out.println();
+        spouse.plan();
+        husband.finishPlanning();
 //        NameGenerator gen = new NameGenerator(5);
 //        int count = 0;
 //        while (true) {
