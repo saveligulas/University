@@ -20,7 +20,7 @@ public class MyDictionary<K, V> {
         return -1;
     }
 
-    public void update(K key, V value) {
+    protected void update(K key, V value) {
         int index = findIndex(key);
         if (index >= 0) {
             _values.set(index, value);
