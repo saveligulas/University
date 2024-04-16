@@ -37,12 +37,12 @@ public class Trolley {
         return amount;
     }
 
-    private void checkPosition(TrainJob job) {
-        Optional<Product> product = _network.getProducts(_position);
-        if (product.isPresent() && product.get().type() == job.type() && getProductAmount(job.type()) < job.target()) {
-            _inventory.add(product.get());
-            _network.clearPosition(_position);
-        }
+    private void checkPosition(TrainJob job) { //TODO fix
+//        Optional<Product> product = _network.getProducts(_position);
+//        if (product.isPresent() && product.get().type() == job.type() && getProductAmount(job.type()) < job.target()) {
+//            _inventory.add(product.get());
+//            _network.clearPosition(_position);
+//        }
     }
 
     public void moveTo(Point position) {
