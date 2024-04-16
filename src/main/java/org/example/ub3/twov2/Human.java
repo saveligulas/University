@@ -1,16 +1,19 @@
 package org.example.ub3.twov2;
 
 import com.github.javafaker.Faker;
+import org.example.Main;
 import org.example.coll.MyCollection;
 import org.example.ub1.three.app.Gender;
 import org.example.ub3.two.Person;
+import org.example.ub3.twov2.exc.OccupiedWithMarriageException;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Optional;
 import java.util.Random;
 
 public class Human {
-    protected static final MarriageBureauV2 MARRIAGE_BUREAU = new MarriageBureauV2();
+    protected static final MarriageBureauV3 MARRIAGE_BUREAU = new MarriageBureauV3();
     protected static final Faker FAKER = new Faker();
     protected static final Random RAND = new Random();
     public final Gender GENDER;
@@ -35,19 +38,72 @@ public class Human {
         this.name = name;
     }
 
+    public Optional<Human> getPartner() {
+        return MARRIAGE_BUREAU.getPartner(this);
+    }
+
+    public MarriageState getState() {
+        try {
+            return MARRIAGE_BUREAU.getMarriageState(this);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
     public boolean propose(Human human) {
         if (this.equals(human)) {
             return false;
         }
 
         try {
-            MARRIAGE_BUREAU.proposeMarriage(this, human);
+            MARRIAGE_BUREAU.propose(this, human);
             return true;
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Illegal Argument: " + e.getMessage());
+        } catch (OccupiedWithMarriageException e) {
+            System.out.println("Cannot propose: " + e.getMessage());
         }
 
         return false;
+    }
+
+    public boolean plan() {
+        try {
+            MARRIAGE_BUREAU.moveToPlanned(this);
+            return true;
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public void addHonoraryGuests(Human... honoraryGuests) {
+        MyCollection<Human> humansToAdd = new MyCollection<>(honoraryGuests);
+        try {
+            MARRIAGE_BUREAU.addBridesmaidsAndGroomsmen(this, humansToAdd);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void addGuests(Human... guests) {
+        MyCollection<Human> guestsToAdd = new MyCollection<>(guests);
+        try {
+            MARRIAGE_BUREAU.addGuests(this, guestsToAdd);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public boolean finishPlanning() {
+        try {
+            MARRIAGE_BUREAU.moveToPrepared(this);
+            return true;
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     public String getNameString() {
@@ -62,5 +118,14 @@ public class Human {
         return (this.name.equals(human.name) &&
                 this.GENDER == human.GENDER &&
                 this.BIRTHDAY.equals(human.BIRTHDAY));
+    }
+
+    @Override
+    public String toString() {
+        return "Human{" +
+                "GENDER=" + GENDER +
+                ", BIRTHDAY=" + BIRTHDAY +
+                ", name=" + name +
+                '}';
     }
 }
