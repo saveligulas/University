@@ -13,15 +13,20 @@ import java.util.Optional;
 import java.util.Random;
 
 public class Human {
+    //region <Internal static Fields>
     protected static final MarriageBureauV3 MARRIAGE_BUREAU = new MarriageBureauV3();
     protected static final Faker FAKER = new Faker();
     protected static final Random RAND = new Random();
+    //endregion
+    //region <public final Fields>
     public final Gender GENDER;
     public final LocalDate BIRTHDAY;
+    //endregion
     Name name;
 
+    //region <Constructor>
     public Human() {
-        this(Gender.values()[RAND.nextInt(1)]);
+        this(Gender.values()[RAND.nextInt(2)]);
     }
 
     public Human(Gender gender) {
@@ -37,7 +42,10 @@ public class Human {
         BIRTHDAY = birthday;
         this.name = name;
     }
+    //endregion
 
+    //region <Public Methods>
+    //region <Getters and State of Human>
     public Optional<Human> getPartner() {
         return MARRIAGE_BUREAU.getPartner(this);
     }
@@ -51,6 +59,24 @@ public class Human {
         return null;
     }
 
+    public String getNameString() {
+        return name.toString();
+    }
+
+    public boolean hasProposed() {
+        return MARRIAGE_BUREAU.hasProposed(this);
+    }
+
+    public Optional<Human> getProposalPartner() {
+        return MARRIAGE_BUREAU.getPartner(this);
+    }
+
+    public boolean hasProposal() {
+        return MARRIAGE_BUREAU.hasProposal(this);
+    }
+    //endregion
+
+    //region <Marriage steps>
     public boolean propose(Human human) {
         if (this.equals(human)) {
             return false;
@@ -68,7 +94,7 @@ public class Human {
         return false;
     }
 
-    public boolean plan() {
+    public boolean acceptProposal() {
         try {
             MARRIAGE_BUREAU.moveToPlanned(this);
             return true;
@@ -106,10 +132,41 @@ public class Human {
         }
     }
 
-    public String getNameString() {
-        return name.toString();
+    public boolean marry() {
+        try {
+            MARRIAGE_BUREAU.marry(this);
+            return true;
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+    //endregion
+
+    //region <Marriage Cancellation and Divorce>
+    public boolean cancelMarriage() {
+        try {
+            MARRIAGE_BUREAU.cancelMarriage(this);
+            return true;
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 
+    public boolean divorce(String reason) {
+        try {
+            MARRIAGE_BUREAU.divorce(this, reason);
+            return true;
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+    //endregion
+    //endregion
+
+    //region <Overwritten Object methods>
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Human human)) {
@@ -128,4 +185,5 @@ public class Human {
                 ", name=" + name +
                 '}';
     }
+    //endregion
 }
