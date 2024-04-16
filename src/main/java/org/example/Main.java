@@ -14,18 +14,17 @@ import org.example.ub3.two.MarriageBureau;
 import org.example.ub3.two.Person;
 import org.example.ub3.twov2.Human;
 
+import java.time.LocalDate;
+
 public class Main {
     public static void main(String[] args) {
-        Human husband = new Human(Gender.MALE);
+        Human husband = new Human(Gender.MALE, LocalDate.now());
         Human spouse = new Human(Gender.FEMALE);
-        MyCollection<Human> guests = new MyCollection<>();
-        for (int i = 0; i < 100) {
-            guests.add(new Human());
-        }
         husband.propose(spouse);
-        System.out.println();
-        spouse.plan();
-        husband.finishPlanning();
+
+
+
+
 //        NameGenerator gen = new NameGenerator(5);
 //        int count = 0;
 //        while (true) {
