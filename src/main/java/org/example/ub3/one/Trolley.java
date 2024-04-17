@@ -25,18 +25,14 @@ public class Trolley {
         _inventory = new MyCollectionArray<Product>(size);
     }
 
-    private int getProductAmount(ProductType type) {
-        int amount = 0;
-        for (Product product : _inventory) {
-            if (product.type() == type) {
-                amount++;
+    public void pickupProducts(MyCollection<Product> products, TrainJob job) {
+        for (Product product : products) {
+            if (job.types.contains(product.type())) {
+                _inventory.add(product);
+                products.remove(product);
+                job.found();
             }
         }
-        return amount;
-    }
-
-    public void pickupProducts(MyCollection<Product> products, TrainJob job) {
-
     }
 
     public void addVector(Point vector) {
@@ -55,6 +51,17 @@ public class Trolley {
         MyCollection<Product> inventory = new MyCollection<>(_inventory);
         _inventory.clear();
         return inventory;
+    }
+
+    public MyCollection<Product> getInventoryAndClearWithTarget(Point target) {
+        MyCollection<Product> productsWithTarget = new MyCollection<>();
+        for (Product product : _inventory) {
+            if (product.destination().equals(target)) {
+                productsWithTarget.add(product);
+                _inventory.remove(product);
+            }
+        }
+        return productsWithTarget;
     }
 
     public Point getPosition() {

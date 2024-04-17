@@ -1,14 +1,5 @@
 package blatt3;
 
-import org.example.ub1.rect.Point;
-import org.example.ub3.one.TrainJob;
-import org.example.ub3.one.TrainNetwork;
-import org.example.ub3.one.Trolley;
-import org.example.ub3.one.pro.ProductType;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 public class TrolleyTest {
 //    @Test
 //    public void testMoveTo() {

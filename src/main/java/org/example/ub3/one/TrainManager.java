@@ -19,6 +19,19 @@ public class TrainManager {
         _pointHubs = pointHubs;
     }
 
+    private int closestTrolleyIndex(Point point) {
+        int closestTrolleyIndex = 0;
+        double closestDistance = Point.distance(point, _trolleys.get(0).getPosition());
+        for (int i = 1; i < _trolleys.size(); i++) {
+            double distance = Point.distance(point, _trolleys.get(i).getPosition());
+            if ((distance < closestDistance && !point.equals(_trolleys.get(i).getPosition())) || closestDistance < 1) {
+                closestTrolleyIndex = i;
+                closestDistance = distance;
+            }
+        }
+        return closestTrolleyIndex;
+    }
+
     public void driveToNearestHub(int trolleyIndex) {
         this.driveToNearestHub(_trolleys.get(trolleyIndex));
     }
@@ -32,7 +45,9 @@ public class TrainManager {
     }
 
     public void completeJob(TrainHub hub, TrainJob job) {
-
+        Point hubPoint = _pointHubs.getKeys(hub).get(0);
+        int trolleyToUse = closestTrolleyIndex(_pointHubs.getKeys(hub).get(0));
+        hub.addProducts(moveTrolleyAndGetProducts(trolleyToUse, hubPoint, job));
     }
 
     private MyCollection<Product> moveTrolleyAndGetProducts(int index, Point target, TrainJob job) {
@@ -57,11 +72,19 @@ public class TrainManager {
             trolley.addVector(new Point(x, y));
             checkPosition(trolley, job);
         }
-        return trolley.getInventoryAndClear();
+        return trolley.getInventoryAndClearWithTarget(target);
     }
 
     private void checkPosition(Trolley trolley, TrainJob job) {
         trolley.pickupProducts(_network.getProducts(trolley.getPosition()), job);
+    }
+
+    public MyCollection<Point> getPointsOfHubs() {
+        return _pointHubs.getKeys();
+    }
+
+    public MyCollection<Product> getProductsAtHub(Point point) {
+        return _pointHubs.get(point)._inventory;
     }
 
     @Override
