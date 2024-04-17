@@ -6,5 +6,5 @@ import org.example.ub1.rect.Point;
 
 import java.util.Optional;
 
-public record CompletedTrainJob(MyDictionary<Point, Integer> pathMap) {
+public record CompletedTrainJob(MyCollection<Point> pathMap, Trolley trolley, TrainJob job, int amountReceived) {
 }
