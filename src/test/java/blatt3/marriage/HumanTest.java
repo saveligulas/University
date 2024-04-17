@@ -26,8 +26,8 @@ public class HumanTest {
         Human human1 = new Human(Gender.MALE);
         Human human2 = new Human(Gender.FEMALE);
 
-        assertTrue(human1.propose(human2));
-        assertFalse(human1.propose(human1)); // Can't propose to self
+        assertTrue(human1.propose(human2).isSuccess());
+        assertFalse(human1.propose(human1).isSuccess()); // Can't propose to self
     }
 
     @Test
@@ -36,7 +36,7 @@ public class HumanTest {
         Human human2 = new Human(Gender.FEMALE);
         human1.propose(human2);
 
-        assertTrue(human2.acceptProposal());
+        assertTrue(human2.acceptProposal().isSuccess());
     }
 
 }
