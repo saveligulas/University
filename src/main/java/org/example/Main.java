@@ -6,9 +6,7 @@ import org.example.ub1.rect.Point;
 import org.example.ub1.three.app.Gender;
 import org.example.ub2.NameGenerator;
 import org.example.ub2.PrimeToolV2;
-import org.example.ub3.one.TrainJob;
-import org.example.ub3.one.TrainNetwork;
-import org.example.ub3.one.Trolley;
+import org.example.ub3.one.*;
 import org.example.ub3.one.pro.ProductType;
 import org.example.ub3.two.MarriageBureau;
 import org.example.ub3.two.Person;
@@ -18,9 +16,8 @@ import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
-        Human husband = new Human(Gender.MALE, LocalDate.now());
-        Human spouse = new Human(Gender.FEMALE);
-        husband.propose(spouse);
+        TrainManager manager = TrainManagerFactory.createTrainManager(3, 3, 2, 2, 1000);
+        System.out.println(manager);
 
 
 
