@@ -1,11 +1,8 @@
 package org.example.ub3.twov2;
 
 import com.github.javafaker.Faker;
-import org.example.Main;
 import org.example.coll.MyCollection;
 import org.example.ub1.three.app.Gender;
-import org.example.ub3.two.Person;
-import org.example.ub3.twov2.exc.OccupiedWithMarriageException;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -50,13 +47,8 @@ public class Human {
         return MARRIAGE_BUREAU.getPartner(this);
     }
 
-    public MarriageState getState() {
-        try {
-            return MARRIAGE_BUREAU.getMarriageState(this);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+    public Optional<MarriageState> getState() {
+        return MARRIAGE_BUREAU.getMarriageState(this);
     }
 
     public String getNameString() {
@@ -77,91 +69,49 @@ public class Human {
     //endregion
 
     //region <Marriage steps>
-    public boolean propose(Human human) {
+    public MarriageBureauResponse propose(Human human) {
         if (this.equals(human)) {
-            return false;
+            return new MarriageBureauResponse();
         }
-
-        try {
-            MARRIAGE_BUREAU.propose(this, human);
-            return true;
-        } catch (IllegalArgumentException e) {
-            System.out.println("Illegal Argument: " + e.getMessage());
-        } catch (OccupiedWithMarriageException e) {
-            System.out.println("Cannot propose: " + e.getMessage());
-        }
-
-        return false;
+        return MARRIAGE_BUREAU.propose(this, human);
     }
 
-    public boolean acceptProposal() {
-        try {
-            MARRIAGE_BUREAU.moveToPlanned(this);
-            return true;
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
+    public MarriageBureauResponse acceptProposal() {
+        return MARRIAGE_BUREAU.moveToPlanned(this);
     }
 
-    public void addHonoraryGuests(Human... honoraryGuests) {
-        MyCollection<Human> humansToAdd = new MyCollection<>(honoraryGuests);
-        try {
-            MARRIAGE_BUREAU.addBridesmaidsAndGroomsmen(this, humansToAdd);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+    public MarriageBureauResponse addHonoraryGuests(Human... honoraryGuests) {
+        return this.addHonoraryGuests(new MyCollection<>(honoraryGuests));
     }
 
-    public void addGuests(Human... guests) {
-        MyCollection<Human> guestsToAdd = new MyCollection<>(guests);
-        try {
-            MARRIAGE_BUREAU.addGuests(this, guestsToAdd);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+    public MarriageBureauResponse addHonoraryGuests(MyCollection<Human> honoraryGuests) {
+        return MARRIAGE_BUREAU.addBridesmaidsAndGroomsmen(this, honoraryGuests);
     }
 
-    public boolean finishPlanning() {
-        try {
-            MARRIAGE_BUREAU.moveToPrepared(this);
-            return true;
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
+    public MarriageBureauResponse addGuests(Human... guests) {
+        return this.addGuests(new MyCollection<>(guests));
     }
 
-    public boolean marry() {
-        try {
-            MARRIAGE_BUREAU.marry(this);
-            return true;
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-        return false;
+    public MarriageBureauResponse addGuests(MyCollection<Human> guests) {
+        return MARRIAGE_BUREAU.addGuests(this, guests);
+    }
+
+    public MarriageBureauResponse finishPlanning() {
+        return MARRIAGE_BUREAU.moveToPrepared(this);
+    }
+
+    public MarriageBureauResponse marry() {
+        return MARRIAGE_BUREAU.marry(this);
     }
     //endregion
 
     //region <Marriage Cancellation and Divorce>
-    public boolean cancelMarriage() {
-        try {
-            MARRIAGE_BUREAU.cancelMarriage(this);
-            return true;
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-        }
-        return false;
+    public MarriageBureauResponse cancelMarriage() {
+        return MARRIAGE_BUREAU.cancelMarriage(this);
     }
 
-    public boolean divorce(String reason) {
-        try {
-            MARRIAGE_BUREAU.divorce(this, reason);
-            return true;
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-        }
-        return false;
+    public MarriageBureauResponse divorce(String reason) {
+        return MARRIAGE_BUREAU.divorce(this, reason);
     }
     //endregion
     //endregion
