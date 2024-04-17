@@ -3,6 +3,7 @@ package blatt1.custom;
 import org.example.coll.MyCollection;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -118,6 +119,15 @@ public class MyCollectionTest {
         for (int i = 0; i < 3; i++) {
             assertEquals(Integer.valueOf(i), collection.get(i));
         }
+    }
+
+    @Test
+    public void testEquals() {
+        MyCollection<String> collection = new MyCollection<>(new String[] { "a", "b", "c" });
+        MyCollection<String> collection2 = new MyCollection<>(new String[] { "a", "b", ""});
+        assertFalse(collection.equals(collection2));
+        collection2 = new MyCollection<>(new String[] { "a", "b", "c"});
+        assertTrue(collection.equals(collection2));
     }
 
     @Test
