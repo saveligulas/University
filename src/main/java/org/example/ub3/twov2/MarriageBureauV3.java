@@ -4,14 +4,12 @@ import org.example.coll.MyBidirectionalDictionary;
 import org.example.coll.MyCollection;
 import org.example.coll.MyDictionary;
 import org.example.ub1.three.app.Gender;
-import org.example.ub3.twov2.exc.OccupiedWithMarriageException;
-import org.example.ub3.twov2.exc.UnpreparedMarriageException;
 
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class MarriageBureauV3 {
+public class MarriageBureauV3 { //TODO: fix all Documentation(remove throws, add MarriageBureauResponse)
     private static final AtomicLong ID_COUNTER = new AtomicLong(100L);
     private final MyBidirectionalDictionary<Human, Long> _humanIds;
     private final MyDictionary<Long, Marriage> _idMarriages;
@@ -115,15 +113,14 @@ public class MarriageBureauV3 {
      *
      * @param human the human to get the marriage state of
      * @return the marriage state of the given human
-     * @throws IllegalArgumentException if the human is not occupied with a marriage
      */
-    public MarriageState getMarriageState(Human human) {
+    public Optional<MarriageState> getMarriageState(Human human) {
         if (!isOccupiedWithMarriage(human)) {
-            throw new IllegalArgumentException("Human is not occupied with marriage");
+            return Optional.empty();
         }
 
         Long id = _humanIds.get(human);
-        return _idMarriages.get(id).state();
+        return Optional.of(_idMarriages.get(id).state());
     }
     //endregion
     //endregion
@@ -172,8 +169,8 @@ public class MarriageBureauV3 {
     //endregion
 
     //region <Marriage Steps Methods>
-    void propose(Human husband, Human spouse) {
-        this.propose(husband, spouse, LocalDate.now());
+    MarriageBureauResponse propose(Human husband, Human spouse) {
+        return this.propose(husband, spouse, LocalDate.now());
     }
 
     /**
@@ -183,9 +180,12 @@ public class MarriageBureauV3 {
      * @param spouse     the human who will be the wife
      * @param proposalDate the date of the proposal
      */
-    void propose(Human husband, Human spouse, LocalDate proposalDate) {
+    MarriageBureauResponse propose(Human husband, Human spouse, LocalDate proposalDate) {
+        MarriageBureauResponse response = new MarriageBureauResponse();
+
         if (husband.GENDER == spouse.GENDER) {
-            throw new IllegalArgumentException("Humans who want to marry can not be of the same gender");
+            response.setErrorCode(Error.SAME_GENDER);
+            return response;
         }
 
         if (husband.GENDER == Gender.FEMALE) {
@@ -196,17 +196,25 @@ public class MarriageBureauV3 {
 
         LocalDate youngestDateToMarry = LocalDate.now().minusYears(18);
         if (husband.BIRTHDAY.isAfter(youngestDateToMarry)) {
-            throw new IllegalArgumentException("Husband too young to marry");
+            response.setErrorCode(Error.UNDERAGE);
+            response.setMessage("Husband too young to marry");
+            return response;
         }
         if (spouse.BIRTHDAY.isAfter(youngestDateToMarry)) {
-            throw new IllegalArgumentException("Spouse too young to marry");
+            response.setErrorCode(Error.UNDERAGE);
+            response.setMessage("Spouse too young to marry");
+            return response;
         }
 
         if (isOccupiedWithMarriage(husband)) {
-            throw new OccupiedWithMarriageException("Husband is already occupied with a marriage");
+            response.setErrorCode(Error.HAS_A_PARTNER);
+            response.setMessage("Husband is already occupied with a marriage");
+            return response;
         }
         if (isOccupiedWithMarriage(spouse)) {
-            throw new OccupiedWithMarriageException("Spouse is already occupied with a marriage");
+            response.setErrorCode(Error.HAS_A_PARTNER);
+            response.setMessage("Spouse is already occupied with a marriage");
+            return response;
         }
 
         Long marriageId = ID_COUNTER.getAndIncrement();
@@ -216,6 +224,8 @@ public class MarriageBureauV3 {
         Marriage marriage = new Marriage(MarriageState.PROPOSED, husband, proposalDate, null,
                 spouse.name.last(), new MyCollection<>(), new MyCollection<>(), new MyCollection<>());
         _idMarriages.put(marriageId, marriage);
+        response.wasSuccess();
+        return response;
     }
 
     //region <Planned>
@@ -224,13 +234,18 @@ public class MarriageBureauV3 {
      *
      * @param proposedHuman the human who was proposed to
      */
-    void moveToPlanned(Human proposedHuman) {
+    MarriageBureauResponse moveToPlanned(Human proposedHuman) {
+        MarriageBureauResponse response = new MarriageBureauResponse();
+
         if (!hasProposal(proposedHuman)) {
-            throw new IllegalArgumentException("You have no open proposals");
+            response.setErrorCode(Error.NO_PROPOSAL);
+            return response;
         }
 
         Long id = _humanIds.get(proposedHuman);
         _idMarriages.put(id, Marriage.updateState(MarriageState.PLANNED, _idMarriages.get(id)));
+        response.wasSuccess();
+        return response;
     }
 
     /**
@@ -239,9 +254,12 @@ public class MarriageBureauV3 {
      * @param human        the human who is getting married
      * @param humansToAdd  the humans who will be added as bridesmaids and groomsmen
      */
-    void addBridesmaidsAndGroomsmen(Human human, MyCollection<Human> humansToAdd) {
+    MarriageBureauResponse addBridesmaidsAndGroomsmen(Human human, MyCollection<Human> humansToAdd) {
+        MarriageBureauResponse response = new MarriageBureauResponse();
+
         if (!hasPlanned(human)) {
-            throw new IllegalArgumentException("You have no planned marriage");
+            response.setErrorCode(Error.HAS_NO_PLANNED_MARRIAGE);
+            return response;
         }
 
         Long id = _humanIds.get(human);
@@ -254,6 +272,8 @@ public class MarriageBureauV3 {
                 marriage.bridesmaids().add(groomsmenOrBridesmaid);
             }
         }
+        response.wasSuccess();
+        return response;
     }
 
     /**
@@ -262,9 +282,12 @@ public class MarriageBureauV3 {
      * @param human        the human who is getting married
      * @param guests  the humans who will be guests
      */
-    void addGuests(Human human, MyCollection<Human> guests) {
+    MarriageBureauResponse addGuests(Human human, MyCollection<Human> guests) {
+        MarriageBureauResponse response = new MarriageBureauResponse();
+
         if (!hasPlanned(human)) {
-            throw new IllegalArgumentException("You have no planned marriage");
+            response.setErrorCode(Error.HAS_NO_PLANNED_MARRIAGE);
+            return response;
         }
 
         Long id = _humanIds.get(human);
@@ -273,6 +296,8 @@ public class MarriageBureauV3 {
         for (Human guest : guests) {
             marriage.guests().add(guest);
         }
+        response.wasSuccess();
+        return response;
     }
     //endregion
 
@@ -281,33 +306,39 @@ public class MarriageBureauV3 {
      *
      * @param human can be either partner of the planned marriage
      */
-    void moveToPrepared(Human human) {
+    MarriageBureauResponse moveToPrepared(Human human) {
+        MarriageBureauResponse response = new MarriageBureauResponse();
+
         if (!hasPlanned(human)) {
-            throw new IllegalArgumentException("You have no planned marriage");
+            response.setErrorCode(Error.HAS_NO_PLANNED_MARRIAGE);
+            return response;
         }
 
         Long id = _humanIds.get(human);
         Marriage marriage = _idMarriages.get(id);
 
-        String errorMessage = null;
+        Error error = null;
         if (marriage.groomsmen().size() == 0) {
-            errorMessage = "You have not enough groomsmen";
+            error = Error.NOT_ENOUGH_GROOMSMEN;
         }
         if (marriage.bridesmaids().size() == 0) {
-            errorMessage = "You have not enough bridesmaids";
+            error = Error.NOT_ENOUGH_BRIDESMAIDS;
         }
         if (marriage.guests().size() == 0) {
-            errorMessage = "You have not enough guests";
+            error = Error.NOT_ENOUGH_GUESTS;
         }
-        if (errorMessage != null) {
-            throw new UnpreparedMarriageException(errorMessage);
+        if (error != null) {
+            response.setErrorCode(error);
+            return response;
         }
 
         _idMarriages.put(id, Marriage.updateState(MarriageState.PREPARED, _idMarriages.get(id)));
+        response.wasSuccess();
+        return response;
     }
 
-    void marry(Human human) {
-        this.marry(human, LocalDate.now());
+    MarriageBureauResponse marry(Human human) {
+        return this.marry(human, LocalDate.now());
     }
 
     /**
@@ -315,9 +346,12 @@ public class MarriageBureauV3 {
      *
      * @param human can be either partner fo the prepared marriage
      */
-    void marry(Human human, LocalDate date) {
+    MarriageBureauResponse marry(Human human, LocalDate date) {
+        MarriageBureauResponse response = new MarriageBureauResponse();
+
         if (!hasPrepared(human)) {
-            throw new IllegalArgumentException("You have no prepared marriage");
+            response.setErrorCode(Error.HAS_NO_PREPARED_MARRIAGE);
+            return response;
         }
 
         Long id = _humanIds.get(human);
@@ -331,6 +365,9 @@ public class MarriageBureauV3 {
         } else {
             partner.name = Name.updateLastName(human.name.last(), partner.name);
         }
+
+        response.wasSuccess();
+        return response;
     }
 
 
@@ -352,22 +389,31 @@ public class MarriageBureauV3 {
     }
 
     //TODO: finish Documentation
-    void cancelMarriage(Human human) {
+    MarriageBureauResponse cancelMarriage(Human human) {
+        MarriageBureauResponse response = new MarriageBureauResponse();
+
         if (!isOccupiedWithMarriage(human)) {
-            throw new IllegalArgumentException("You have no open proposals");
+            response.setErrorCode(Error.NOT_INVOLVED_IN_MARRIAGE);
+            return response;
         }
 
         if (isMarried(human)) {
-            throw new IllegalStateException("You are already married, you need to divorce");
+            response.setErrorCode(Error.IS_MARRIED);
+            return response;
         }
 
         removeMarriage(human);
+        response.wasSuccess();
+        return response;
     }
 
     //TODO: finish Documentation
-    void divorce(Human human, String reason) {
+    MarriageBureauResponse divorce(Human human, String reason) {
+        MarriageBureauResponse response = new MarriageBureauResponse();
+
         if (!isMarried(human)) {
-            throw new IllegalArgumentException("You are not married");
+            response.setErrorCode(Error.HAS_NO_MARRIAGE);
+            return response;
         }
 
         Long id = _humanIds.get(human);
@@ -382,6 +428,9 @@ public class MarriageBureauV3 {
         }
         removeMarriage(human);
         _divorces.add(divorce);
+
+        response.wasSuccess();
+        return response;
     }
     //endregion
 }
