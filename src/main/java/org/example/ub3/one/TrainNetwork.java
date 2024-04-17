@@ -29,21 +29,6 @@ public class TrainNetwork {
         }
     }
 
-//    public void fillWithRandomProducts() {
-//        Random r = new Random();
-//        for (int row = 0; row < DIMENSIONS.getVerticalLength() + 1; row++) {
-//            for (int col = 0; col < DIMENSIONS.getHorizontalLength() + 1; col++) {
-//                Point p = new Point(row, col);
-//                if (r.nextBoolean()) {
-//                    ProductType t = ProductType.values()[r.nextInt(ProductType.values().length)];
-//                    _pointProductMap.put(p, Optional.of(new Product(t)));
-//                } else {
-//                    _pointProductMap.put(p, Optional.empty());
-//                }
-//            }
-//        }
-//    }
-
     public MyCollection<Product> getProducts(Point point) {
         if (!DIMENSIONS.isInsideRectangle(point)) {
             return new MyCollection<>();
