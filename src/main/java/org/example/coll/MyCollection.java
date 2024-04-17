@@ -186,6 +186,22 @@ public class MyCollection<T> implements Iterable<T> {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MyCollection<?> collection)) {
+            return false;
+        }
+        if (this._pointer != collection._pointer) {
+            return false;
+        }
+        for (int i = 0; i < _pointer; i++) {
+            if (!this.get(i).equals(collection.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
     public @NotNull Iterator<T> iterator() {
         return new Iterator<T>() {
             private int currentIndex = 0;
