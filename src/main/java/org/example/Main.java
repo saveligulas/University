@@ -1,6 +1,8 @@
 package org.example;
 
+import org.example.coll.MyBidirectionalDictionary;
 import org.example.coll.MyCollection;
+import org.example.coll.MyDictionary;
 import org.example.stack.StackCalculator;
 import org.example.ub1.rect.Point;
 import org.example.ub1.three.app.Gender;
