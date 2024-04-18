@@ -2,8 +2,8 @@ package org.example.coll.tuple;
 
 public class TupleBidirectional<K> extends Tuple<K, K> {
 
-    public TupleBidirectional(K husband, K spouse) {
-        super(husband, spouse);
+    public TupleBidirectional(K k1, K k2) {
+        super(k1, k2);
     }
 
     public boolean equalsOneValue(K k) {

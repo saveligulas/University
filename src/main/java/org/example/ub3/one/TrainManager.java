@@ -44,7 +44,7 @@ public class TrainManager {
         this.completeJob(_pointHubs.get(pointOfTrainHub), job);
     }
 
-    public void completeJob(TrainHub hub, TrainJob job) {
+    private void completeJob(TrainHub hub, TrainJob job) {
         Point hubPoint = _pointHubs.getKeys(hub).get(0);
         int trolleyToUse = closestTrolleyIndex(_pointHubs.getKeys(hub).get(0));
         hub.addProducts(moveTrolleyAndGetProducts(trolleyToUse, hubPoint, job));
