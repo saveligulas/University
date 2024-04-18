@@ -59,9 +59,8 @@ public class MyDictionary<K, V> {
     }
 
     public void clear() {
-        for (K key : _keys) {
-            this.remove(key);
-        }
+        _values.clear();
+        _keys.clear();
     }
 
     public MyCollection<K> getKeys() {
