@@ -14,7 +14,7 @@ import org.example.ub1.three.dmg.HealthPool;
 
 import java.util.Random;
 
-public class Player {
+public class Playuh {
     public final String USERNAME;
     private HealthPool _healthPool;
     private Appearance _appearance;
@@ -23,11 +23,11 @@ public class Player {
     private LocationPosition _locationPos;
     private Experience _experience;
 
-    public Player(String username) {
+    public Playuh(String username) {
         this(username, new HealthPool(100), new Appearance(), new Backpack(12, 12) , null, new LocationPosition(Location.HOME_ISLAND, new Point(0,0)), new Experience());
     }
 
-    public Player(String username, HealthPool healthPool, Appearance appearance, Backpack backpack, Item item, LocationPosition location, Experience experience) {
+    public Playuh(String username, HealthPool healthPool, Appearance appearance, Backpack backpack, Item item, LocationPosition location, Experience experience) {
         USERNAME = username;
         _healthPool = healthPool;
         _appearance = appearance;
