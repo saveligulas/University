@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class ProbeManagerTest {
     private ProbeManager probeManager;
@@ -36,7 +37,7 @@ public class ProbeManagerTest {
                 break;
             }
         }
-        assertEquals(false, containsOldValue);
+        assertFalse(containsOldValue);
     }
 
     @Test

@@ -6,8 +6,8 @@ import org.example.coll.tuple.Tuple;
 import java.time.LocalTime;
 
 public class ProbeManager {
-    private MyDictionary<LocalTime, Integer> _localTimeTemperatures;
-    private int _maxValues;
+    private final MyDictionary<LocalTime, Integer> _localTimeTemperatures;
+    private final int _maxValues;
 
     public ProbeManager(int max) {
         _localTimeTemperatures = new MyDictionary<>();
@@ -19,6 +19,7 @@ public class ProbeManager {
             _localTimeTemperatures.put(localTime, temp);
         } else {
             _localTimeTemperatures.remove(_localTimeTemperatures.getKeys().get(0));
+            _localTimeTemperatures.put(localTime, temp);
         }
     }
 
