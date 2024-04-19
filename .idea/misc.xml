@@ -7,7 +7,7 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/InPerson/pom.xml" />
+        <option value="$PROJECT_DIR$/src/game/pom.xml" />
       </list>
     </option>
   </component>
