@@ -52,7 +52,7 @@ public abstract class Tile {
         };
     }
 
-    public List<Tile> getAllConnectedTiles() {
+    public List<Tile> getAllConnectedTilesRecursive() {
         List<Tile> connectedTiles = new ArrayList<>();
         Set<Tile> visited = new HashSet<>();
         Queue<Tile> queue = new LinkedList<>();
