@@ -1,16 +1,17 @@
 package org.example.ub4.interactions;
 
-import org.example.coll.MyCollection;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InteractionResult {
     private boolean _success;
     private String _message;
-    private MyCollection<Interaction> _possibleNextInteractions;
+    private List<Interaction> _possibleNextInteractions;
 
     public InteractionResult(String message) {
         _success = false;
         _message = message;
-        _possibleNextInteractions = new MyCollection<>();
+        _possibleNextInteractions = new ArrayList<>();
     }
 
     public static InteractionResult empty(String message) {
