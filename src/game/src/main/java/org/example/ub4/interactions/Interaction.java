@@ -1,4 +1,4 @@
-package org.example.ub4.tile;
+package org.example.ub4.interactions;
 
 public enum Interaction {
     NONE, DISCOVER, ADD, OPEN, CLOSE
