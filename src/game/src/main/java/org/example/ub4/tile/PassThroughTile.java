@@ -1,15 +1,22 @@
 package org.example.ub4.tile;
 
+import org.example.ub4.player.Player;
+
 public abstract class PassThroughTile extends Tile {
     public PassThroughTile(int id) {
         super(id);
     }
 
-    public PassThroughTile(int id, Tile[] neighbours) {
-        super(id, neighbours);
+    public PassThroughTile(int id, Direction sourceDirection, Tile source, Direction destinationDirection, Tile destination) {
+        super(id);
+        if (Math.abs(sourceDirection.ordinal() - destinationDirection.ordinal()) % 2 != 0) {
+            throw new IllegalArgumentException("Directions of source and destination Tile must be opposite");
+        }
+        setTile(destinationDirection, destination);
+        setTile(sourceDirection, source);
     }
 
-    public PassThroughTile(int id, Tile north, Tile east, Tile south, Tile west) {
-        super(id, north, east, south, west);
-    }
+
+
+    public abstract void passThrough(Player player);
 }
