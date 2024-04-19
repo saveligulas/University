@@ -3,6 +3,7 @@ package org.example.ub4.tile;
 import org.example.coll.MyDictionary;
 import org.example.ub4.interactions.Interaction;
 import org.example.ub4.interactions.InteractionResult;
+import org.example.ub4.obstacle.Obstacle;
 import org.example.ub4.player.Player;
 
 import java.util.*;
@@ -14,6 +15,7 @@ public abstract class Tile {
     private Tile _east;
     private Tile _south;
     private Tile _west;
+    private Obstacle _obstacle;
 
     public Tile(int id) {
         _id = id;
