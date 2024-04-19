@@ -19,6 +19,11 @@ public abstract class InteractionTile extends Tile {
         super(id, north, east, south, west);
     }
 
+    /**
+     * Call this method implicitly by using Player.setTile as that also includes this method. If this method is called, make sure that the player also has the tile set.
+     * @param player
+     * @throws InteractionTileIsFullException
+     */
     public abstract void addPlayerToTile(Player player) throws InteractionTileIsFullException;
 
     public abstract InteractionResult interactOnTile(Player player, Interaction interaction);
