@@ -1,9 +1,7 @@
 package org.example.ub4.player;
 
-import org.example.coll.MyCollection;
 import org.example.ub4.excep.InteractionTileIsFullException;
 import org.example.ub4.tile.InteractionTile;
-import org.example.ub4.tile.Tile;
 
 import java.util.ArrayList;
 import java.util.List;
