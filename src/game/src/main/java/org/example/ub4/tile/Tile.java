@@ -13,10 +13,12 @@ public abstract class Tile {
     private Tile _south;
     private Tile _west;
     private Obstacle _obstacle;
-    private String _description = "";
+    // is protected to allow subclasses to implement setDescription method
+    protected String _description = "";
 
     public Tile(int id) {
         _id = id;
+        setDescription();
     }
 
     public Tile(int id, Tile[] neighbours) {
@@ -29,6 +31,7 @@ public abstract class Tile {
         _east = east;
         _south = south;
         _west = west;
+        setDescription();
     }
 
     public HashMap<Direction, Tile> getNeighbourMap() {
@@ -95,11 +98,9 @@ public abstract class Tile {
     public abstract boolean contains(Player player);
 
     /**
-     * Must be called in the constructor of non-abstract indirect inheritors of Tile.
+     * Method is called in constructors and must be implemented to add the correct description
      */
-    protected void setDescription(String description) {
-        _description = description;
-    }
+    protected abstract void setDescription();
 
     protected Optional<Tile> getNorth() {
         return Optional.ofNullable(_north);
