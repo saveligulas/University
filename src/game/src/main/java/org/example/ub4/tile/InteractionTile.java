@@ -2,9 +2,7 @@ package org.example.ub4.tile;
 
 import org.example.ub4.excep.InteractionTileIsFullException;
 import org.example.ub4.excep.TileCanNotBeAccessedException;
-import org.example.ub4.interactions.Interaction;
-import org.example.ub4.interactions.InteractionResult;
-import org.example.ub4.interactions.TileInteractionResultFactory;
+import org.example.ub4.interactions.*;
 import org.example.ub4.player.Player;
 
 public abstract class InteractionTile extends Tile {
@@ -28,9 +26,9 @@ public abstract class InteractionTile extends Tile {
      */
     public abstract void addPlayerToTile(Player player) throws InteractionTileIsFullException;
 
-    public abstract InteractionResult interactOnTile(Player player, Interaction interaction);
+    public abstract InteractionResult<OnTileInteraction> interactOnTile(Player player, OnTileInteraction interaction);
 
-    public InteractionResult interactWithNeighbouringTile(Tile tile, Player player, Interaction interaction) throws TileCanNotBeAccessedException {
+    public InteractionResult<NeighbourTileInteraction> interactWithNeighbouringTile(Tile tile, Player player, NeighbourTileInteraction interaction) throws TileCanNotBeAccessedException {
         if (!isNeighbour(tile)) {
             throw new TileCanNotBeAccessedException("Tile " + tile + " is not a neighbour of " + this);
         }
