@@ -20,10 +20,14 @@ public class Player {
 
     public boolean setTile(InteractionTile tile) {
         try {
-            _interactionTile.addPlayerToTile(this);
+            tile.addPlayerToTile(this);
         } catch (InteractionTileIsFullException e) {
             return false;
         }
+        if (_interactionTile != null) {
+            _interactionTile.removePlayerFromTile(this);
+        }
+
         _interactionTile = tile;
         return true;
     }
