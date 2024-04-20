@@ -1,21 +1,17 @@
 package org.example.ub4.tile.passthrough;
 
-import org.example.ub4.interactions.Interaction;
-import org.example.ub4.interactions.InteractionResult;
 import org.example.ub4.player.Player;
 import org.example.ub4.tile.Direction;
+import org.example.ub4.tile.InteractionTile;
 import org.example.ub4.tile.Tile;
 
-import java.util.List;
 
 public class DoorTile extends HorizontalTile {
     public DoorTile(int id) {
         super(id);
     }
 
-
-
-    public DoorTile(int id, Direction sourceDirection, Tile source, Direction destinationDirection, Tile destination) {
+    public DoorTile(int id, Direction sourceDirection, InteractionTile source, Direction destinationDirection, InteractionTile destination) {
         super(id, sourceDirection, source, destinationDirection, destination);
     }
 
@@ -25,7 +21,12 @@ public class DoorTile extends HorizontalTile {
     }
 
     @Override
-    public void passThrough(Player player) {
-
+    public boolean passThrough(Player player) {
+        Direction sourceDirection = this.getDirectionOfNeighbour(player.getTile()).orElseThrow(() -> new RuntimeException("Player accessing door is not on a neighbouring Tile"));
+        Tile destination = this.getTileInDirection(Direction.getOppositeDirection(sourceDirection)).orElseThrow(() -> new RuntimeException("Door Tile does not have opposing Tile"));
+        if (! (destination instanceof InteractionTile interactionTile)) {
+            throw new RuntimeException("Destination Tile is not an InteractionTile");
+        }
+        return player.setTile(interactionTile);
     }
 }
