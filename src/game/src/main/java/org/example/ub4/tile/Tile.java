@@ -7,12 +7,13 @@ import java.util.*;
 
 
 public abstract class Tile {
-    private int _id;
+    private final int _id;
     private Tile _north;
     private Tile _east;
     private Tile _south;
     private Tile _west;
     private Obstacle _obstacle;
+    private String _description = "";
 
     public Tile(int id) {
         _id = id;
@@ -92,6 +93,13 @@ public abstract class Tile {
         return getNeighbourMap().containsValue(tile);
     }
     public abstract boolean contains(Player player);
+
+    /**
+     * Must be called in the constructor of non-abstract indirect inheritors of Tile.
+     */
+    protected void setDescription(String description) {
+        _description = description;
+    }
 
     protected Optional<Tile> getNorth() {
         return Optional.ofNullable(_north);
