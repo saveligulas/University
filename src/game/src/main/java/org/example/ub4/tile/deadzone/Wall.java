@@ -18,13 +18,4 @@ public class Wall extends DeadZoneTile {
     public Wall(int id, Tile north, Tile east, Tile south, Tile west) {
         super(id, north, east, south, west);
     }
-
-    @Override
-    public InteractionResult interactFromNeighbouringTile(Player player, Interaction interaction) {
-        if (interaction == Interaction.DISCOVER) {
-            return InteractionResult.empty("This is a wall.");
-        } else {
-            throw new RuntimeException("Interaction:" + interaction + " should not be used on Wall instances");
-        }
-    }
 }

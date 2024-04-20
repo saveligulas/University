@@ -24,9 +24,4 @@ public class Void extends DeadZoneTile {
     public Void(int id, Tile north, Tile east, Tile south, Tile west) {
         super(id, north, east, south, west);
     }
-
-    @Override
-    public InteractionResult interactFromNeighbouringTile(Player player, Interaction interaction) {
-        return null;
-    }
 }
