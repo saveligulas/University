@@ -1,8 +1,5 @@
 package org.example.ub4.tile;
 
-import org.example.coll.MyDictionary;
-import org.example.ub4.interactions.Interaction;
-import org.example.ub4.interactions.InteractionResult;
 import org.example.ub4.obstacle.Obstacle;
 import org.example.ub4.player.Player;
 
@@ -33,7 +30,7 @@ public abstract class Tile {
         _west = west;
     }
 
-    public HashMap<Direction, Tile> getTileMap() {
+    public HashMap<Direction, Tile> getNeighbourMap() {
         HashMap<Direction, Tile> tileMap = new HashMap<>();
         for (Direction direction : Direction.values()) {
             Optional<Tile> tileInDirection = getTileInDirection(direction);
@@ -91,7 +88,10 @@ public abstract class Tile {
         return _id;
     }
 
-    public abstract InteractionResult interactFromNeighbouringTile(Player player, Interaction interaction);
+    public boolean isNeighbour(Tile tile) {
+        return getNeighbourMap().containsValue(tile);
+    }
+    public abstract boolean contains(Player player);
 
     protected Optional<Tile> getNorth() {
         return Optional.ofNullable(_north);
