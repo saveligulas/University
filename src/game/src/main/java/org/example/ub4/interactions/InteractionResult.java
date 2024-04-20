@@ -3,10 +3,10 @@ package org.example.ub4.interactions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InteractionResult {
+public class InteractionResult<T extends Enum<T>> {
     private final boolean _success;
     private final String _message;
-    private final List<Interaction> _possibleNextInteractions;
+    private final List<T> _possibleNextInteractions;
 
     public InteractionResult() {
         this("Empty");
@@ -16,42 +16,39 @@ public class InteractionResult {
         this(false, message, new ArrayList<>());
     }
 
-    public InteractionResult(boolean success, String message, List<Interaction> possibleNextInteractions) {
+    public InteractionResult(boolean success, String message, List<T> possibleNextInteractions) {
         _success = success;
         _message = message;
         _possibleNextInteractions = possibleNextInteractions;
     }
 
-    public static InteractionResult emptyUnsuccessful(String message) {
-        return new InteractionResult(message);
+    public InteractionResult<T> emptyUnsuccessful(String message) {
+        return null;
     }
 
-    public static class Builder {
-        private boolean _success;
-        private String _message;
-        private final List<Interaction> _possibleNextInteractions;
+    public static class Builder<T extends Enum<T>> {
+        private boolean _success = false; // Initialize to default value
+        private String _message = ""; // Initialize to default value
+        private final List<T> _possibleNextInteractions = new ArrayList<>();
 
-        public Builder() {
-            _possibleNextInteractions = new ArrayList<>();
-        }
 
-        public Builder success(boolean success) {
+        public Builder<T> success(boolean success) {
             _success = success;
             return this;
         }
 
-        public Builder message(String message) {
+        public Builder<T> message(String message) {
             _message = message;
             return this;
         }
 
-        public Builder addPossibleNextInteraction(Interaction interaction) {
+        public Builder<T> addPossibleNextInteraction(T interaction) {
             _possibleNextInteractions.add(interaction);
             return this;
         }
 
-        public InteractionResult build() {
-            return new InteractionResult(_success, _message, new ArrayList<>(_possibleNextInteractions));
+        public InteractionResult<T> build() {
+            return new InteractionResult<T>(_success, _message, new ArrayList<>(_possibleNextInteractions));
         }
     }
 }
