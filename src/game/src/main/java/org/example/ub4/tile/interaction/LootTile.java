@@ -1,6 +1,5 @@
 package org.example.ub4.tile.interaction;
 
-import org.example.ub4.interactions.Interaction;
 import org.example.ub4.interactions.InteractionResult;
 import org.example.ub4.interactions.OnTileInteraction;
 import org.example.ub4.player.Loot;
@@ -23,6 +22,12 @@ public class LootTile extends SinglePlayerTile {
 
     public LootTile(int id, Tile north, Tile east, Tile south, Tile west) {
         super(id, north, east, south, west);
+    }
+
+    public void lootAndClear() {
+        List<Loot> result = new ArrayList<>(_loot);
+        _loot.clear();
+        _player.addLoot(result);
     }
 
     @Override
