@@ -29,4 +29,11 @@ public abstract class SinglePlayerTile extends InteractionTile {
     public void addPlayerToTile(Player player) throws InteractionTileIsFullException {
         _player = player;
     }
+
+    @Override
+    public void removePlayerFromTile(Player player) {
+        if (_player.equals(player)) {
+            _player = null;
+        }
+    }
 }
