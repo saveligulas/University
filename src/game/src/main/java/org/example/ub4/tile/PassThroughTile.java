@@ -16,7 +16,10 @@ public abstract class PassThroughTile extends Tile {
         setTile(sourceDirection, source);
     }
 
-
+    @Override
+    public boolean contains(Player player) {
+        return false;
+    }
 
     public abstract void passThrough(Player player);
 }
