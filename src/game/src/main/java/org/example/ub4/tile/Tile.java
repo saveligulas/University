@@ -95,6 +95,30 @@ public abstract class Tile {
     public boolean isNeighbour(Tile tile) {
         return getNeighbourMap().containsValue(tile);
     }
+
+    protected Optional<Direction> getDirectionOfNeighbour(Tile tile) {
+        if (!isNeighbour(tile)) {
+            return Optional.empty();
+        }
+        if (tile.equals(_north)) {
+            return Optional.of(Direction.NORTH);
+        }
+        if (tile.equals(_east)) {
+            return Optional.of(Direction.EAST);
+        }
+        if (tile.equals(_south)) {
+            return Optional.of(Direction.SOUTH);
+        }
+        if (tile.equals(_west)) {
+            return Optional.of(Direction.WEST);
+        }
+        throw new RuntimeException("Tile is neighbour, but direction could not be determined");
+    }
+
+    public boolean hasObstacle() {
+        return _obstacle!= null;
+    }
+
     public abstract boolean contains(Player player);
 
     /**
@@ -132,6 +156,12 @@ public abstract class Tile {
         }
     }
 
+
+
+    void setObstacle(Obstacle obstacle) {
+        _obstacle = obstacle;
+    }
+
     protected void setTile(Direction direction, Tile tile) {
         switch (direction.ordinal()) {
             case 0 -> setNorth(tile);
@@ -139,6 +169,11 @@ public abstract class Tile {
             case 2 -> setSouth(tile);
             case 3 -> setWest(tile);
         }
+    }
+
+    public void connectTile(Direction directionOfTarget, Tile target) {
+        setTile(directionOfTarget, target);
+        target.setTile(Direction.getOppositeDirection(directionOfTarget), this);
     }
 
     protected void setNorth(Tile tile) {
