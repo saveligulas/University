@@ -7,9 +7,9 @@ public abstract class PassThroughTile extends Tile {
         super(id);
     }
 
-    public PassThroughTile(int id, Direction sourceDirection, Tile source, Direction destinationDirection, Tile destination) {
+    public <T extends InteractionTile> PassThroughTile(int id, Direction sourceDirection, T source, Direction destinationDirection, T destination) {
         super(id);
-        if (Math.abs(sourceDirection.ordinal() - destinationDirection.ordinal()) % 2 != 0) {
+        if (Direction.getOppositeDirection(sourceDirection) == destinationDirection) {
             throw new IllegalArgumentException("Directions of source and destination Tile must be opposite");
         }
         setTile(destinationDirection, destination);
@@ -21,5 +21,5 @@ public abstract class PassThroughTile extends Tile {
         return false;
     }
 
-    public abstract void passThrough(Player player);
+    public abstract boolean passThrough(Player player);
 }
