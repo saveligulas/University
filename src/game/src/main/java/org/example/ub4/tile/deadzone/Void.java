@@ -24,4 +24,9 @@ public class Void extends DeadZoneTile {
     public Void(int id, Tile north, Tile east, Tile south, Tile west) {
         super(id, north, east, south, west);
     }
+
+    @Override
+    protected void setDescription() {
+        _description = "This is the void.";
+    }
 }

@@ -2,6 +2,7 @@ package org.example.ub4.tile.interaction;
 
 import org.example.ub4.interactions.Interaction;
 import org.example.ub4.interactions.InteractionResult;
+import org.example.ub4.interactions.OnTileInteraction;
 import org.example.ub4.player.Loot;
 import org.example.ub4.player.Player;
 import org.example.ub4.tile.Tile;
@@ -25,7 +26,12 @@ public class LootTile extends SinglePlayerTile {
     }
 
     @Override
-    public InteractionResult interactOnTile(Player player, Interaction interaction) {
+    protected void setDescription() {
+
+    }
+
+    @Override
+    public InteractionResult<OnTileInteraction> interactOnTile(Player player, OnTileInteraction interaction) {
         return null;
     }
 }

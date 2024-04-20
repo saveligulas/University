@@ -18,4 +18,9 @@ public class Wall extends DeadZoneTile {
     public Wall(int id, Tile north, Tile east, Tile south, Tile west) {
         super(id, north, east, south, west);
     }
+
+    @Override
+    protected void setDescription() {
+        _description = "This is a wall.";
+    }
 }

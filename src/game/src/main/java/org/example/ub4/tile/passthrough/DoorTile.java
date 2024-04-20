@@ -20,6 +20,11 @@ public class DoorTile extends HorizontalTile {
     }
 
     @Override
+    protected void setDescription() {
+        _description = "This Tile has a door between it.";
+    }
+
+    @Override
     public void passThrough(Player player) {
 
     }
