@@ -8,13 +8,13 @@ import java.util.List;
 
 public class Player {
     private final String _username;
-    private final List<Consumable> _consumables;
+    private final List<Loot> _inventory;
     private final List<String> _answers;
     private InteractionTile _interactionTile;
 
     public Player(String username) {
         _username = username;
-        _consumables = new ArrayList<>();
+        _inventory = new ArrayList<>();
         _answers = new ArrayList<>();
     }
 
@@ -30,6 +30,10 @@ public class Player {
 
         _interactionTile = tile;
         return true;
+    }
+
+    public void addLoot(List<Loot> loot) {
+        _inventory.addAll(loot);
     }
 
     public InteractionTile getTile() {
