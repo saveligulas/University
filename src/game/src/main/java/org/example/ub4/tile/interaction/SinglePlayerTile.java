@@ -21,6 +21,11 @@ public abstract class SinglePlayerTile extends InteractionTile {
     }
 
     @Override
+    public boolean contains(Player player) {
+        return _player.equals(player);
+    }
+
+    @Override
     public void addPlayerToTile(Player player) throws InteractionTileIsFullException {
         _player = player;
     }

@@ -40,6 +40,11 @@ public abstract class MultiPlayerTile extends InteractionTile {
     }
 
     @Override
+    public boolean contains(Player player) {
+        return _players.contains(player);
+    }
+
+    @Override
     public void addPlayerToTile(Player player) throws InteractionTileIsFullException {
         if (!_players.add(player)) {
             throw new InteractionTileIsFullException("The tile is already full.");
