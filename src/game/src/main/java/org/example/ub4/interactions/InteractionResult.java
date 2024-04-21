@@ -27,9 +27,9 @@ public class InteractionResult<T extends Enum<T>> {
     }
 
     public static class Builder<T extends Enum<T>> {
-        private boolean _success = false; // Initialize to default value
-        private String _message = ""; // Initialize to default value
-        private final List<T> _possibleNextInteractions = new ArrayList<>();
+        protected boolean _success = false; // Initialize to default value
+        protected String _message = ""; // Initialize to default value
+        protected final List<T> _possibleNextInteractions = new ArrayList<>();
 
 
         public Builder<T> success(boolean success) {
