@@ -1,6 +1,8 @@
 package org.example.ub4.game;
 
 import org.example.ub4.player.Player;
+import org.example.ub4.tile.InteractionTile;
+import org.example.ub4.tile.Tile;
 
 import java.util.List;
 
@@ -45,7 +47,12 @@ public class GameState {
         return _players.get(_playerTurnPointer);
     }
 
+    public InteractionTile getTileOfCurrentPlayer() {
+        return _players.get(_playerTurnPointer).getTile();
+    }
+
     public List<Player> getPlayers() {
         return _players;
     }
+
 }
