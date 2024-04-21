@@ -28,7 +28,15 @@ public abstract class InteractionTile extends Tile {
 
     public abstract void removePlayerFromTile(Player player);
 
-    public abstract InteractionResult<OnTileInteraction> interactOnTile(Player player, OnTileInteraction interaction);
+    public OnTileInteractionResult interactOnTile(Player player) {
+        return interactOnTile(player, null);
+    }
+
+    public abstract OnTileInteractionResult interactOnTile(Player player, OnTileInteraction interaction);
+
+    public InteractionResult<NeighbourTileInteraction> interactWithNeighbouringTile(Tile tile, Player player) throws TileCanNotBeAccessedException {
+        return interactWithNeighbouringTile(tile, player, null);
+    }
 
     public InteractionResult<NeighbourTileInteraction> interactWithNeighbouringTile(Tile tile, Player player, NeighbourTileInteraction interaction) throws TileCanNotBeAccessedException {
         if (!isNeighbour(tile)) {
