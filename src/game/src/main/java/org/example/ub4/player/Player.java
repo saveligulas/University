@@ -24,6 +24,7 @@ public class Player {
         } catch (InteractionTileIsFullException e) {
             return false;
         }
+
         if (_interactionTile != null) {
             _interactionTile.removePlayerFromTile(this);
         }
