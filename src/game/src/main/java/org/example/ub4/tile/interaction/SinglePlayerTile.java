@@ -6,7 +6,7 @@ import org.example.ub4.tile.InteractionTile;
 import org.example.ub4.tile.Tile;
 
 public abstract class SinglePlayerTile extends InteractionTile {
-    private Player _player;
+    protected Player _player;
 
     public SinglePlayerTile(int id) {
         super(id);
@@ -27,6 +27,9 @@ public abstract class SinglePlayerTile extends InteractionTile {
 
     @Override
     public void addPlayerToTile(Player player) throws InteractionTileIsFullException {
+        if (_player != null) {
+            throw new InteractionTileIsFullException("Player already on tile");
+        }
         _player = player;
     }
 
