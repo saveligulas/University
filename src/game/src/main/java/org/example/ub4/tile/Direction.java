@@ -12,4 +12,18 @@ public enum Direction {
             default -> throw new IllegalArgumentException();
         };
     }
+
+    public static Direction getDirectionZeroIndexed(int index) {
+        return getDirectionOneIndexed(index + 1);
+    }
+
+    public static Direction getDirectionOneIndexed(int index) {
+        return switch (index) {
+            case 1 -> SOUTH;
+            case 2 -> WEST;
+            case 3 -> NORTH;
+            case 4 -> EAST;
+            default -> throw new IllegalArgumentException();
+        };
+    }
 }
