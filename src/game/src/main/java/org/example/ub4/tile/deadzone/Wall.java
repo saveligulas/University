@@ -1,8 +1,5 @@
 package org.example.ub4.tile.deadzone;
 
-import org.example.ub4.interactions.Interaction;
-import org.example.ub4.interactions.InteractionResult;
-import org.example.ub4.player.Player;
 import org.example.ub4.tile.DeadZoneTile;
 import org.example.ub4.tile.Tile;
 
