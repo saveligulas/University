@@ -5,6 +5,8 @@ import org.example.ub4.excep.TileCanNotBeAccessedException;
 import org.example.ub4.interactions.*;
 import org.example.ub4.player.Player;
 
+import java.util.List;
+
 public abstract class InteractionTile extends Tile {
 
     public InteractionTile(int id) {
@@ -34,11 +36,13 @@ public abstract class InteractionTile extends Tile {
 
     public abstract OnTileInteractionResult interactOnTile(Player player, OnTileInteraction interaction);
 
-    public InteractionResult<NeighbourTileInteraction> interactWithNeighbouringTile(Tile tile, Player player) throws TileCanNotBeAccessedException {
+    public abstract List<NeighbourTileInteraction> getInitialPossibleInteractions();
+
+    public NeighbourTileInteractionResult interactWithNeighbouringTile(Tile tile, Player player) throws TileCanNotBeAccessedException {
         return interactWithNeighbouringTile(tile, player, null);
     }
 
-    public InteractionResult<NeighbourTileInteraction> interactWithNeighbouringTile(Tile tile, Player player, NeighbourTileInteraction interaction) throws TileCanNotBeAccessedException {
+    public NeighbourTileInteractionResult interactWithNeighbouringTile(Tile tile, Player player, NeighbourTileInteraction interaction) throws TileCanNotBeAccessedException {
         if (!isNeighbour(tile)) {
             throw new TileCanNotBeAccessedException("Tile " + tile + " is not a neighbour of " + this);
         }
