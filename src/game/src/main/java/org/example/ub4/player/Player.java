@@ -40,4 +40,8 @@ public class Player {
     public InteractionTile getTile() {
         return _interactionTile;
     }
+
+    public String getUsername() {
+        return _username;
+    }
 }
