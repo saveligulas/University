@@ -3,6 +3,7 @@ package org.example.ub4.game;
 import org.example.ub4.excep.TileCanNotBeAccessedException;
 import org.example.ub4.interactions.*;
 import org.example.ub4.player.Player;
+import org.example.ub4.tile.Direction;
 import org.example.ub4.tile.Tile;
 
 public class Game {
@@ -18,8 +19,16 @@ public class Game {
         }
     }
 
+    protected Player getCurrentPlayer() {
+        return _state.getCurrentPlayer();
+    }
+
+    protected Tile getNeighbourintTile(int indexFromOne) {
+        return _state.getTileOfCurrentPlayer().getTileInDirection(Direction.getDirectionOneIndexed(indexFromOne)).orElseThrow(() -> new IllegalArgumentException("Index out of bounds should not be passed to this method"));
+    }
+
     // gives us the info of what round we are on and which players are still in the game
-    public RoundInfo getRoundInfo() {
+    protected RoundInfo getRoundInfo() {
         return RoundInfo.buildRoundInfo(_state);
     }
 
@@ -29,9 +38,16 @@ public class Game {
 
     }
 
-    protected NeighbourTileInteractionResult getNeighbouringTileOptions(Tile neighbourTile) throws TileCanNotBeAccessedException {
-        return _state.getTileOfCurrentPlayer().interactWithNeighbouringTile(neighbourTile, _state.getCurrentPlayer());
+    protected NeighbourTileInteractionResult getNeighbouringTileOptions(Tile neighbourTile) {
+        try {
+            return _state.getTileOfCurrentPlayer().interactWithNeighbouringTile(neighbourTile, _state.getCurrentPlayer());
+        } catch (TileCanNotBeAccessedException e) {
+            System.out.println("Critical error occurred: Game interface allowed Player to select tile that is not its neighbour.");
+            System.exit(500);
+            return null;
+        }
     }
+
 
     // gives us the result of the interaction and if it worked
     protected OnTileInteractionResult performAction(OnTileInteraction onTileInteraction) {
@@ -54,4 +70,8 @@ public class Game {
         }
     }
 
+
+    protected void endRound() {
+        _state.advanceRound();
+    }
 }
