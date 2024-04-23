@@ -26,6 +26,11 @@ public class LootTile extends SinglePlayerTile {
         super(id, north, east, south, west);
     }
 
+    @Override
+    public List<OnTileInteraction> getOnTileInitialInteractions() {
+        return List.of();
+    }
+
     public void lootAndClear() {
         List<Loot> result = new ArrayList<>(_loot);
         _loot.clear();
@@ -39,11 +44,6 @@ public class LootTile extends SinglePlayerTile {
 
     @Override
     public OnTileInteractionResult interactOnTile(Player player, OnTileInteraction interaction) {
-        return null;
-    }
-
-    @Override
-    public List<NeighbourTileInteraction> getInitialPossibleInteractions() {
         return null;
     }
 }
