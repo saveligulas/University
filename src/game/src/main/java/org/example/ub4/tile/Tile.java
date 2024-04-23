@@ -1,5 +1,6 @@
 package org.example.ub4.tile;
 
+import org.example.ub4.interactions.NeighbourTileInteraction;
 import org.example.ub4.obstacle.Obstacle;
 import org.example.ub4.player.Player;
 
@@ -125,6 +126,12 @@ public abstract class Tile {
      * Method is called in constructors and must be implemented to add the correct description
      */
     protected abstract void setDescription();
+
+    public List<NeighbourTileInteraction> getPossibleInteractions() {
+        List<NeighbourTileInteraction> possibleInteractions = new ArrayList<>();
+        possibleInteractions.add(NeighbourTileInteraction.DISCOVER);
+        return possibleInteractions;
+    }
 
     protected Optional<Tile> getNorth() {
         return Optional.ofNullable(_north);
