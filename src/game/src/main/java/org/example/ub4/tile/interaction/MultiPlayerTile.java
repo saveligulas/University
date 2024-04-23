@@ -10,24 +10,22 @@ public abstract class MultiPlayerTile extends InteractionTile {
     protected LimitedSizeArrayList<Player> _players;
     protected int _maxSize;
 
-    private void initialize(int size) {
-        _players = new LimitedSizeArrayList<>(size);
-        _maxSize = size;
-    }
+    // set size in this method
+    protected abstract void initialize();
 
     public MultiPlayerTile(int id) {
         super(id);
-        initialize(2);
+        initialize();
     }
 
     public MultiPlayerTile(int id, Tile[] neighbours) {
         super(id, neighbours);
-        initialize(2);
+        initialize();
     }
 
     public MultiPlayerTile(int id, Tile north, Tile east, Tile south, Tile west) {
         super(id, north, east, south, west);
-        initialize(2);
+        initialize();
     }
 
     protected boolean isFull() {
@@ -37,6 +35,11 @@ public abstract class MultiPlayerTile extends InteractionTile {
     public void setMaxSize(int maxSize) {
         _players = new LimitedSizeArrayList<>(_players, maxSize);
         _maxSize = maxSize;
+    }
+
+    @Override
+    public boolean removePlayerFromTile(Player player) {
+        return _players.remove(player);
     }
 
     @Override

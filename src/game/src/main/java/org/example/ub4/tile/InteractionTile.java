@@ -35,7 +35,7 @@ public abstract class InteractionTile extends Tile {
      */
     public abstract void addPlayerToTile(Player player) throws InteractionTileIsFullException;
 
-    public abstract void removePlayerFromTile(Player player);
+    public abstract boolean removePlayerFromTile(Player player);
 
     public abstract List<OnTileInteraction> getOnTileInitialInteractions();
 
