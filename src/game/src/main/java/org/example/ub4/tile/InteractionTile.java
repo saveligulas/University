@@ -21,6 +21,13 @@ public abstract class InteractionTile extends Tile {
         super(id, north, east, south, west);
     }
 
+    @Override
+    public List<NeighbourTileInteraction> getPossibleInteractions() {
+        List<NeighbourTileInteraction> result = super.getPossibleInteractions();
+        result.add(NeighbourTileInteraction.WALK_TO);
+        return result;
+    }
+
     /**
      * Call this method implicitly by using Player.setTile as that also includes this method. If this method is called, make sure that the player also has the tile set.
      * @param player
@@ -30,13 +37,13 @@ public abstract class InteractionTile extends Tile {
 
     public abstract void removePlayerFromTile(Player player);
 
+    public abstract List<OnTileInteraction> getOnTileInitialInteractions();
+
     public OnTileInteractionResult interactOnTile(Player player) {
         return interactOnTile(player, null);
     }
 
     public abstract OnTileInteractionResult interactOnTile(Player player, OnTileInteraction interaction);
-
-    public abstract List<NeighbourTileInteraction> getInitialPossibleInteractions();
 
     public NeighbourTileInteractionResult interactWithNeighbouringTile(Tile tile, Player player) throws TileCanNotBeAccessedException {
         return interactWithNeighbouringTile(tile, player, null);
@@ -46,6 +53,9 @@ public abstract class InteractionTile extends Tile {
         if (!isNeighbour(tile)) {
             throw new TileCanNotBeAccessedException("Tile " + tile + " is not a neighbour of " + this);
         }
-        return TileInteractionResultFactory.createResult(this, tile, player, interaction);
+        if (!contains(player)) {
+            throw new IllegalArgumentException("Player " + player + " should not be able to call this method, as he is not present on the tile " + this);
+        }
+        return TileInteractionResultManager.createResult(tile, player, interaction);
     }
 }
