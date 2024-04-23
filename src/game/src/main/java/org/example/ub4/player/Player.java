@@ -11,11 +11,13 @@ public class Player {
     private final List<Loot> _inventory;
     private final List<String> _answers;
     private InteractionTile _interactionTile;
+    private final List<Integer> _discoveredTiles;
 
     public Player(String username) {
         _username = username;
         _inventory = new ArrayList<>();
         _answers = new ArrayList<>();
+        _discoveredTiles = new ArrayList<>();
     }
 
     public boolean setTile(InteractionTile tile) {
