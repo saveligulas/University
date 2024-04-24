@@ -28,7 +28,19 @@ public class LootTile extends SinglePlayerTile {
 
     @Override
     public List<OnTileInteraction> getOnTileInitialInteractions() {
-        return List.of();
+        List<OnTileInteraction> interactions = super.getOnTileInitialInteractions();
+        interactions.add(OnTileInteraction.LOOT);
+        return interactions;
+    }
+
+    @Override
+    public OnTileInteractionResult interactOnTile(Player player, OnTileInteraction interaction) {
+        if (interaction == OnTileInteraction.LOOT) {
+            String message = "You looted: " + _loot;
+            lootAndClear();
+        }
+
+        return OnTileInteractionResult.emptyTrue();
     }
 
     public void lootAndClear() {
@@ -37,13 +49,19 @@ public class LootTile extends SinglePlayerTile {
         _player.addLoot(result);
     }
 
+    public void addLoot(Loot... loot) {
+        _loot.addAll(List.of(loot));
+    }
+
     @Override
     protected void setDescription() {
-
+        _description = "Lucky you are, as this is Tile is all yours. Great Riches await you.";
     }
 
     @Override
-    public OnTileInteractionResult interactOnTile(Player player, OnTileInteraction interaction) {
-        return null;
+    protected void setSpecification() {
+        _specification = "Loot";
     }
+
+
 }
