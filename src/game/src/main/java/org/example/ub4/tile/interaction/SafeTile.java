@@ -28,17 +28,17 @@ public class SafeTile extends MultiPlayerTile {
     }
 
     @Override
-    public List<OnTileInteraction> getOnTileInitialInteractions() {
-        return null;
-    }
-
-    @Override
-    public OnTileInteractionResult interactOnTile(Player player, OnTileInteraction interaction) {
-        return null;
+    public List<OnTileInteraction> addAdditionalOnTileInteractions() {
+        return List.of(OnTileInteraction.SCOUT);
     }
 
     @Override
     protected void setDescription() {
+        _description = "This Tile is safe for all travellers, that may pass through.";
+    }
 
+    @Override
+    protected void setSpecification() {
+        _specification = "Safe Zone";
     }
 }
