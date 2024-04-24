@@ -11,15 +11,17 @@ public class GameState {
     private final int _maxRound;
     private final List<Player> _players;
     private int _playerTurnPointer;
+    private final InteractionTile _sourceTile;
 
-    public GameState(int roundsToPlay, Player... players) {
-        this(roundsToPlay, List.of(players));
+    public GameState(int roundsToPlay, InteractionTile sourceTile, Player... players) {
+        this(roundsToPlay, sourceTile, List.of(players));
     }
 
-    public GameState(int roundsToPlay, List<Player> players) {
+    public GameState(int roundsToPlay, InteractionTile sourceTile, List<Player> players) {
         _currentRound = 1;
         _maxRound = roundsToPlay;
         _players = players;
+        _sourceTile = sourceTile;
     }
 
     public void advancePlayerTurn() {
