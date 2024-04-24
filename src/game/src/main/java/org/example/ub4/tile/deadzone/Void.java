@@ -10,11 +10,13 @@ import org.example.ub4.tile.Tile;
 import java.util.List;
 
 public class Void extends DeadZoneTile {
-    public Void() {
+    public static final Void INSTANCE = new Void(-1, new Tile[]{null, null, null, null});
+
+    private Void() {
         super();
     }
 
-    public Void(int id, Tile[] neighbours) {
+    private Void(int id, Tile[] neighbours) {
         super(id, neighbours);
     }
 
