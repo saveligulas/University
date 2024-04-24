@@ -4,6 +4,7 @@ import org.example.ub4.player.Player;
 import org.example.ub4.tile.Direction;
 import org.example.ub4.tile.InteractionTile;
 import org.example.ub4.tile.Tile;
+import org.example.ub4.tile.deadzone.Wall;
 
 
 public class DoorTile extends HorizontalTile {
