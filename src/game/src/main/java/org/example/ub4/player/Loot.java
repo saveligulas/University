@@ -23,5 +23,9 @@ public class Loot {
     protected void setDescription(String description) {
         _description = description;
     }
+
+    public String toString() {
+        return _description;
+    }
 }
 

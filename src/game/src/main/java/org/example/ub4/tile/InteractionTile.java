@@ -5,6 +5,7 @@ import org.example.ub4.excep.TileCanNotBeAccessedException;
 import org.example.ub4.interactions.*;
 import org.example.ub4.player.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class InteractionTile extends Tile {
@@ -37,7 +38,9 @@ public abstract class InteractionTile extends Tile {
 
     public abstract boolean removePlayerFromTile(Player player);
 
-    public abstract List<OnTileInteraction> getOnTileInitialInteractions();
+    public List<OnTileInteraction> getOnTileInitialInteractions() {
+        return new ArrayList<>(List.of(OnTileInteraction.PASS));
+    }
 
     public OnTileInteractionResult interactOnTile(Player player) {
         return interactOnTile(player, null);

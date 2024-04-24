@@ -23,18 +23,17 @@ public class Game {
         return _state.getCurrentPlayer();
     }
 
+    protected void advancePlayerTurn() {
+        _state.advancePlayerTurn();
+    }
+
     protected Tile getNeighbourintTile(int indexFromOne) {
         return _state.getTileOfCurrentPlayer().getTileInDirection(Direction.getDirectionOneIndexed(indexFromOne)).orElseThrow(() -> new IllegalArgumentException("Index out of bounds should not be passed to this method"));
     }
 
-    // gives us the info of what round we are on and which players are still in the game
-    protected RoundInfo getRoundInfo() {
-        return RoundInfo.buildRoundInfo(_state);
-    }
-
     // gives us the options the player has for this turn
     protected OnTileInteractionResult getOnTileOptions() {
-        return _state.getTileOfCurrentPlayer().interactOnTile(_state.getCurrentPlayer());
+        return new OnTileInteractionResult(true, "Your options:", _state.getTileOfCurrentPlayer().getOnTileInitialInteractions());
 
     }
 
