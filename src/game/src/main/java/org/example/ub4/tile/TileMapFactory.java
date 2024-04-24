@@ -1,5 +1,7 @@
 package org.example.ub4.tile;
 
+import com.github.javafaker.Faker;
+import org.example.ub4.player.Loot;
 import org.example.ub4.tile.deadzone.Wall;
 import org.example.ub4.tile.interaction.LootTile;
 import org.example.ub4.tile.interaction.SafeTile;
@@ -20,6 +22,31 @@ public class TileMapFactory {
 
     private static final Random _r = new Random();
 
+    public static InteractionTile getSourceTile(int size) {
+        return getSourceTile(createMapAndGetSourceTile(size));
+    }
+
+    public static InteractionTile getSourceTile(Tile[][] tileMap) {
+        int size = tileMap.length;
+        int nextId = 0;
+        for (int row = 0; row < tileMap.length; row++) {
+            for (int col = 0; col < tileMap[row].length; col++) {
+                if (tileMap[row][col] != null) {
+                    Tile currentTile = tileMap[row][col];
+                    currentTile.setId(nextId);
+                    nextId++;
+                    if (col < size - 1 && tileMap[row][col + 1] != null) {
+                        currentTile.connectTile(Direction.EAST, tileMap[row][col + 1]);
+                    }
+                    if (row < size - 1 && tileMap[row + 1][col] != null) {
+                        currentTile.connectTile(Direction.SOUTH, tileMap[row + 1][col]);
+                    }
+                }
+            }
+        }
+        return (InteractionTile) tileMap[0][0];
+    }
+
     public static Tile[][] createMapAndGetSourceTile(int size) {
         boolean[][] locationMap = getBooleanMap(size);
         Tile[][] tileMap = new Tile[size][size];
@@ -38,14 +65,13 @@ public class TileMapFactory {
             }
         }
 
-        if (oneTileRows.size() > 1) {
-            removeAdjacentDuplicates(oneTileRows);
-            addRooms(tileMap, locationMap, oneTileRows);
+        removeAdjacentDuplicates(oneTileRows);
+        for (Integer row : oneTileRows) {
+            int column = getStart(locationMap[row]);
+            tileMap[row][column] = new DoorTile(-1);
         }
-        if (oneTileRows.size() == 1) {
-            int row = oneTileRows.get(0);
-            int column = getStart(locationMap[oneTileRows.get(0)]);
-            tileMap[oneTileRows.get(0)][column] = new DoorTile(-1);
+        if (oneTileRows.size() > 1) {
+            addRooms(tileMap, locationMap, oneTileRows);
         }
 
         return tileMap;
@@ -71,7 +97,7 @@ public class TileMapFactory {
         int start = _r.nextInt(size);
 
         if (previousRow == null) {
-            return start;
+            return 0;
         }
 
         while (start > getEnd(previousRow)) {
@@ -81,10 +107,15 @@ public class TileMapFactory {
     }
 
     private static int randomLengthThatConnects(int size, boolean[] previousRow, int startPoint) {
-        int length = _r.nextInt(1, size - startPoint);
+        int length = 1;
+        if (size - startPoint == length) {
+            return length;
+        }
+        length = _r.nextInt(1, size - startPoint);
+
 
         if (previousRow == null) {
-            return length;
+            return size / 2;
         }
 
         while (startPoint + length < getStart(previousRow)) {
@@ -119,15 +150,28 @@ public class TileMapFactory {
 
     //region Step 2
     private static void fillRowWithInteractionTiles(Tile[] tileRow, boolean[] locationRow) {
+        boolean found = false;
+        Faker faker = new Faker();
         for (int i = 0; i < locationRow.length; i++) {
             if (locationRow[i]) {
-                Tile tile;
-                if (_r.nextBoolean()) {
-                    tile = new LootTile(-1);
+                if (found) {
+                    InteractionTile tile;
+                    if (_r.nextBoolean()) {
+                        LootTile lootTile = new LootTile(-1);
+                        int amountToPut = _r.nextInt(4);
+                        for (int amount = 0; amount < amountToPut; amount++) {
+                            lootTile.addLoot(new Loot(faker.hobbit().character() + " Figure"));
+                        }
+                        tile = lootTile;
+                    } else {
+                        tile = new SafeTile(-1);
+                    }
+                    tileRow[i] = tile;
                 } else {
-                    tile = new SafeTile(-1);
+                    tileRow[i] = new SafeTile(-1);
+                    found = true;
                 }
-                tileRow[i] = tile;
+
             }
         }
     }
@@ -156,28 +200,25 @@ public class TileMapFactory {
                         boolean hasAFalseNeighBour = false;
 
                         if (col > 0 && !locationMap[row][col - 1]) {
-                            hasAFalseNeighBour = true;
+                            tileMap[row][col - 1] = new Wall();
                         }
 
                         if (col < cols - 1 && !locationMap[row][col + 1]) {
-                            hasAFalseNeighBour = true;
+                            tileMap[row][col + 1] = new Wall();
                         }
 
                         if (row > 0 && !locationMap[row - 1][col]) {
-                            hasAFalseNeighBour = true;
+                            tileMap[row - 1][col] = new Wall();
                         }
                         if (row < rows - 1 && !locationMap[row + 1][col]) {
-                            hasAFalseNeighBour = true;
+                            tileMap[row + 1][col] = new Wall();
                         }
 
-                        if (hasAFalseNeighBour) {
-                            tileMap[row][col] = new Wall();
-                        }
                     }
                 }
             }
             oneTileRows.remove(0);
-            oneTileRows.remove(1);
+            oneTileRows.remove(0);
         }
     }
     //endregion
