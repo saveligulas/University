@@ -21,6 +21,11 @@ public class DoorTile extends HorizontalTile {
     }
 
     @Override
+    protected void setSpecification() {
+        _specification = "Door";
+    }
+
+    @Override
     public boolean passThrough(Player player) {
         Direction sourceDirection = this.getDirectionOfNeighbour(player.getTile()).orElseThrow(() -> new RuntimeException("Player accessing door is not on a neighbouring Tile"));
         Tile destination = this.getTileInDirection(Direction.getOppositeDirection(sourceDirection)).orElseThrow(() -> new RuntimeException("Door Tile does not have opposing Tile"));
