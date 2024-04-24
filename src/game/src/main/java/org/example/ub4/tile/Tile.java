@@ -1,14 +1,16 @@
 package org.example.ub4.tile;
 
 import org.example.ub4.interactions.NeighbourTileInteraction;
+import org.example.ub4.interactions.NeighbourTileInteractionResult;
 import org.example.ub4.obstacle.Obstacle;
 import org.example.ub4.player.Player;
+import org.example.ub4.tile.deadzone.Void;
 
 import java.util.*;
 
 
 public abstract class Tile {
-    private final int _id;
+    private int _id;
     private Tile _north;
     private Tile _east;
     private Tile _south;
@@ -16,10 +18,14 @@ public abstract class Tile {
     private Obstacle _obstacle;
     // is protected to allow subclasses to implement setDescription method
     protected String _description = "";
+    protected String _specification = "";
+
+    protected Tile() {
+        this(-1);
+    }
 
     public Tile(int id) {
-        _id = id;
-        setDescription();
+        this(id, new Void(-1, new Tile[] {null, null, null, null}), new Void(-1, new Tile[] {null, null, null, null}), new Void(-1, new Tile[] {null, null, null, null}), new Void(-1, new Tile[] {null, null, null, null}));
     }
 
     public Tile(int id, Tile[] neighbours) {
@@ -33,6 +39,7 @@ public abstract class Tile {
         _south = south;
         _west = west;
         setDescription();
+        setSpecification();
     }
 
     public HashMap<Direction, Tile> getNeighbourMap() {
@@ -127,11 +134,34 @@ public abstract class Tile {
      */
     protected abstract void setDescription();
 
-    public List<NeighbourTileInteraction> getPossibleInteractions() {
+    protected abstract void setSpecification();
+
+    public List<NeighbourTileInteraction> getNeighbourTileInteractions() {
         List<NeighbourTileInteraction> possibleInteractions = new ArrayList<>();
         possibleInteractions.add(NeighbourTileInteraction.DISCOVER);
+        possibleInteractions.add(NeighbourTileInteraction.PASS);
+        possibleInteractions.addAll(addMorePossibleInteractions());
         return possibleInteractions;
     }
+
+    protected abstract List<NeighbourTileInteraction> addMorePossibleInteractions();
+
+    public NeighbourTileInteractionResult interactFromNeighbour(Player player, NeighbourTileInteraction interaction) {
+        if (interaction == NeighbourTileInteraction.DISCOVER) {
+            List<NeighbourTileInteraction> possibleInteractions = getNeighbourTileInteractions();
+            possibleInteractions.remove(NeighbourTileInteraction.DISCOVER);
+            player.addDiscoveredTile(this);
+            return new NeighbourTileInteractionResult(true, "You discovered the tile: " + _specification +" -\n" + _description , possibleInteractions);
+        }
+
+        if (interaction == NeighbourTileInteraction.PASS) {
+            return NeighbourTileInteractionResult.emptyTrue();
+        }
+
+        return interactFromNeighbourAdditionalOptions(player, interaction);
+    }
+
+    public abstract NeighbourTileInteractionResult interactFromNeighbourAdditionalOptions(Player player, NeighbourTileInteraction interaction);
 
     protected Optional<Tile> getNorth() {
         return Optional.ofNullable(_north);
@@ -148,22 +178,6 @@ public abstract class Tile {
     protected Optional<Tile> getWest() {
         return Optional.ofNullable(_west);
     }
-
-    void setTiles(Tile[] tilesOrderedByDirection) {
-        for (int i = 0; i < 4; i++) {
-            Tile tile = tilesOrderedByDirection[i];
-            if (tile != null) {
-                switch (i) {
-                    case 0 -> setNorth(tile);
-                    case 1 -> setEast(tile);
-                    case 2 -> setSouth(tile);
-                    case 3 -> setWest(tile);
-                }
-            }
-        }
-    }
-
-
 
     void setObstacle(Obstacle obstacle) {
         _obstacle = obstacle;
@@ -197,6 +211,19 @@ public abstract class Tile {
 
     protected void setWest(Tile tile) {
         _west = tile;
+    }
+
+    protected void setId(int id) {
+        _id = id;
+    }
+
+    public String shortToString() {
+        return _specification;
+    }
+
+    @Override
+    public String toString() {
+        return _specification +" -\n" + _description;
     }
 
     @Override
