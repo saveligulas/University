@@ -4,6 +4,7 @@ import org.example.ub4.interactions.InteractionResult;
 import org.example.ub4.interactions.NeighbourTileInteraction;
 import org.example.ub4.interactions.NeighbourTileInteractionResult;
 import org.example.ub4.player.Player;
+import org.example.ub4.tile.deadzone.Wall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +24,8 @@ public abstract class PassThroughTile extends Tile {
     }
 
     @Override
-    public List<NeighbourTileInteraction> getPossibleInteractions() {
-        List<NeighbourTileInteraction> possibleInteractions = super.getPossibleInteractions();
-        possibleInteractions.add(NeighbourTileInteraction.PASS_THROUGH);
-        return possibleInteractions;
+    public List<NeighbourTileInteraction> addMorePossibleInteractions() {
+        return List.of(NeighbourTileInteraction.PASS_THROUGH);
     }
 
     @Override
@@ -35,12 +34,7 @@ public abstract class PassThroughTile extends Tile {
     }
 
     @Override
-    public NeighbourTileInteractionResult interactFromNeighbour(Player player, NeighbourTileInteraction interaction) {
-        NeighbourTileInteractionResult discoverSuper = super.interactFromNeighbour(player, interaction);
-        if (discoverSuper.wasSuccessful()) {
-            return discoverSuper;
-        }
-
+    public NeighbourTileInteractionResult interactFromNeighbourAdditionalOptions(Player player, NeighbourTileInteraction interaction) {
         if (interaction == NeighbourTileInteraction.PASS_THROUGH) {
             if (passThrough(player)) {
                 return new NeighbourTileInteractionResult(true, "You successfully passed through: " + _specification + " -\n" + _description);
@@ -49,7 +43,7 @@ public abstract class PassThroughTile extends Tile {
             }
         }
 
-        return NeighbourTileInteractionResult.emptyTrue();
+        return NeighbourTileInteractionResult.emptyFalse();
     }
 
     public abstract boolean passThrough(Player player);
