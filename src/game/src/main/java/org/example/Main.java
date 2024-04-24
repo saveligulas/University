@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.ub4.game.ConsoleGame;
-simport org.example.ub4.tile.InteractionTile;
+import org.example.ub4.tile.InteractionTile;
 import org.example.ub4.tile.Tile;
 import org.example.ub4.tile.TileMapFactory;
 
