@@ -34,9 +34,11 @@ public abstract class SinglePlayerTile extends InteractionTile {
     }
 
     @Override
-    public void removePlayerFromTile(Player player) {
+    public boolean removePlayerFromTile(Player player) {
         if (_player.equals(player)) {
             _player = null;
+            return true;
         }
+        return false;
     }
 }
