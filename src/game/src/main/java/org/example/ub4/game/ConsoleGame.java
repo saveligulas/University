@@ -3,10 +3,10 @@ package org.example.ub4.game;
 import org.example.ub4.interactions.NeighbourTileInteraction;
 import org.example.ub4.interactions.NeighbourTileInteractionResult;
 import org.example.ub4.interactions.OnTileInteractionResult;
-import org.example.ub4.player.Loot;
 import org.example.ub4.player.Player;
+import org.example.ub4.tile.Direction;
+import org.example.ub4.tile.InteractionTile;
 import org.example.ub4.tile.Tile;
-import org.example.ub4.tile.interaction.LootTile;
 
 import java.util.*;
 
@@ -18,14 +18,11 @@ public class ConsoleGame {
         _scanner = new Scanner(System.in);
     }
 
-    public void run(int roundsToPlay, int playerAmount) {
-        initializeGame(roundsToPlay, playerAmount);
+    public void run(int roundsToPlay, int playerAmount, InteractionTile sourceTile) {
+        initializeGame(roundsToPlay, playerAmount, sourceTile);
         for (int i = 0; i < roundsToPlay; i++) {
             System.out.println("Round :" + i + 1);
             for (int p = 0; p < playerAmount; p++) {
-                LootTile tile = new LootTile(1);
-                tile.addLoot(new Loot("Apple"));
-                _game.getCurrentPlayer().setTile(new LootTile(1));
                 System.out.println(_game.getCurrentPlayer());
                 int whatToDo = askAndGetResponse("What action do you want to perform this turn?",
                         new ArrayList<>(List.of("Look at Inventory and consume", "Interact with Tile", "Interact with neighbouring Tile")));
@@ -35,10 +32,12 @@ public class ConsoleGame {
                         break;
                     case 1:
                         OnTileInteractionResult resultOnTile = getOnTileInteractionResult(_game.getCurrentPlayer());
+                        System.out.println(resultOnTile.getSuccessString());
                         System.out.println(resultOnTile.getMessage());
                         break;
                     case 2:
                         NeighbourTileInteractionResult resultOnNeighbour = getNeighbourTileInteractionResult(_game.getCurrentPlayer());
+                        System.out.println(resultOnNeighbour.getSuccessString());
                         System.out.println(resultOnNeighbour.getMessage());
                         break;
                 }
@@ -52,27 +51,26 @@ public class ConsoleGame {
 
 
     private OnTileInteractionResult getOnTileInteractionResult(Player player) {
-        OnTileInteractionResult onTileInteractionResult = _game.getOnTileOptions();
         int onTileSelectedOption = askAndGetResponse("What action do you want to perform on this Tile?",
-                onTileInteractionResult.getPossibleNextInteractions());
-        return player.getTile().interactOnTile(player, onTileInteractionResult.getPossibleNextInteractions().get(onTileSelectedOption));
+                _game.getOnTileOptions());
+        return player.getTile().interactOnTile(player, _game.getOnTileOptions().get(onTileSelectedOption));
     }
 
     private NeighbourTileInteractionResult getNeighbourTileInteractionResult(Player player) {
         int tileSelected = askAndGetResponse("What Tile do you want to interact with?",
-                List.of("North", "East", "South", "West"));
-        Tile selectedTile = _game.getNeighbourintTile(tileSelected + 1);
-        NeighbourTileInteractionResult result = _game.getNeighbouringTileOptions(selectedTile);
-        if (result.wasSuccessful()) {
-            int selectedOption = askAndGetResponse("What Interaction do you want to perform?",
-                    result.getPossibleNextInteractions());
-            return selectedTile.interactFromNeighbour(_game.getCurrentPlayer(), result.getPossibleNextInteractions().get(selectedOption));
+                List.of(Direction.values()));
+        Tile selectedTile = player.getTile().getTileInDirection(Direction.values()[tileSelected]).orElseThrow(() -> new RuntimeException("Invalid input for Tile"));
+        List<NeighbourTileInteraction> options = selectedTile.getNeighbourTileInteractions();
+        if (options.size() == 0) {
+            return new NeighbourTileInteractionResult(false, "No possible Interactions with this Tile.");
         }
 
-        return new NeighbourTileInteractionResult(false, "No possible Interactions with this Tile.");
+        int selectedOption = askAndGetResponse("What Interaction do you want to perform?",
+                    options);
+        return selectedTile.interactFromNeighbour(_game.getCurrentPlayer(), options.get(selectedOption));
     }
 
-    private void initializeGame(int roundsToPlay, int playerAmount) {
+    private void initializeGame(int roundsToPlay, int playerAmount, InteractionTile sourceTile) {
         Set<String> usernames = new HashSet<>();
         for (int i = 0; i < playerAmount; i++) {
             String username;
@@ -82,7 +80,7 @@ public class ConsoleGame {
             } while (usernames.contains(username));
             usernames.add(username);
         }
-        _game = GameInitializer.initialize(roundsToPlay, usernames);
+        _game = GameInitializer.initialize(roundsToPlay, sourceTile, usernames);
     }
 
     private List<String> getStringList(List<?> list) {
