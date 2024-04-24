@@ -1,7 +1,6 @@
 package org.example.ub4.tile;
 
 import org.example.ub4.excep.InteractionTileIsFullException;
-import org.example.ub4.excep.TileCanNotBeAccessedException;
 import org.example.ub4.interactions.*;
 import org.example.ub4.player.Player;
 
@@ -22,12 +21,14 @@ public abstract class InteractionTile extends Tile {
         super(id, north, east, south, west);
     }
 
-    @Override
-    public List<NeighbourTileInteraction> getPossibleInteractions() {
-        List<NeighbourTileInteraction> result = super.getPossibleInteractions();
-        result.add(NeighbourTileInteraction.WALK_TO);
+    public List<OnTileInteraction> getOnTileInteractions() {
+        List<OnTileInteraction> result = new ArrayList<>();
+        result.add(OnTileInteraction.PASS);
+        result.addAll(addAdditionalOnTileInteractions());
         return result;
     }
+
+    public abstract List<OnTileInteraction> addAdditionalOnTileInteractions();
 
     /**
      * Call this method implicitly by using Player.setTile as that also includes this method. If this method is called, make sure that the player also has the tile set.
@@ -38,27 +39,30 @@ public abstract class InteractionTile extends Tile {
 
     public abstract boolean removePlayerFromTile(Player player);
 
-    public List<OnTileInteraction> getOnTileInitialInteractions() {
-        return new ArrayList<>(List.of(OnTileInteraction.PASS));
+    @Override
+    public List<NeighbourTileInteraction> addMorePossibleInteractions() {
+        return List.of(NeighbourTileInteraction.WALK_TO);
     }
 
-    public OnTileInteractionResult interactOnTile(Player player) {
-        return interactOnTile(player, null);
-    }
-
-    public abstract OnTileInteractionResult interactOnTile(Player player, OnTileInteraction interaction);
-
-    public NeighbourTileInteractionResult interactWithNeighbouringTile(Tile tile, Player player) throws TileCanNotBeAccessedException {
-        return interactWithNeighbouringTile(tile, player, null);
-    }
-
-    public NeighbourTileInteractionResult interactWithNeighbouringTile(Tile tile, Player player, NeighbourTileInteraction interaction) throws TileCanNotBeAccessedException {
-        if (!isNeighbour(tile)) {
-            throw new TileCanNotBeAccessedException("Tile " + tile + " is not a neighbour of " + this);
+    public OnTileInteractionResult interactOnTile(Player player, OnTileInteraction interaction) {
+        if (interaction == OnTileInteraction.PASS) {
+            return OnTileInteractionResult.emptyTrue();
         }
-        if (!contains(player)) {
-            throw new IllegalArgumentException("Player " + player + " should not be able to call this method, as he is not present on the tile " + this);
+
+        return interactOnTileAdditionalOptions(player, interaction);
+    }
+
+    protected abstract OnTileInteractionResult interactOnTileAdditionalOptions(Player player, OnTileInteraction interaction);
+
+    @Override
+    public NeighbourTileInteractionResult interactFromNeighbourAdditionalOptions(Player player, NeighbourTileInteraction interaction) {
+        if (interaction == NeighbourTileInteraction.WALK_TO) {
+            if (!player.setTile(this)) {
+                return new NeighbourTileInteractionResult(false, "You cannot walk to this Tile for mysterious reasons.");
+            }
+            return new NeighbourTileInteractionResult(true, "You walked to the Tile successfully.");
         }
-        return TileInteractionResultManager.createResult(tile, player, interaction);
+
+        return NeighbourTileInteractionResult.emptyFalse();
     }
 }
