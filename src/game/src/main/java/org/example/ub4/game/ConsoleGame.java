@@ -3,7 +3,10 @@ package org.example.ub4.game;
 import org.example.ub4.interactions.NeighbourTileInteraction;
 import org.example.ub4.interactions.NeighbourTileInteractionResult;
 import org.example.ub4.interactions.OnTileInteractionResult;
+import org.example.ub4.player.Loot;
+import org.example.ub4.player.Player;
 import org.example.ub4.tile.Tile;
+import org.example.ub4.tile.interaction.LootTile;
 
 import java.util.*;
 
@@ -18,9 +21,12 @@ public class ConsoleGame {
     public void run(int roundsToPlay, int playerAmount) {
         initializeGame(roundsToPlay, playerAmount);
         for (int i = 0; i < roundsToPlay; i++) {
-            System.out.println(_game.getRoundInfo() + "Playeholder roundInfo:" + i);
+            System.out.println("Round :" + i + 1);
             for (int p = 0; p < playerAmount; p++) {
-                System.out.println(_game.getCurrentPlayer().getUsername());
+                LootTile tile = new LootTile(1);
+                tile.addLoot(new Loot("Apple"));
+                _game.getCurrentPlayer().setTile(new LootTile(1));
+                System.out.println(_game.getCurrentPlayer());
                 int whatToDo = askAndGetResponse("What action do you want to perform this turn?",
                         new ArrayList<>(List.of("Look at Inventory and consume", "Interact with Tile", "Interact with neighbouring Tile")));
                 switch (whatToDo) {
@@ -28,25 +34,42 @@ public class ConsoleGame {
                         //TODO: Consume and inventory
                         break;
                     case 1:
-                        OnTileInteractionResult onTileInteractionResult = _game.getOnTileOptions();
-                        int onTileSelectedOption = askAndGetResponse("What action do you want to perform on this Tile?",
-                                onTileInteractionResult.getPossibleNextInteractions());
-                        System.out.println(_game.performAction(onTileInteractionResult.getPossibleNextInteractions().get(onTileSelectedOption)).getMessage());
+                        OnTileInteractionResult resultOnTile = getOnTileInteractionResult(_game.getCurrentPlayer());
+                        System.out.println(resultOnTile.getMessage());
+                        break;
                     case 2:
-                        int tileSelected = askAndGetResponse("What Tile do you want to interact with?",
-                                List.of("North", "East", "South", "West"));
-                        Tile selectedTile = _game.getNeighbourintTile(tileSelected + 1);
-                        NeighbourTileInteractionResult result = _game.getNeighbouringTileOptions(selectedTile);
-                        if (result.wasSuccessful()) {
-                            int selectedOption = askAndGetResponse("What Interaction do you want to perform?",
-                                    result.getPossibleNextInteractions());
-                            System.out.println(_game.performAction(selectedTile, result.getPossibleNextInteractions().get(selectedOption)).getMessage());
-                        }
+                        NeighbourTileInteractionResult resultOnNeighbour = getNeighbourTileInteractionResult(_game.getCurrentPlayer());
+                        System.out.println(resultOnNeighbour.getMessage());
+                        break;
                 }
                 System.out.println("Your turn has ended!");
+                _game.advancePlayerTurn();
             }
             _game.endRound();
         }
+    }
+
+
+
+    private OnTileInteractionResult getOnTileInteractionResult(Player player) {
+        OnTileInteractionResult onTileInteractionResult = _game.getOnTileOptions();
+        int onTileSelectedOption = askAndGetResponse("What action do you want to perform on this Tile?",
+                onTileInteractionResult.getPossibleNextInteractions());
+        return player.getTile().interactOnTile(player, onTileInteractionResult.getPossibleNextInteractions().get(onTileSelectedOption));
+    }
+
+    private NeighbourTileInteractionResult getNeighbourTileInteractionResult(Player player) {
+        int tileSelected = askAndGetResponse("What Tile do you want to interact with?",
+                List.of("North", "East", "South", "West"));
+        Tile selectedTile = _game.getNeighbourintTile(tileSelected + 1);
+        NeighbourTileInteractionResult result = _game.getNeighbouringTileOptions(selectedTile);
+        if (result.wasSuccessful()) {
+            int selectedOption = askAndGetResponse("What Interaction do you want to perform?",
+                    result.getPossibleNextInteractions());
+            return selectedTile.interactFromNeighbour(_game.getCurrentPlayer(), result.getPossibleNextInteractions().get(selectedOption));
+        }
+
+        return new NeighbourTileInteractionResult(false, "No possible Interactions with this Tile.");
     }
 
     private void initializeGame(int roundsToPlay, int playerAmount) {
