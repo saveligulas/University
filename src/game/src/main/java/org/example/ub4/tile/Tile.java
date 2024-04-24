@@ -25,7 +25,7 @@ public abstract class Tile {
     }
 
     public Tile(int id) {
-        this(id, new Void(-1, new Tile[] {null, null, null, null}), new Void(-1, new Tile[] {null, null, null, null}), new Void(-1, new Tile[] {null, null, null, null}), new Void(-1, new Tile[] {null, null, null, null}));
+        this(id, new Tile[] {Void.INSTANCE, Void.INSTANCE, Void.INSTANCE, Void.INSTANCE});
     }
 
     public Tile(int id, Tile[] neighbours) {
