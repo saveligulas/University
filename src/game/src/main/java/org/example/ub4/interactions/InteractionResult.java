@@ -22,6 +22,10 @@ public class InteractionResult<T extends Enum<T>> {
         _possibleNextInteractions = possibleNextInteractions;
     }
 
+    public String getSuccessString() {
+        return _success? "Success!" : "Unsuccessful!";
+    }
+
     public boolean wasSuccessful() {
         return _success;
     }
