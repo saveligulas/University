@@ -8,8 +8,8 @@ import org.example.ub4.tile.Tile;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: Deprecate entire Legacy class and move implementation directly into Tiles
 public class TileInteractionResultManager {
-    // TODO: implement these methods with null for interaction as well
     public static OnTileInteractionResult createResult(Player player, OnTileInteraction interaction) {
         if (interaction == OnTileInteraction.PASS) {
             OnTileInteractionResult.Builder builder = new OnTileInteractionResult.Builder();
