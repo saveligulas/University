@@ -1,10 +1,23 @@
 package org.example.ub4.interactions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OnTileInteractionResult extends InteractionResult<OnTileInteraction> {
+    public OnTileInteractionResult(boolean success, String message) {
+        this(success, message, new ArrayList<>());
+    }
+
     public OnTileInteractionResult(boolean success, String message, List<OnTileInteraction> possibleNextInteractions) {
         super(success, message, possibleNextInteractions);
+    }
+
+    public static OnTileInteractionResult emptyFalse() {
+        return new OnTileInteractionResult(false, "Empty");
+    }
+
+    public static OnTileInteractionResult emptyTrue() {
+        return new OnTileInteractionResult(true, "Empty");
     }
 
     // Additional methods or overrides if needed

@@ -1,11 +1,24 @@
 package org.example.ub4.interactions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NeighbourTileInteractionResult extends InteractionResult<NeighbourTileInteraction> {
 
+    public NeighbourTileInteractionResult(boolean success, String message) {
+        this(success, message, new ArrayList<>());
+    }
+
     public NeighbourTileInteractionResult(boolean success, String message, List<NeighbourTileInteraction> possibleNextInteractions) {
         super(success, message, possibleNextInteractions);
+    }
+
+    public static NeighbourTileInteractionResult emptyFalse() {
+        return new NeighbourTileInteractionResult(false, "Empty", new ArrayList<>());
+    }
+
+    public static NeighbourTileInteractionResult emptyTrue() {
+        return new NeighbourTileInteractionResult(true, "Empty", new ArrayList<>());
     }
 
     // Additional methods or overrides if needed
