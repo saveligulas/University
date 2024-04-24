@@ -56,6 +56,14 @@ public class Player {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Player player)) {
+            return false;
+        }
+        return player._username.equals(this._username);
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(_username).append("\n");
@@ -74,6 +82,8 @@ public class Player {
                     sb.append(v.shortToString());
                 } else if(_discoveredTiles.contains(directionTile.getId())) {
                     sb.append(directionTile.shortToString());
+                } else {
+                    sb.append("Unknown");
                 }
             } else {
                 sb.append("Unknown");

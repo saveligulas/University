@@ -27,26 +27,24 @@ public class LootTile extends SinglePlayerTile {
     }
 
     @Override
-    public List<OnTileInteraction> getOnTileInitialInteractions() {
-        List<OnTileInteraction> interactions = super.getOnTileInitialInteractions();
-        interactions.add(OnTileInteraction.LOOT);
-        return interactions;
+    public List<OnTileInteraction> addAdditionalOnTileInteractions() {
+        return List.of(OnTileInteraction.LOOT);
     }
 
     @Override
-    public OnTileInteractionResult interactOnTile(Player player, OnTileInteraction interaction) {
+    protected OnTileInteractionResult interactOnTileAdditionalOptions(Player player, OnTileInteraction interaction) {
         if (interaction == OnTileInteraction.LOOT) {
             String message = "You looted: " + _loot;
             lootAndClear();
+            return new OnTileInteractionResult(true, message);
         }
 
-        return OnTileInteractionResult.emptyTrue();
+        return OnTileInteractionResult.emptyFalse();
     }
 
     public void lootAndClear() {
-        List<Loot> result = new ArrayList<>(_loot);
+        _player.addLoot(_loot);
         _loot.clear();
-        _player.addLoot(result);
     }
 
     public void addLoot(Loot... loot) {
