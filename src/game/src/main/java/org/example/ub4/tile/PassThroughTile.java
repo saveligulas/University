@@ -1,8 +1,11 @@
 package org.example.ub4.tile;
 
+import org.example.ub4.interactions.InteractionResult;
 import org.example.ub4.interactions.NeighbourTileInteraction;
+import org.example.ub4.interactions.NeighbourTileInteractionResult;
 import org.example.ub4.player.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PassThroughTile extends Tile {
@@ -29,6 +32,24 @@ public abstract class PassThroughTile extends Tile {
     @Override
     public boolean contains(Player player) {
         return false;
+    }
+
+    @Override
+    public NeighbourTileInteractionResult interactFromNeighbour(Player player, NeighbourTileInteraction interaction) {
+        NeighbourTileInteractionResult discoverSuper = super.interactFromNeighbour(player, interaction);
+        if (discoverSuper.wasSuccessful()) {
+            return discoverSuper;
+        }
+
+        if (interaction == NeighbourTileInteraction.PASS_THROUGH) {
+            if (passThrough(player)) {
+                return new NeighbourTileInteractionResult(true, "You successfully passed through: " + _specification + " -\n" + _description);
+            } else {
+                return new NeighbourTileInteractionResult(false, "You can not pass through: " + _specification);
+            }
+        }
+
+        return NeighbourTileInteractionResult.emptyTrue();
     }
 
     public abstract boolean passThrough(Player player);
