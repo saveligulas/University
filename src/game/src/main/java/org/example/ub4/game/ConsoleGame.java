@@ -46,6 +46,7 @@ public class ConsoleGame {
             }
             _game.endRound();
         }
+        System.out.println("Game has ended!");
     }
 
 
