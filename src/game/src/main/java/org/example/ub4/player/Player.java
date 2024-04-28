@@ -31,7 +31,9 @@ public class Player {
         }
 
         if (_interactionTile != null) {
-            _interactionTile.removePlayerFromTile(this);
+            if(!_interactionTile.removePlayerFromTile(this)) {
+                throw new RuntimeException("Player could not be removed from Tile and is now present in: " + _interactionTile + " and " + tile);
+            }
         }
 
         _interactionTile = tile;
