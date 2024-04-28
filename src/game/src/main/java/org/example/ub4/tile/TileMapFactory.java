@@ -22,8 +22,9 @@ public class TileMapFactory {
 
     private static final Random _r = new Random();
 
+    //region Connect Tiles
     public static InteractionTile getSourceTile(int size) {
-        return getSourceTile(createMapAndGetSourceTile(size));
+        return getSourceTile(createUnconnected2DMap(size));
     }
 
     public static InteractionTile getSourceTile(Tile[][] tileMap) {
@@ -46,8 +47,10 @@ public class TileMapFactory {
         }
         return (InteractionTile) tileMap[0][0];
     }
+    //endregion
 
-    public static Tile[][] createMapAndGetSourceTile(int size) {
+    // Fill with InteractionTiles and leave one Tile rows empty
+    public static Tile[][] createUnconnected2DMap(int size) {
         boolean[][] locationMap = getBooleanMap(size);
         Tile[][] tileMap = new Tile[size][size];
         List<Integer> oneTileRows = new ArrayList<>();
@@ -65,6 +68,7 @@ public class TileMapFactory {
             }
         }
 
+        // adds Doors
         removeAdjacentDuplicates(oneTileRows);
         for (Integer row : oneTileRows) {
             int column = getStart(locationMap[row]);
@@ -76,8 +80,6 @@ public class TileMapFactory {
 
         return tileMap;
     }
-
-
 
     //region Step 1
     public static boolean[][] getBooleanMap(int size) {
@@ -175,7 +177,9 @@ public class TileMapFactory {
             }
         }
     }
+    //endregion
 
+    //region Step 3
     public static void removeAdjacentDuplicates(List<Integer> list) {
         int i = 0;
         while (i < list.size() - 1) {
