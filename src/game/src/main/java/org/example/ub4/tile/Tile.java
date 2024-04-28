@@ -42,6 +42,7 @@ public abstract class Tile {
         setSpecification();
     }
 
+    //region public Getters
     public HashMap<Direction, Tile> getNeighbourMap() {
         HashMap<Direction, Tile> tileMap = new HashMap<>();
         for (Direction direction : Direction.values()) {
@@ -104,29 +105,12 @@ public abstract class Tile {
         return getNeighbourMap().containsValue(tile);
     }
 
-    protected Optional<Direction> getDirectionOfNeighbour(Tile tile) {
-        if (!isNeighbour(tile)) {
-            return Optional.empty();
-        }
-        if (tile.equals(_north)) {
-            return Optional.of(Direction.NORTH);
-        }
-        if (tile.equals(_east)) {
-            return Optional.of(Direction.EAST);
-        }
-        if (tile.equals(_south)) {
-            return Optional.of(Direction.SOUTH);
-        }
-        if (tile.equals(_west)) {
-            return Optional.of(Direction.WEST);
-        }
-        throw new RuntimeException("Tile is neighbour, but direction could not be determined");
-    }
-
     public boolean hasObstacle() {
         return _obstacle!= null;
     }
+    //endregion
 
+    //region Fully abstract Methods
     public abstract boolean contains(Player player);
 
     /**
@@ -135,7 +119,9 @@ public abstract class Tile {
     protected abstract void setDescription();
 
     protected abstract void setSpecification();
+    //endregion
 
+    //region public Methods with abstract Component
     public List<NeighbourTileInteraction> getNeighbourTileInteractions() {
         List<NeighbourTileInteraction> possibleInteractions = new ArrayList<>();
         possibleInteractions.add(NeighbourTileInteraction.DISCOVER);
@@ -162,6 +148,27 @@ public abstract class Tile {
     }
 
     public abstract NeighbourTileInteractionResult interactFromNeighbourAdditionalOptions(Player player, NeighbourTileInteraction interaction);
+    //endregion
+
+    //region protected Getters and Setters
+    protected Optional<Direction> getDirectionOfNeighbour(Tile tile) {
+        if (!isNeighbour(tile)) {
+            return Optional.empty();
+        }
+        if (tile.equals(_north)) {
+            return Optional.of(Direction.NORTH);
+        }
+        if (tile.equals(_east)) {
+            return Optional.of(Direction.EAST);
+        }
+        if (tile.equals(_south)) {
+            return Optional.of(Direction.SOUTH);
+        }
+        if (tile.equals(_west)) {
+            return Optional.of(Direction.WEST);
+        }
+        throw new RuntimeException("Tile is neighbour, but direction could not be determined");
+    }
 
     protected Optional<Tile> getNorth() {
         return Optional.ofNullable(_north);
@@ -179,10 +186,6 @@ public abstract class Tile {
         return Optional.ofNullable(_west);
     }
 
-    void setObstacle(Obstacle obstacle) {
-        _obstacle = obstacle;
-    }
-
     protected void setTile(Direction direction, Tile tile) {
         switch (direction.ordinal()) {
             case 0 -> setNorth(tile);
@@ -190,11 +193,6 @@ public abstract class Tile {
             case 2 -> setSouth(tile);
             case 3 -> setWest(tile);
         }
-    }
-
-    public void connectTile(Direction directionOfTarget, Tile target) {
-        setTile(directionOfTarget, target);
-        target.setTile(Direction.getOppositeDirection(directionOfTarget), this);
     }
 
     protected void setNorth(Tile tile) {
@@ -216,7 +214,19 @@ public abstract class Tile {
     protected void setId(int id) {
         _id = id;
     }
+    //endregion
 
+    //TODO: implement
+    void setObstacle(Obstacle obstacle) {
+        _obstacle = obstacle;
+    }
+
+    public void connectTile(Direction directionOfTarget, Tile target) {
+        setTile(directionOfTarget, target);
+        target.setTile(Direction.getOppositeDirection(directionOfTarget), this);
+    }
+
+    //region Object Methods
     public String shortToString() {
         return _specification;
     }
@@ -233,4 +243,5 @@ public abstract class Tile {
         }
         return (this._id == tile._id);
     }
+    //endregion
 }
