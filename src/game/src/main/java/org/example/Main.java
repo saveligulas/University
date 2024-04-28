@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
-        Tile[][] map = TileMapFactory.createMapAndGetSourceTile(25);
+        Tile[][] map = TileMapFactory.createUnconnected2DMap(25);
         for (Tile[] row : map) {
             StringBuilder sb = new StringBuilder();
             for (Tile t : row) {
@@ -21,7 +21,6 @@ public class Main {
         }
         InteractionTile sourceTile = TileMapFactory.getSourceTile(map);
         List<Tile> tiles = sourceTile.getAllConnectedTilesRecursive();
-        Set<Tile> distinctTiles = new HashSet<>(tiles);
         System.out.println();
         ConsoleGame game = new ConsoleGame();
         game.run(5, 2, sourceTile);
