@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 public abstract class LibraryItem {
+    private final int _copyNumber;
     private final String _title;
     private final String _identifier;
     private final String _publisher;
@@ -18,7 +19,8 @@ public abstract class LibraryItem {
     MyPriorityQueue<Reservation> _reservations;
 
 
-    public LibraryItem(String title, String publisher, NameOfPerson intellectualOwner, String identifier) {
+    public LibraryItem(int copyNumber, String title, String publisher, NameOfPerson intellectualOwner, String identifier) {
+        _copyNumber = copyNumber;
         _title = title;
         _publisher = publisher;
         _intellectualOwner = intellectualOwner;
@@ -53,7 +55,7 @@ public abstract class LibraryItem {
         return addReservation(customer, startDate, endDate, false);
     }
 
-    public Reservation addReservation(Customer customer, LocalDate startDate, LocalDate endDate, boolean isActive) {
+    private Reservation addReservation(Customer customer, LocalDate startDate, LocalDate endDate, boolean isActive) {
         Reservation reservation = new Reservation(customer.getId(), isActive, startDate, endDate, getMaxExtensions(customer));
         _reservations.add(reservation);
         return reservation;
@@ -64,6 +66,10 @@ public abstract class LibraryItem {
             throw new ReservationQueueIsEmptyException();
         }
         return _reservations.peek().isActive();
+    }
+
+    public LocalDate getEarliestDateAvailable() {
+        return _reservations.peekLast().getEndDate();
     }
 
     public String getTitle() {
@@ -87,6 +93,6 @@ public abstract class LibraryItem {
         if (!(obj instanceof LibraryItem item)) {
             return false;
         }
-        return this._identifier.equals(item._identifier);
+        return this._identifier.equals(item._identifier) && this._copyNumber == item._copyNumber;
     }
 }
