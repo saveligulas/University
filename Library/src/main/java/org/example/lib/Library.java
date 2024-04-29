@@ -1,5 +1,6 @@
 package org.example.lib;
 
+import org.example.cons.InteractionResult;
 import org.example.human.Customer;
 
 import java.util.Collection;
@@ -29,6 +30,7 @@ public class Library {
         _customers.addAll(customers);
     }
 
+    public InteractionResult
 
 
     //TODO: add csv file read and load of items
