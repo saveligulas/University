@@ -1,4 +1,4 @@
-package org.example.obj;
+package org.example.human;
 
 import java.util.List;
 
