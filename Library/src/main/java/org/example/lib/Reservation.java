@@ -1,29 +1,31 @@
-package org.example.obj;
+package org.example.lib;
+
+import org.example.exc.ExtensionLimitReachedException;
 
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.temporal.WeekFields;
 
-public class LendingInfo {
-    private final Integer _lenderId;
+
+public class Reservation implements Comparable<Reservation> {
+    private final Integer _customerId;
     private final int _maxExtensions;
     private boolean _isActive;
     private final LocalDate _startDate;
     private LocalDate _endDate;
     private int _extensions;
 
-    public LendingInfo() {
-        _lenderId = null;
+    public Reservation() {
+        _customerId = null;
         _maxExtensions = -1;
         _isActive = false;
-        _startDate = LocalDate.MIN;
+        _startDate = LocalDate.MAX;
         _endDate = LocalDate.MAX;
         _extensions = -1;
     }
 
-    public LendingInfo(Integer lenderId, LocalDate startDate, LocalDate endDate, int maxExtensions) {
-        _lenderId = lenderId;
+    public Reservation(Integer customerId, boolean isActive, LocalDate startDate, LocalDate endDate, int maxExtensions) {
+        _customerId = customerId;
         _maxExtensions = maxExtensions;
+        _isActive = isActive;
         _startDate = startDate;
         _endDate = endDate;
         _extensions = 0;
@@ -38,7 +40,7 @@ public class LendingInfo {
     }
 
     public Integer getLenderId() {
-        return _lenderId;
+        return _customerId;
     }
 
     public int getMaxExtensions() {
@@ -59,5 +61,10 @@ public class LendingInfo {
 
     public int getExtensions() {
         return _extensions;
+    }
+
+    @Override
+    public int compareTo(Reservation o) {
+        return this._startDate.compareTo(o._startDate);
     }
 }
