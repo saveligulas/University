@@ -34,23 +34,30 @@
         </points>
     </point_sheet>
 
-    <course id="001">
+    <course id="course001">
         <name>Beginner's Archery Course</name>
         <location_description>Back at the old watchtower.</location_description>
         <targets>
             <animal target_id="target-001">1. Boar</animal>
             <animal target_id="target-002">2. Pig</animal>
         </targets>
+        <participants>
+            <person id="person001" group_id="course001">John Doe</person>
+            <person id="person002" group_id="course001">Jane Smith</person>
+        </participants>
     </course>
 
-    <course id="002">
+    <course id="course002">
         <name>Intermediate Archery Course</name>
         <location_description>In the woods to the east. Follow the Mountainbike trail. Turn to the left on the first intersection.</location_description>
         <targets>
             <animal target_id="target-003">1. Hawk</animal>
             <animal target_id="target-003">2. Hawk</animal>
         </targets>
+        <participants>
+            <person id="person003" group_id="course002">Michael Johnson</person>
+            <person id="person004" group_id="course002">Emily Brown</person>
+        </participants>
     </course>
-
 </archery_tournament>
 
