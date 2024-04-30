@@ -2,6 +2,7 @@ package org.example.human;
 
 import org.example.lib.Reservation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,6 +18,7 @@ public class Customer {
         _id = ID_COUNTER.getAndIncrement();
         this._name = name;
         _profile = profile;
+        _activeAndOldReservations = new ArrayList<>();
     }
 
     public int getId() {
@@ -33,5 +35,13 @@ public class Customer {
 
     public LendingProfile getProfile() {
         return _profile;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Customer customer)) {
+            return false;
+        }
+        return this._id == customer._id;
     }
 }
