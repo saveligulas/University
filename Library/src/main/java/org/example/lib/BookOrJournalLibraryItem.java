@@ -4,8 +4,9 @@ import org.example.human.Customer;
 import org.example.human.NameOfPerson;
 
 public abstract class BookOrJournalLibraryItem extends LibraryItem {
-    public BookOrJournalLibraryItem(String title, String publisher, NameOfPerson intellectualOwner, String identifier) {
-        super(title, publisher, intellectualOwner, identifier);
+
+    public BookOrJournalLibraryItem(int copyNumber, String title, String publisher, NameOfPerson intellectualOwner, String identifier, Category primaryCategory, Category... themeCategories) {
+        super(copyNumber, title, publisher, intellectualOwner, identifier, primaryCategory, themeCategories);
     }
 
     @Override
