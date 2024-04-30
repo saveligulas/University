@@ -2,7 +2,10 @@ package org.example.lib;
 
 import org.example.cons.Interaction;
 import org.example.cons.InteractionResult;
+import org.example.cons.SearchRequest;
+import org.example.cons.SearchResult;
 import org.example.human.Customer;
+import org.example.obj.Tuple;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -30,13 +33,12 @@ public class Library {
         _customers.addAll(customers);
     }
 
-    public InteractionResult interact(Interaction interaction, Customer customer, String identifier, int weeks, LibraryItem item) {
+    public InteractionResult lendOrReserve(Interaction interaction, Customer customer, String identifier, int weeks) {
         switch (interaction) {
-            case SEARCH -> searchItem(customer, identifier);
             case LEND -> lendItem(customer, identifier, weeks);
             case RESERVE -> reserveItem(customer, identifier, weeks);
-            case RETURN -> returnItem(customer, item);
         }
+        return new InteractionResult(false, "This action has not been implemented yet.");
     }
 
     private InteractionResult lendItem(Customer customer, String identifier, int weeks) {
@@ -82,19 +84,45 @@ public class Library {
             }
         }
 
-        Reservation reservation = itemWithShortestReservationQueue.reserve(customer, weeks, earliestDate);
+        Reservation reservation = itemWithShortestReservationQueue.reserve(customer, weeks);
         if (!customer.addReservation(reservation)) {
             throw new RuntimeException("Could not add reservation to customer");
         }
         return new InteractionResult(true, "Reservation was added to customer.");
     }
 
-    private InteractionResult searchItem(Customer customer, String name) {
+    public InteractionResult returnItem(Customer customer, LibraryItem item) { //TODO
         return null;
     }
 
-    private InteractionResult returnItem(Customer customer, LibraryItem item) {
+    public SearchResult search(SearchRequest request) {
+        Set<Tuple<String, String>> allItemsStringAvailable = new HashSet<>();
+        for (String identifier : _identifierInventory.keySet()) {
+            Tuple<String, String> titleAvailable = new Tuple<>(_identifierInventory.get(identifier).get(0).getTitle(), "");
+            LocalDate earliestDateAvailable = LocalDate.MAX;
+            for (LibraryItem item : _identifierInventory.get(identifier)) {
+                LocalDate nextAvailable = item.getEarliestDateAvailable();
+                if (nextAvailable.isBefore(earliestDateAvailable)) {
+                    earliestDateAvailable = nextAvailable;
+                }
+                if (!item.hasActiveLender()) {
+                    titleAvailable.setSecond("Available");
+                    break;
+                }
+            }
+            if (titleAvailable.getSecond().equals("")) {
+                // extract only the date part
+                titleAvailable.setSecond("Available on:" +earliestDateAvailable.toString().substring(0, 10));
+            }
+            allItemsStringAvailable.add(titleAvailable);
+        }
+        SearchResult result = new SearchResult();
 
+        for (Tuple<String, String> titleAndMessage : allItemsStringAvailable) {
+            result.put(titleAndMessage.getFirst(), titleAndMessage.getSecond());
+        }
+
+        return result;
     }
 
 
