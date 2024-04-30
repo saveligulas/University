@@ -5,8 +5,8 @@ import org.example.human.NameOfPerson;
 
 public abstract class OtherLibraryItem extends LibraryItem {
 
-    public OtherLibraryItem(String title, String publisher, NameOfPerson intellectualOwner, String identifier) {
-        super(title, publisher, intellectualOwner, identifier);
+    public OtherLibraryItem(int copyNumber, String title, String publisher, NameOfPerson intellectualOwner, String identifier, Category primaryCategory, Category... themeCategories) {
+        super(copyNumber, title, publisher, intellectualOwner, identifier, primaryCategory, themeCategories);
     }
 
     @Override
