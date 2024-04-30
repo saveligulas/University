@@ -63,6 +63,10 @@ public class Reservation implements Comparable<Reservation> {
         return _extensions;
     }
 
+    public void setIsActive(boolean isActive) {
+        _isActive = isActive;
+    }
+
     @Override
     public int compareTo(Reservation o) {
         return this._startDate.compareTo(o._startDate);
