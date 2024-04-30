@@ -1,9 +1,8 @@
-[
-        <!ELEMENT archery_tournament (type|target|point_sheet|course)*>
+<!ELEMENT archery_tournament (type|target|point_sheet|course|person)*>
         <!ELEMENT type (#PCDATA)>
         <!ATTLIST type
                 id ID #REQUIRED
-                point_sheet_id IDREF #REQUIRED>
+                point_sheet_id IDREFS #REQUIRED>
         <!ELEMENT target (#PCDATA)>
         <!ATTLIST target
                 id ID #REQUIRED
@@ -14,7 +13,7 @@
         <!ELEMENT name (#PCDATA)>
         <!ELEMENT points (point)*>
         <!ELEMENT point (#PCDATA)>
-        <!ELEMENT course (name|location_description|targets)*>
+        <!ELEMENT course (name|location_description|targets|participants)*>
         <!ATTLIST course
                 id ID #REQUIRED>
         <!ELEMENT location_description (#PCDATA)>
@@ -22,4 +21,8 @@
         <!ELEMENT animal (#PCDATA)>
         <!ATTLIST animal
                 target_id IDREF #REQUIRED>
-        ]>
+        <!ELEMENT participants (person)*>
+        <!ELEMENT person (#PCDATA)>
+        <!ATTLIST person
+                id ID #REQUIRED
+                group_id IDREF #REQUIRED>
