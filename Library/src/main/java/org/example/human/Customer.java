@@ -1,6 +1,7 @@
 package org.example.human;
 
 import org.example.lib.Reservation;
+import org.example.lib.ReservationStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +38,37 @@ public class Customer {
         return _profile;
     }
 
+    public List<String> getActiveIdentifiers() {
+        List<String> identifiers = new ArrayList<>();
+        for (Reservation reservation : _activeAndOldReservations) {
+            if (reservation.getStatus() == ReservationStatus.PRESENT) {
+                identifiers.add(reservation.getIdentifier());
+            }
+        }
+        return identifiers;
+    }
+
+    public List<String> getFutureIdentifiers() {
+        List<String> identifiers = new ArrayList<>();
+        for (Reservation reservation : _activeAndOldReservations) {
+            if (reservation.getStatus() == ReservationStatus.FUTURE) {
+                identifiers.add(reservation.getIdentifier());
+            }
+        }
+        return identifiers;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Customer customer)) {
             return false;
         }
         return this._id == customer._id;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(_id + ": " + _name + "\nYour active reservations: ");
     }
 }
