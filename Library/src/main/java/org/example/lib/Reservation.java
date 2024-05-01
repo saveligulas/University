@@ -7,25 +7,20 @@ import java.time.LocalDate;
 
 public class Reservation implements Comparable<Reservation> {
     private final Integer _customerId;
+    private final String _identifier;
+    private final int _copyNumber;
     private final int _maxExtensions;
-    private boolean _isActive;
+    private ReservationStatus _status;
     private final LocalDate _startDate;
     private LocalDate _endDate;
     private int _extensions;
 
-    public Reservation() {
-        _customerId = null;
-        _maxExtensions = -1;
-        _isActive = false;
-        _startDate = LocalDate.MAX;
-        _endDate = LocalDate.MAX;
-        _extensions = -1;
-    }
-
-    public Reservation(Integer customerId, boolean isActive, LocalDate startDate, LocalDate endDate, int maxExtensions) {
+    public Reservation(Integer customerId, String identifier, int copyNumber, ReservationStatus status, LocalDate startDate, LocalDate endDate, int maxExtensions) {
         _customerId = customerId;
+        _identifier = identifier;
+        _copyNumber = copyNumber;
         _maxExtensions = maxExtensions;
-        _isActive = isActive;
+        _status = status;
         _startDate = startDate;
         _endDate = endDate;
         _extensions = 0;
@@ -47,8 +42,8 @@ public class Reservation implements Comparable<Reservation> {
         return _maxExtensions;
     }
 
-    public boolean isActive() {
-        return _isActive;
+    public ReservationStatus getStatus() {
+        return _status;
     }
 
     public LocalDate getStartDate() {
@@ -63,8 +58,16 @@ public class Reservation implements Comparable<Reservation> {
         return _extensions;
     }
 
-    public void setIsActive(boolean isActive) {
-        _isActive = isActive;
+    public String getIdentifier() {
+        return _identifier;
+    }
+
+    public int getCopyNumber() {
+        return _copyNumber;
+    }
+
+    public void setStatus(ReservationStatus status) {
+        _status = status;
     }
 
     @Override
