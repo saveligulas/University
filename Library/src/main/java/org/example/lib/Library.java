@@ -1,20 +1,24 @@
 package org.example.lib;
 
-import org.example.cons.Interaction;
 import org.example.cons.InteractionResult;
 import org.example.cons.SearchRequest;
 import org.example.cons.SearchResult;
+import org.example.exc.ItemWithIdentifierAlreadyLentToCustomerException;
+import org.example.exc.ReservingItemCustomerHasAlreadyLentException;
+import org.example.exc.ReservingItemMultipleTimesException;
+import org.example.exc.VideoGameCannotBeReservedException;
 import org.example.human.Customer;
-import org.example.obj.Tuple;
+import org.example.human.LendingProfile;
+import org.example.human.NameOfPerson;
 
 import java.time.LocalDate;
 import java.util.*;
 
 public class Library {
     private final HashMap<String, List<LibraryItem>> _identifierInventory = new HashMap<>();
-    private final Set<Customer> _customers = new HashSet<>();
+    private final Set<Customer> _customers = new HashSet<>(List.of(new Customer(new NameOfPerson("John", List.of("The Dummy"), "Doe"), LendingProfile.TUTOR)));
 
-    public void fillWithItems(Collection<LibraryItem> items) {
+    public void fillWithItems(List<LibraryItem> items) {
         for (LibraryItem item : items) {
             String identifier = item.getIdentifier();
             if (_identifierInventory.containsKey(identifier)) {
@@ -33,15 +37,20 @@ public class Library {
         _customers.addAll(customers);
     }
 
-    public InteractionResult lendOrReserve(Interaction interaction, Customer customer, String identifier, int weeks) {
-        switch (interaction) {
-            case LEND -> lendItem(customer, identifier, weeks);
-            case RESERVE -> reserveItem(customer, identifier, weeks);
+    public Optional<Customer> getCustomer(int id) {
+        for (Customer customer : _customers) {
+            if (customer.getId() == id) {
+                return Optional.of(customer);
+            }
         }
-        return new InteractionResult(false, "This action has not been implemented yet.");
+        return Optional.empty();
     }
 
-    private InteractionResult lendItem(Customer customer, String identifier, int weeks) {
+    public boolean hasItem(String identifier) {
+        return _identifierInventory.containsKey(identifier);
+    }
+
+    public InteractionResult lendItem(Customer customer, String identifier, int weeks) {
         List<LibraryItem> itemsWithIdentifier = _identifierInventory.get(identifier);
         boolean allOccupied = true;
         LibraryItem itemToLend = null;
@@ -58,15 +67,22 @@ public class Library {
             return new InteractionResult(false, "All copies of the Book are currently lent out. You need to reserve one.");
         }
 
-        Reservation reservation = itemToLend.lend(customer, weeks);
+        Reservation reservation;
+        try {
+            reservation = itemToLend.lend(customer, weeks);
+        } catch (ItemWithIdentifierAlreadyLentToCustomerException e) {
+            return new InteractionResult(false, "You already have lent out a book with the same identifier.");
+        }
+
+
         if (!customer.addReservation(reservation)) {
             throw new RuntimeException("Could not add reservation to customer but book is reserved");
         }
 
-        return new InteractionResult(true, "You have lent out a copy of the book and the Reservation has been added to your account.");
+        return new InteractionResult(true, "You have lent out " + itemToLend.getTitle() + " until the " + reservation.getStartDate().toString().substring(0, 10));
     }
 
-    private InteractionResult reserveItem(Customer customer, String identifier, int weeks) {
+    public InteractionResult reserveItem(Customer customer, String identifier, int weeks) {
         List<LibraryItem> itemsWithIdentifier = _identifierInventory.get(identifier);
         LibraryItem itemWithShortestReservationQueue = null;
         LocalDate earliestDate = LocalDate.MAX;
@@ -84,11 +100,25 @@ public class Library {
             }
         }
 
-        Reservation reservation = itemWithShortestReservationQueue.reserve(customer, weeks);
+        Reservation reservation;
+
+        try {
+            reservation = itemWithShortestReservationQueue.reserve(customer, weeks);
+        } catch (ReservingItemMultipleTimesException e) {
+            return new InteractionResult(false, "You cannot reserve a book multiple times.");
+        } catch (ReservingItemCustomerHasAlreadyLentException e) {
+            return new InteractionResult(false, "You cannot reserve a book you have currently lent out.");
+        } catch (VideoGameCannotBeReservedException e) {
+            return new InteractionResult(false, "You cannot reserve a video game.");
+        }
+
         if (!customer.addReservation(reservation)) {
             throw new RuntimeException("Could not add reservation to customer");
         }
-        return new InteractionResult(true, "Reservation was added to customer.");
+
+        return new InteractionResult(true, "Reservation was added to your account.\n" +
+                "You need to pickup" + itemWithShortestReservationQueue.getTitle() + " on " + reservation.getStartDate().toString().substring(0, 10) +
+                "and return it on the " + reservation.getEndDate().toString().substring(0, 10));
     }
 
     public InteractionResult returnItem(Customer customer, LibraryItem item) { //TODO
@@ -96,23 +126,24 @@ public class Library {
     }
 
     public SearchResult search(SearchRequest request) {
-        Set<Tuple<String, String>> allItemsStringAvailable = new HashSet<>();
+        SearchResult result = new SearchResult();
+
         for (String identifier : _identifierInventory.keySet()) {
-            Tuple<String, String> titleAvailable = new Tuple<>(_identifierInventory.get(identifier).get(0).getTitle(), "");
             LocalDate earliestDateAvailable = LocalDate.MAX;
+            String availability = "";
             for (LibraryItem item : _identifierInventory.get(identifier)) {
                 LocalDate nextAvailable = item.getEarliestDateAvailable();
                 if (nextAvailable.isBefore(earliestDateAvailable)) {
                     earliestDateAvailable = nextAvailable;
                 }
                 if (!item.hasActiveLender()) {
-                    titleAvailable.setSecond("Available");
+                    availability = "Available";
                     break;
                 }
             }
-            if (titleAvailable.getSecond().equals("")) {
+            if (availability.equals("")) {
                 // extract only the date part
-                titleAvailable.setSecond("Available on:" +earliestDateAvailable.toString().substring(0, 10));
+                availability = "Available on: " + earliestDateAvailable.toString().substring(0, 10);
             }
 
             LibraryItem selectedItem = _identifierInventory.get(identifier).get(0);
@@ -120,7 +151,7 @@ public class Library {
             if (!request.getThemeCategories().isEmpty()) {
                 boolean allPresent = true;
                 for (Category category : request.getThemeCategories()) {
-                    if (!selectedItem.getThemeCategories().contains(category)) {
+                    if (!selectedItem.getCategories().contains(category)) {
                         allPresent = false;
                         break;
                     }
@@ -132,20 +163,14 @@ public class Library {
             }
 
             if (request.getSectionCategory() != null) {
-                if (!selectedItem.getPrimaryCategory().equals(request.getSectionCategory())) {
+                if (!selectedItem.getSection().equals(request.getSectionCategory())) {
                     continue;
                 }
             }
 
             if (containsMultipleIgnoreCase(selectedItem.getTitle(), request.getMustContains())) {
-                allItemsStringAvailable.add(titleAvailable);
+                result.add(identifier, selectedItem.getTitle(), availability);
             }
-        }
-
-        SearchResult result = new SearchResult();
-
-        for (Tuple<String, String> titleAndMessage : allItemsStringAvailable) {
-            result.put(titleAndMessage.getFirst(), titleAndMessage.getSecond());
         }
 
         return result;
