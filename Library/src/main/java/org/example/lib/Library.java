@@ -114,8 +114,34 @@ public class Library {
                 // extract only the date part
                 titleAvailable.setSecond("Available on:" +earliestDateAvailable.toString().substring(0, 10));
             }
-            allItemsStringAvailable.add(titleAvailable);
+
+            LibraryItem selectedItem = _identifierInventory.get(identifier).get(0);
+
+            if (!request.getThemeCategories().isEmpty()) {
+                boolean allPresent = true;
+                for (Category category : request.getThemeCategories()) {
+                    if (!selectedItem.getThemeCategories().contains(category)) {
+                        allPresent = false;
+                        break;
+                    }
+                }
+
+                if (!allPresent) {
+                    continue;
+                }
+            }
+
+            if (request.getSectionCategory() != null) {
+                if (!selectedItem.getPrimaryCategory().equals(request.getSectionCategory())) {
+                    continue;
+                }
+            }
+
+            if (containsMultipleIgnoreCase(selectedItem.getTitle(), request.getMustContains())) {
+                allItemsStringAvailable.add(titleAvailable);
+            }
         }
+
         SearchResult result = new SearchResult();
 
         for (Tuple<String, String> titleAndMessage : allItemsStringAvailable) {
@@ -123,6 +149,16 @@ public class Library {
         }
 
         return result;
+    }
+
+    private boolean containsMultipleIgnoreCase(String mainStr, List<String> searchStrings) {
+        String lowerCaseMainStr = mainStr.toLowerCase();
+        for (String searchString : searchStrings) {
+            if (!lowerCaseMainStr.contains(searchString.toLowerCase())) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
