@@ -1,8 +1,6 @@
 package org.example.lib;
 
-import org.example.exc.ItemIsNotAvailableException;
-import org.example.exc.ReservingItemCustomerHasAlreadyLentException;
-import org.example.exc.ReservingItemMultipleTimesConsecutivelyException;
+import org.example.exc.*;
 import org.example.human.Customer;
 import org.example.human.NameOfPerson;
 import org.example.obj.MyPriorityQueue;
@@ -16,43 +14,48 @@ public abstract class LibraryItem {
     private final String _identifier;
     private final String _publisher;
     private final NameOfPerson _intellectualOwner;
-    private final Category _primaryCategory;
-    private final List<Category> _themeCategories;
+    private final Section _section;
+    private final List<Category> _categories;
     //Must ensure there is always one LendingInfo inside
     MyPriorityQueue<Reservation> _reservations;
 
 
-    public LibraryItem(int copyNumber, String title, String publisher, NameOfPerson intellectualOwner, String identifier, Category primaryCategory, Category... themeCategories) {
+    public LibraryItem(int copyNumber, String title, String publisher, NameOfPerson intellectualOwner, String identifier, Section section, List<Category> themeCategories) {
         _copyNumber = copyNumber;
         _title = title;
         _publisher = publisher;
         _intellectualOwner = intellectualOwner;
         _identifier = identifier;
         _reservations = new MyPriorityQueue<>();
-        _primaryCategory = primaryCategory;
-        _themeCategories = List.of(themeCategories);
+        _section = section;
+        _categories = new ArrayList<>(themeCategories);
     }
 
     public abstract int getWeeksCustomerCanLendFor(Customer customer);
 
     public abstract int getMaxExtensions(Customer customer);
 
-    //TODO: add exceptions when a customer wants to reserve a book multiple times in a row
-    public Reservation lend(Customer customer, int weeks) {
-        if (_reservations.size() > 0 && _reservations.peek().isActive()) {
+    //TODO: add more info in the subclasses to have additional information(for example: FSK, Actor List, Audiobook Speakers...)
+    // public abstract String getDetails();
+
+    public Reservation lend(Customer customer, int weeks) throws ItemWithIdentifierAlreadyLentToCustomerException {
+        if (!_reservations.isEmpty() && hasActiveLender()) {
             throw new ItemIsNotAvailableException();
+        }
+        if (customer.getActiveIdentifiers().contains(_identifier)) {
+            throw new ItemWithIdentifierAlreadyLentToCustomerException();
         }
         LocalDate now = LocalDate.now();
         int weeksMax = getWeeksCustomerCanLendFor(customer);
         LocalDate endDate = weeks <= 0 || weeks > weeksMax ? now.plusWeeks(weeksMax) : now.plusWeeks(weeks);
-        return addReservationToQueue(customer, now, endDate, true);
+        return addReservationToQueue(customer, now, endDate, ReservationStatus.PRESENT);
     }
 
-    public Reservation reserve(Customer customer, int weeks) throws ReservingItemCustomerHasAlreadyLentException, ReservingItemMultipleTimesConsecutivelyException {
-        if (_reservations.peekLast().getCustomerId() == customer.getId()) {
-            throw new ReservingItemMultipleTimesConsecutivelyException();
+    public Reservation reserve(Customer customer, int weeks) throws ReservingItemCustomerHasAlreadyLentException, ReservingItemMultipleTimesException, VideoGameCannotBeReservedException {
+        if (customer.getFutureIdentifiers().contains(_identifier)) {
+            throw new ReservingItemMultipleTimesException();
         }
-        if (_reservations.peek().getCustomerId() == customer.getId()) {
+        if (customer.getActiveIdentifiers().contains(_identifier)) {
             throw new ReservingItemCustomerHasAlreadyLentException();
         }
 
@@ -62,11 +65,11 @@ public abstract class LibraryItem {
     private Reservation reserve(Customer customer, int weeks, LocalDate startDate) {
         int weeksMax = getWeeksCustomerCanLendFor(customer);
         LocalDate endDate = weeks <= 0 || weeks > weeksMax ? startDate.plusWeeks(weeksMax) : startDate.plusWeeks(weeks);
-        return addReservationToQueue(customer, startDate, endDate, false);
+        return addReservationToQueue(customer, startDate, endDate, ReservationStatus.FUTURE);
     }
 
-    private Reservation addReservationToQueue(Customer customer, LocalDate startDate, LocalDate endDate, boolean isActive) {
-        Reservation reservation = new Reservation(customer.getId(), isActive, startDate, endDate, getMaxExtensions(customer));
+    private Reservation addReservationToQueue(Customer customer, LocalDate startDate, LocalDate endDate, ReservationStatus status) {
+        Reservation reservation = new Reservation(customer.getId(), this._identifier, this._copyNumber, status, startDate, endDate, getMaxExtensions(customer));
         _reservations.add(reservation);
         return reservation;
     }
@@ -75,10 +78,27 @@ public abstract class LibraryItem {
         if (_reservations.isEmpty()) {
             return false;
         }
-        return _reservations.peek().isActive();
+        return _reservations.peek().getStatus() == ReservationStatus.PRESENT || _reservations.peek().getStatus() == ReservationStatus.EXPIRED;
+    }
+
+    public boolean returnItem(Customer customer) {
+        if (_reservations.isEmpty()) {
+            return false;
+        }
+        if (_reservations.peek().getCustomerId()!= customer.getId()) {
+            return false;
+        }
+        _reservations.poll().setStatus(ReservationStatus.RETURNED);
+        if (!_reservations.isEmpty()) {
+            _reservations.peek().setStatus(ReservationStatus.PRESENT);
+        }
+        return true;
     }
 
     public LocalDate getEarliestDateAvailable() {
+        if (_reservations.isEmpty()) {
+            return LocalDate.now();
+        }
         return _reservations.peekLast().getEndDate();
     }
 
@@ -88,6 +108,10 @@ public abstract class LibraryItem {
 
     public String getIdentifier() {
         return _identifier;
+    }
+
+    public String getUniqueIdentifier() {
+        return _identifier + "-" + _copyNumber;
     }
 
     public String getPublisher() {
@@ -102,12 +126,12 @@ public abstract class LibraryItem {
         return _copyNumber;
     }
 
-    public Category getPrimaryCategory() {
-        return _primaryCategory;
+    public Section getSection() {
+        return _section;
     }
 
-    public List<Category> getThemeCategories() {
-        return _themeCategories;
+    public List<Category> getCategories() {
+        return _categories;
     }
 
     @Override
@@ -115,6 +139,6 @@ public abstract class LibraryItem {
         if (!(obj instanceof LibraryItem item)) {
             return false;
         }
-        return this._identifier.equals(item._identifier) && this._copyNumber == item._copyNumber;
+        return this.getUniqueIdentifier().equals(item.getUniqueIdentifier());
     }
 }
