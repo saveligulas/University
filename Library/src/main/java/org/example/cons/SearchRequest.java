@@ -1,17 +1,18 @@
 package org.example.cons;
 
 import org.example.lib.Category;
+import org.example.lib.Section;
 
 import java.util.List;
 
 public class SearchRequest {
     private final List<String> _mustContains;
-    private final Category _sectionCategory;
+    private final Section _section;
     private final List<Category> _themeCategories;
 
-    public SearchRequest(List<String> mustContains, Category sectionCategory, List<Category> themeCategories) {
+    public SearchRequest(List<String> mustContains, Section section, List<Category> themeCategories) {
         _mustContains = mustContains;
-        _sectionCategory = sectionCategory;
+        _section = section;
         _themeCategories = themeCategories;
     }
 
@@ -19,8 +20,8 @@ public class SearchRequest {
         return _mustContains;
     }
 
-    public Category getSectionCategory() {
-        return _sectionCategory;
+    public Section getSectionCategory() {
+        return _section;
     }
 
     public List<Category> getThemeCategories() {
