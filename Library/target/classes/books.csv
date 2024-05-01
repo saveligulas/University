@@ -1,0 +1,21 @@
+Copy,Title,Publisher,Name,ISBN,Categories
+1,Python - Why?,Pan Books,Lebron James,ISBN-123455534340,"CLASSICS, NON_FICTION, HISTORY"
+2,The Lord of the Rings,Allen & Unwin,J. R. R. Tolkien,ISBN-1234567890,FANTASY
+2,A Brief History of Time,Bantam Books,Stephen W. Hawking,ISBN-9876543210,HISTORY
+9,The Hitchhiker's Guide to the Galaxy,Pan Books,Douglas Adams,ISBN-0000000001,"FANTASY, SCI_FI"
+2,Pride and Prejudice,Penguin Classics,Jane Austen,ISBN-9780140435229,"CLASSICS, ROMANCE"
+5,To Kill a Mockingbird,Harper Perennial,Harper Lee,ISBN-9780061122426,"FICTION, CLASSICS"
+6,Dune,Penguin Science Fiction,Frank Herbert,ISBN-9780140179884,SCI-FI
+2,21 Lessons for the 21st Century,Penguin Random House,Yuval Noah Harari,ISBN-9781101908951,NON_FICTION
+3,Sapiens: A Brief History of Humankind,Random House,Yuval Noah Harari,ISBN-9780307405045,"HISTORY, NON-FICTION"
+2,The Martian,W. W. Norton & Company,Andy Weir,ISBN-9780316203761,SCI_FI
+1,Project Hail Mary,Andy Weir,Andy Weir,ISBN-9780593338993,"SCI_FI, THRILLER"
+3,Dummy,Dummy Publisher,John Doe,ISBN-0,FANTASY
+2,Sherlock Holmes: A Study in Scarlet,Penguin Classics,Arthur Conan Doyle,ISBN-9780140435519,"MYSTERY, CLASSICS"
+1,Frankenstein,Penguin Classics,Mary Shelley,ISBN-9780140439500,"CLASSICS, GOTHIC"
+4,The Handmaid's Tale,Penguin Random House,Margaret Atwood,ISBN-9780547840911,"FICTION, DYSTOPIAN"
+3,Moby Dick,Penguin Classics,Herman Melville,ISBN-9780140439494,"CLASSICS, ADVENTURE"
+2,The Count of Monte Cristo,Penguin Classics,Alexandre Dumas,ISBN-9780140435533,"CLASSICS, ADVENTURE"
+1,Jane Eyre,Penguin Classics,Charlotte Brontë,ISBN-9780140439004,"CLASSICS, ROMANCE"
+1,Slaughterhouse-Five,Penguin Books,Kurt Vonnegut,ISBN-9780140040376,"FICTION, WAR"
+2,The God of Small Things,Harper Perennial,Arundhati Roy,ISBN-9780060993098,FICTION
