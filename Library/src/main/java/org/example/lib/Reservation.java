@@ -39,7 +39,7 @@ public class Reservation implements Comparable<Reservation> {
         _endDate = _endDate.plusWeeks(weeks);
     }
 
-    public Integer getLenderId() {
+    public Integer getCustomerId() {
         return _customerId;
     }
 
