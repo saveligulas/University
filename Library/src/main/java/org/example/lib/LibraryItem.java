@@ -49,6 +49,13 @@ public abstract class LibraryItem {
     }
 
     public Reservation reserve(Customer customer, int weeks) throws ReservingItemCustomerHasAlreadyLentException, ReservingItemMultipleTimesConsecutivelyException {
+        if (_reservations.peekLast().getCustomerId() == customer.getId()) {
+            throw new ReservingItemMultipleTimesConsecutivelyException();
+        }
+        if (_reservations.peek().getCustomerId() == customer.getId()) {
+            throw new ReservingItemCustomerHasAlreadyLentException();
+        }
+
         return reserve(customer, weeks, getEarliestDateAvailable());
     }
 
@@ -89,6 +96,18 @@ public abstract class LibraryItem {
 
     public NameOfPerson getIntellectualOwner() {
         return _intellectualOwner;
+    }
+
+    public int getCopyNumber() {
+        return _copyNumber;
+    }
+
+    public Category getPrimaryCategory() {
+        return _primaryCategory;
+    }
+
+    public List<Category> getThemeCategories() {
+        return _themeCategories;
     }
 
     @Override
