@@ -24,6 +24,9 @@ public class MyPriorityQueue<E> extends PriorityQueue<E> {
         if (isEmpty()) {
             return null;
         }
+        if (size() == 1) {
+            return peek();
+        }
 
         // To peek at the last element, we temporarily store elements in another priority queue
         PriorityQueue<E> tempQueue = new PriorityQueue<>(this);
