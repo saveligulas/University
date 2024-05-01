@@ -3,10 +3,12 @@ package org.example.lib;
 import org.example.human.Customer;
 import org.example.human.NameOfPerson;
 
+import java.util.List;
+
 public abstract class BookOrJournalLibraryItem extends LibraryItem {
 
-    public BookOrJournalLibraryItem(int copyNumber, String title, String publisher, NameOfPerson intellectualOwner, String identifier, Category primaryCategory, Category... themeCategories) {
-        super(copyNumber, title, publisher, intellectualOwner, identifier, primaryCategory, themeCategories);
+    public BookOrJournalLibraryItem(int copyNumber, String title, String publisher, NameOfPerson intellectualOwner, String identifier, Section section, List<Category> themeCategories) {
+        super(copyNumber, title, publisher, intellectualOwner, identifier, section, themeCategories);
     }
 
     @Override
