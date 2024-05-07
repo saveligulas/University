@@ -1,4 +1,4 @@
-package org.example.lib;
+package lib.items;
 
 public enum Category {
     FANTASY, HISTORY, CLASSICS, SCI_FI, ROMANCE, THRILLER, FICTION, NON_FICTION, MYSTERY, POETRY, ART, BIOGRAPHY, EPIC, ADVENTURE, LEGAL
