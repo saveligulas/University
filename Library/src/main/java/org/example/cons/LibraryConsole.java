@@ -108,7 +108,8 @@ public class LibraryConsole {
     }
 
     private void runReturnItem(Customer customer) {
-
+        //TODO
+        System.out.println("Not yet implemented");
     }
 
     private String scanForLine(String question) {
