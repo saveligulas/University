@@ -9,16 +9,18 @@ public class Reservation implements Comparable<Reservation> {
     private final Integer _customerId;
     private final String _identifier;
     private final int _copyNumber;
+    private final String _title;
     private final int _maxExtensions;
     private ReservationStatus _status;
     private final LocalDate _startDate;
     private LocalDate _endDate;
     private int _extensions;
 
-    public Reservation(Integer customerId, String identifier, int copyNumber, ReservationStatus status, LocalDate startDate, LocalDate endDate, int maxExtensions) {
+    public Reservation(Integer customerId, String identifier, int copyNumber, String title, ReservationStatus status, LocalDate startDate, LocalDate endDate, int maxExtensions) {
         _customerId = customerId;
         _identifier = identifier;
         _copyNumber = copyNumber;
+        _title = title;
         _maxExtensions = maxExtensions;
         _status = status;
         _startDate = startDate;
@@ -36,6 +38,10 @@ public class Reservation implements Comparable<Reservation> {
 
     public Integer getCustomerId() {
         return _customerId;
+    }
+
+    public String getTitle() {
+        return _title;
     }
 
     public int getMaxExtensions() {

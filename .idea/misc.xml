@@ -10,6 +10,8 @@
         <option value="$PROJECT_DIR$/src/game/pom.xml" />
         <option value="$PROJECT_DIR$/Shape/pom.xml" />
         <option value="$PROJECT_DIR$/Library/pom.xml" />
+        <option value="$PROJECT_DIR$/Stack/pom.xml" />
+        <option value="$PROJECT_DIR$/Stax/pom.xml" />
       </list>
     </option>
   </component>

@@ -20,7 +20,7 @@ public class SearchResult {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (SearchRecord r : _searchResults) {
-            sb.append(r);
+            sb.append("\n").append(r);
         }
         return sb.toString();
     }
