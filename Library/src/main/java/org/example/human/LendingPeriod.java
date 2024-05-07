@@ -1,4 +1,4 @@
-package org.example.human;
+package hum;
 
 import java.time.Period;
 
