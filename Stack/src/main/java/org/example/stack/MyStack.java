@@ -40,6 +40,9 @@ public class MyStack<T> {
     @SuppressWarnings("unchecked")
     public T pop() {
         _pointer--;
+        if (_pointer == -1) {
+            throw new NullPointerException();
+        }
         return (T) _data[_pointer];
     }
 }

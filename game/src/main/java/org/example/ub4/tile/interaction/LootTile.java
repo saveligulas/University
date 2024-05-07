@@ -53,7 +53,7 @@ public class LootTile extends SinglePlayerTile {
 
     @Override
     protected void setDescription() {
-        _description = "Lucky you are, as this is Tile is all yours. Great Riches await you.";
+        _description = "Lucky you are, as this is all yours. Great Riches await you.";
     }
 
     @Override
