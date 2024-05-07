@@ -5,9 +5,13 @@
     <file url="file://$PROJECT_DIR$/Library/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Shape/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Shape/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Stack/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Stack/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Stax/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Stax/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/game/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/game/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/InPerson/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/InPerson/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/game/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/game/src/main/resources" charset="UTF-8" />
   </component>
 </project>
