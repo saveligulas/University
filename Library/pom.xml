@@ -7,6 +7,10 @@
     <groupId>org.example</groupId>
     <artifactId>Library</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>LibraryV2</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>19</maven.compiler.source>
