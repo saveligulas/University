@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE archery_tournament SYSTEM "archery_course.dtd">
+<archery_tournament>
+    <type id="boar" point_sheet_id="boar_points">Boar</type>
+    <type id="pig" point_sheet_id="pig_points">Pig</type>
+    <type id="hawk" point_sheet_id="hawk_points">Hawk</type>
+
+    <target id="target-001" type_id="boar">Target 1</target>
+    <target id="target-002" type_id="pig">Target 2</target>
+    <target id="target-003" type_id="hawk">Target 3</target>
+
+    <person id="person001" group_id="course001">John Doe</person>
+    <person id="person002" group_id="course001">Jane Smith</person>
+
+    <person id="person003" group_id="course002">Michael Johnson</person>
+    <person id="person004" group_id="course002">Emily Brown</person>
+
+    <point_sheet id="boar_points">
+        <name>Boar Points</name>
+        <points>
+            <point>10</point>
+            <point>15</point>
+            <point>20</point>
+        </points>
+    </point_sheet>
+    <point_sheet id="pig_points">
+        <name>Pig Points</name>
+        <points>
+            <point>5</point>
+            <point>8</point>
+            <point>12</point>
+        </points>
+    </point_sheet>
+    <point_sheet id="hawk_points">
+        <name>Hawk Points</name>
+        <points>
+            <point>25</point>
+            <point>30</point>
+            <point>35</point>
+        </points>
+    </point_sheet>
+
+    <course id="course001">
+        <name>Beginner's Archery Course</name>
+        <location_description>Back at the old watchtower.</location_description>
+    </course>
+
+    <course id="course002">
+        <name>Intermediate Archery Course</name>
+        <location_description>In the woods to the east. Follow the Mountainbike trail. Turn to the left on the first intersection.</location_description>
+    </course>
+</archery_tournament>
+
