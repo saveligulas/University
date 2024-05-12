@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE library_items SYSTEM "items.dtd">
+<library_items>
+    <books>
+        <book>
+            <info identifier="ISBN-1000">
+                <copy_number></copy_number>
+                <title></title>
+                <publisher></publisher>
+                <intellectual_owner></intellectual_owner>
+                <description></description>
+                <categories>
+                    <category></category>
+                </categories>
+            </info>
+        </book>
+    </books>
+</library_items>
