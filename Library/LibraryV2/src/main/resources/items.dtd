@@ -1,0 +1,14 @@
+<!ELEMENT library_items (books)>
+<!ELEMENT books (book)>
+<!ELEMENT journals (journal)>
+<!ELEMENT book (info)>
+<!ELEMENT journal (info)>
+<!ELEMENT info (copy_number, title, publisher, intellectual_owner, description, categories)>
+<!ATTLIST info identifier ID #REQUIRED>
+<!ELEMENT copy_number (#PCDATA)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT publisher (#PCDATA)>
+<!ELEMENT intellectual_owner (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT categories (category+)>
+<!ELEMENT category (#PCDATA)>
