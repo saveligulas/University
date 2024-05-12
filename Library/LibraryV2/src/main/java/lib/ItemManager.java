@@ -3,19 +3,18 @@ package lib;
 import lib.items.Book;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ItemManager {
     private final TimeService _service;
-    private final List<Book> books = new ArrayList<>();
-    private final List<LendingInformation> _reservations;
-    private final List<LendingInformation> _leases;
-    private final List<LendingInformation> _records;
-
-    public ItemManager(int copies) {
+    private final List<Book> _books = new ArrayList<>();
+    private final List<LeaseService> _leaseServices = new ArrayList<>();
+    public ItemManager(List<Book> books) {
         _service = TimeService.INSTANCE;
-        _reservations = new ArrayList<>();
-        _leases = new ArrayList<>();
-        _records = new ArrayList<>();
+        for (int i = 0; i < books.size(); i++) {
+            _books.add(books.get(i));
+            _leaseServices.add(new LeaseService());
+        }
     }
 }
