@@ -13,9 +13,11 @@ public class TimeTable implements Iterable<Boolean> {
         this.availableArray = availableArray;
     }
 
+    public static TimeTable of(LocalDate start, LocalDate end, int copies, boolean[]... availableArrays) {
+        return new TimeTable(start, end, availableArray);
+    }
 
-    public static TimeTable of(LocalDate start, LocalDate end, List<LendingInformation> infoList, int copies) {
-        boolean[] availableArray = new boolean[Time.daysBetweenInclusive(start, end)];
+    public static TimeTable of(LocalDate start, LocalDate end, List<LendingInformation> infoList) {
         
         return new TimeTable(start, end, availableArray);
     }
@@ -31,8 +33,7 @@ public class TimeTable implements Iterable<Boolean> {
 
         public AvailabilityBooleanIterator(boolean[] availableArray) {
             this._currentIndex = 0;
-            _values = new boolean[availableArray.length];
-            System.arraycopy(availableArray, 0, _values, 0, availableArray.length);
+            _values = availableArray;
         }
 
         @Override
