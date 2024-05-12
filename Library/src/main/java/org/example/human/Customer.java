@@ -3,6 +3,7 @@ package org.example.human;
 import org.example.lib.Reservation;
 import org.example.lib.ReservationStatus;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -58,6 +59,16 @@ public class Customer {
         return identifiers;
     }
 
+    public List<String> getReturnTodayIdentifiers() {
+        List<String> identifiers = new ArrayList<>();
+        for (Reservation reservation : _activeAndOldReservations) {
+            if (reservation.getEndDate().equals(LocalDate.now())) {
+                identifiers.add(reservation.getIdentifier());
+            }
+        }
+        return identifiers;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Customer customer)) {
@@ -69,6 +80,12 @@ public class Customer {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(_id + ": " + _name + "\nYour active reservations: ");
+        sb.append(_id).append(": ").append(_name).append("\nYour active reservations: ");
+        for (Reservation r : _activeAndOldReservations) {
+            if (r.getStatus() == ReservationStatus.PRESENT) {
+                sb.append(r.getTitle()).append("/").append(r.getIdentifier()).append(": ").append(r.getEndDate().toString().substring(0, 10));
+            }
+        }
+        return sb.toString();
     }
 }

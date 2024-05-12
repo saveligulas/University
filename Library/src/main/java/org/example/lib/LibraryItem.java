@@ -69,7 +69,7 @@ public abstract class LibraryItem {
     }
 
     private Reservation addReservationToQueue(Customer customer, LocalDate startDate, LocalDate endDate, ReservationStatus status) {
-        Reservation reservation = new Reservation(customer.getId(), this._identifier, this._copyNumber, status, startDate, endDate, getMaxExtensions(customer));
+        Reservation reservation = new Reservation(customer.getId(), this._identifier, this._copyNumber, this._title, status, startDate, endDate, getMaxExtensions(customer));
         _reservations.add(reservation);
         return reservation;
     }

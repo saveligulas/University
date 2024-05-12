@@ -1,0 +1,10 @@
+{"targets": [
+{"target_id": "target-002","type_id": "null","content": "Target 2"},
+{"target_id": "target-003","type_id": "null","content": "Target 3"}],"courses": [
+{"course_id": "course002","name": "course","content": "In the woods to the east. Follow the Mountainbike trail. Turn to the left on the first intersection."}],"types": [
+{"type_id": "boar","point_sheet_id": "boar_points","content": "Boar"},
+{"type_id": "pig","point_sheet_id": "pig_points","content": "Pig"},
+{"type_id": "hawk","point_sheet_id": "hawk_points","content": "Hawk"}],"participants": [
+{"id": "person002","group_id": "course001","name": "Jane Smith"},
+{"id": "person003","group_id": "course002","name": "Michael Johnson"},
+{"id": "person004","group_id": "course002","name": "Emily Brown"}}
