@@ -9,13 +9,14 @@ import java.util.Set;
 
 public abstract class LibraryItem {
     private final String _identifier;
-    private final int _copyNumber;
+    private int _copyNumber;
 
     private final String _title;
     private final String _publisher;
     private final String _intellectualOwner;
     private String _description;
     private Set<Category> _categories;
+    private Lease _activeLease;
 
     public LibraryItem(String _identifier, int _copyNumber, String _title, String _publisher, String _intellectualOwner, String description, Set<Category> _categories) {
         this._identifier = _identifier;
@@ -41,6 +42,10 @@ public abstract class LibraryItem {
 
     public int getCopyNumber() {
         return _copyNumber;
+    }
+
+    public void setCopyNumber(int copyNumber) {
+        _copyNumber = copyNumber;
     }
 
     public String getTitle() {
@@ -73,6 +78,14 @@ public abstract class LibraryItem {
 
     public boolean removeCategory(Category category) {
         return _categories.remove(category);
+    }
+
+    public Lease getActiveLease() {
+        return _activeLease;
+    }
+
+    public void setActiveLease(Lease activeLease) {
+        this._activeLease = activeLease;
     }
 
 }
